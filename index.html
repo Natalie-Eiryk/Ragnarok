@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragnarök - By Natalie Eiryk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lcars.css">
+</head>
+<body class="landing">
+    <!-- Scan line overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Matrix rain effect (subtle) -->
+    <canvas id="matrix-rain"></canvas>
+
+    <!-- Main content -->
+    <div class="landing-container">
+        <div class="lcars-frame">
+            <div class="lcars-bar top">
+                <div class="lcars-elbow left"></div>
+                <div class="lcars-block orange"></div>
+                <div class="lcars-block cyan"></div>
+                <div class="lcars-block purple"></div>
+                <div class="lcars-title-block">
+                    <span class="lcars-label">TRANSMISSION INCOMING</span>
+                </div>
+                <div class="lcars-block pink"></div>
+                <div class="lcars-elbow right"></div>
+            </div>
+
+            <div class="landing-content">
+                <h1 class="glitch" data-text="RAGNARÖK">RAGNARÖK</h1>
+                <p class="author">by Natalie Eiryk</p>
+                <p class="tagline typewriter">The end is just the beginning...</p>
+
+                <a href="chapters/index.html" class="lcars-button enter-button">
+                    <span class="button-text">ENTER</span>
+                    <span class="button-accent"></span>
+                </a>
+
+                <div class="secondary-links">
+                    <a href="https://www.natalie-eiryk.com" class="lcars-link" target="_blank">SUPPORT THE AUTHOR</a>
+                </div>
+            </div>
+
+            <div class="lcars-bar bottom">
+                <div class="lcars-elbow left"></div>
+                <div class="lcars-block cyan"></div>
+                <div class="lcars-block orange"></div>
+                <div class="lcars-block purple"></div>
+                <div class="lcars-status-block">
+                    <span class="status-text">SIGNAL LOCKED</span>
+                    <span class="status-indicator"></span>
+                </div>
+                <div class="lcars-elbow right"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/effects.js"></script>
+</body>
+</html>
