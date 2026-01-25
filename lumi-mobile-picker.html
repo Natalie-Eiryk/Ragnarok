@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMI Mobile - Category Picker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #ff9900;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid;
+        }
+
+        .section-header.custody { border-color: #ff6b9d; }
+        .section-header.calendar { border-color: #00ccff; }
+        .section-header.todo { border-color: #ff9900; }
+        .section-header.lumi { border-color: #cc99ff; }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-header.custody h2 { color: #ff6b9d; }
+        .section-header.calendar h2 { color: #00ccff; }
+        .section-header.todo h2 { color: #ff9900; }
+        .section-header.lumi h2 { color: #cc99ff; }
+
+        .count {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #1c1c1e;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .option:hover {
+            background: #2c2c2e;
+        }
+
+        .option input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            accent-color: #ff9900;
+            flex-shrink: 0;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-label {
+            font-size: 16px;
+            font-weight: 500;
+            display: block;
+        }
+
+        .option-desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+
+        .summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1c1c1e;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-text {
+            font-size: 15px;
+        }
+
+        .summary-count {
+            color: #ff9900;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            padding: 12px 24px;
+            background: #ff9900;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #ffaa22;
+        }
+
+        .spacer {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>LUMI Mobile Categories</h1>
+    <p class="subtitle">Check the ones that feel right. Wording matters.</p>
+
+    <form id="categoryForm">
+        <!-- CUSTODY -->
+        <div class="section">
+            <div class="section-header custody">
+                <h2>Custody</h2>
+                <span class="count custody-count">0 selected</span>
+            </div>
+            <div class="options" data-section="custody">
+                <label class="option">
+                    <input type="checkbox" name="custody" value="with_me">
+                    <div class="option-content">
+                        <span class="option-label">With Me</span>
+                        <span class="option-desc">Kid is with you now</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="handoff">
+                    <div class="option-content">
+                        <span class="option-label">Handoff</span>
+                        <span class="option-desc">Transferring custody</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="pickup">
+                    <div class="option-content">
+                        <span class="option-label">Pickup</span>
+                        <span class="option-desc">You're picking them up</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="dropoff">
+                    <div class="option-content">
+                        <span class="option-label">Dropoff</span>
+                        <span class="option-desc">You're dropping them off</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="at_moms">
+                    <div class="option-content">
+                        <span class="option-label">At Mom's</span>
+                        <span class="option-desc">Log they're with the other parent</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="at_school">
+                    <div class="option-content">
+                        <span class="option-label">At School</span>
+                        <span class="option-desc">School hours started</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="sick_day">
+                    <div class="option-content">
+                        <span class="option-label">Sick Day</span>
+                        <span class="option-desc">Keeping them home</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="schedule_change">
+                    <div class="option-content">
+                        <span class="option-label">Schedule Change</span>
+                        <span class="option-desc">Deviation from normal</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="overnight">
+                    <div class="option-content">
+                        <span class="option-label">Overnight</span>
+                        <span class="option-desc">Extended stay logged</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="exchange_note">
+                    <div class="option-content">
+                        <span class="option-label">Exchange Note</span>
+                        <span class="option-desc">Something to communicate at handoff</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="running_late">
+                    <div class="option-content">
+                        <span class="option-label">Running Late</span>
+                        <span class="option-desc">Delay notification</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="early_pickup">
+                    <div class="option-content">
+                        <span class="option-label">Early Pickup</span>
+                        <span class="option-desc">Earlier than scheduled</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="weekend_start">
+                    <div class="option-content">
+                        <span class="option-label">Weekend Start</span>
+                        <span class="option-desc">Beginning weekend custody</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="weekend_end">
+                    <div class="option-content">
+                        <span class="option-label">Weekend End</span>
+                        <span class="option-desc">Ending weekend custody</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="holiday">
+                    <div class="option-content">
+                        <span class="option-label">Holiday</span>
+                        <span class="option-desc">Special custody day</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="emergency">
+                    <div class="option-content">
+                        <span class="option-label">Emergency</span>
+                        <span class="option-desc">Urgent custody situation</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="doctor_visit">
+                    <div class="option-content">
+                        <span class="option-label">Doctor Visit</span>
+                        <span class="option-desc">Medical appointment</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="activity">
+                    <div class="option-content">
+                        <span class="option-label">Activity</span>
+                        <span class="option-desc">Sports/lessons/etc</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="babysitter">
+                    <div class="option-content">
+                        <span class="option-label">Babysitter</span>
+                        <span class="option-desc">Third party has them</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="custody" value="travel">
+                    <div class="option-content">
+                        <span class="option-label">Travel</span>
+                        <span class="option-desc">Out of town with kid</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- CALENDAR -->
+        <div class="section">
+            <div class="section-header calendar">
+                <h2>Calendar</h2>
+                <span class="count calendar-count">0 selected</span>
+            </div>
+            <div class="options" data-section="calendar">
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="add_event">
+                    <div class="option-content">
+                        <span class="option-label">Add Event</span>
+                        <span class="option-desc">Generic new event</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="todays_schedule">
+                    <div class="option-content">
+                        <span class="option-label">Today's Schedule</span>
+                        <span class="option-desc">What's on for today</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="meeting">
+                    <div class="option-content">
+                        <span class="option-label">Meeting</span>
+                        <span class="option-desc">Work/personal meeting</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="appointment">
+                    <div class="option-content">
+                        <span class="option-label">Appointment</span>
+                        <span class="option-desc">Doctor, lawyer, etc</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="deadline">
+                    <div class="option-content">
+                        <span class="option-label">Deadline</span>
+                        <span class="option-desc">Something due</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="reminder">
+                    <div class="option-content">
+                        <span class="option-label">Reminder</span>
+                        <span class="option-desc">Future ping</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="block_time">
+                    <div class="option-content">
+                        <span class="option-label">Block Time</span>
+                        <span class="option-desc">Reserve focus time</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="reschedule">
+                    <div class="option-content">
+                        <span class="option-label">Reschedule</span>
+                        <span class="option-desc">Move something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="cancel">
+                    <div class="option-content">
+                        <span class="option-label">Cancel</span>
+                        <span class="option-desc">Remove an event</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="this_week">
+                    <div class="option-content">
+                        <span class="option-label">This Week</span>
+                        <span class="option-desc">Week overview</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="tomorrow">
+                    <div class="option-content">
+                        <span class="option-label">Tomorrow</span>
+                        <span class="option-desc">Tomorrow's view</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="recurring">
+                    <div class="option-content">
+                        <span class="option-label">Recurring</span>
+                        <span class="option-desc">Repeating event</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="travel_time">
+                    <div class="option-content">
+                        <span class="option-label">Travel Time</span>
+                        <span class="option-desc">Buffer for commute</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="all_day">
+                    <div class="option-content">
+                        <span class="option-label">All Day</span>
+                        <span class="option-desc">Full day event</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="birthday">
+                    <div class="option-content">
+                        <span class="option-label">Birthday</span>
+                        <span class="option-desc">Someone's birthday</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="anniversary">
+                    <div class="option-content">
+                        <span class="option-label">Anniversary</span>
+                        <span class="option-desc">Important date</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="bill_due">
+                    <div class="option-content">
+                        <span class="option-label">Bill Due</span>
+                        <span class="option-desc">Payment reminder</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="court_date">
+                    <div class="option-content">
+                        <span class="option-label">Court Date</span>
+                        <span class="option-desc">Legal appointment</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="school_event">
+                    <div class="option-content">
+                        <span class="option-label">School Event</span>
+                        <span class="option-desc">Kid's school thing</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="calendar" value="work_shift">
+                    <div class="option-content">
+                        <span class="option-label">Work Shift</span>
+                        <span class="option-desc">Clock in/out times</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- TO-DO -->
+        <div class="section">
+            <div class="section-header todo">
+                <h2>To-Do</h2>
+                <span class="count todo-count">0 selected</span>
+            </div>
+            <div class="options" data-section="todo">
+                <label class="option">
+                    <input type="checkbox" name="todo" value="urgent">
+                    <div class="option-content">
+                        <span class="option-label">Urgent</span>
+                        <span class="option-desc">Do it now</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="task">
+                    <div class="option-content">
+                        <span class="option-label">Task</span>
+                        <span class="option-desc">Generic to-do</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="call_someone">
+                    <div class="option-content">
+                        <span class="option-label">Call Someone</span>
+                        <span class="option-desc">Phone call needed</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="buy_something">
+                    <div class="option-content">
+                        <span class="option-label">Buy Something</span>
+                        <span class="option-desc">Shopping item</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="email">
+                    <div class="option-content">
+                        <span class="option-label">Email</span>
+                        <span class="option-desc">Need to send one</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="text">
+                    <div class="option-content">
+                        <span class="option-label">Text</span>
+                        <span class="option-desc">Message someone</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="research">
+                    <div class="option-content">
+                        <span class="option-label">Research</span>
+                        <span class="option-desc">Look into something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="book_it">
+                    <div class="option-content">
+                        <span class="option-label">Book It</span>
+                        <span class="option-desc">Make a reservation</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="fix">
+                    <div class="option-content">
+                        <span class="option-label">Fix</span>
+                        <span class="option-desc">Something needs repair</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="pay">
+                    <div class="option-content">
+                        <span class="option-label">Pay</span>
+                        <span class="option-desc">Bill or payment</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="return">
+                    <div class="option-content">
+                        <span class="option-label">Return</span>
+                        <span class="option-desc">Send something back</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="cancel">
+                    <div class="option-content">
+                        <span class="option-label">Cancel</span>
+                        <span class="option-desc">Cancel a subscription/service</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="schedule">
+                    <div class="option-content">
+                        <span class="option-label">Schedule</span>
+                        <span class="option-desc">Book an appointment</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="follow_up">
+                    <div class="option-content">
+                        <span class="option-label">Follow Up</span>
+                        <span class="option-desc">Check back on something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="decide">
+                    <div class="option-content">
+                        <span class="option-label">Decide</span>
+                        <span class="option-desc">Decision needed</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="prepare">
+                    <div class="option-content">
+                        <span class="option-label">Prepare</span>
+                        <span class="option-desc">Get ready for something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="document">
+                    <div class="option-content">
+                        <span class="option-label">Document</span>
+                        <span class="option-desc">Write something down properly</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="review">
+                    <div class="option-content">
+                        <span class="option-label">Review</span>
+                        <span class="option-desc">Look over something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="ask_lumi">
+                    <div class="option-content">
+                        <span class="option-label">Ask LUMI</span>
+                        <span class="option-desc">Question for later</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="todo" value="someday">
+                    <div class="option-content">
+                        <span class="option-label">Someday</span>
+                        <span class="option-desc">Not urgent, eventual</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- LUMI -->
+        <div class="section">
+            <div class="section-header lumi">
+                <h2>LUMI</h2>
+                <span class="count lumi-count">0 selected</span>
+            </div>
+            <div class="options" data-section="lumi">
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="quick_note">
+                    <div class="option-content">
+                        <span class="option-label">Quick Note</span>
+                        <span class="option-desc">Fast thought capture</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="voice_message">
+                    <div class="option-content">
+                        <span class="option-label">Voice Message</span>
+                        <span class="option-desc">Audio note idea</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="journal">
+                    <div class="option-content">
+                        <span class="option-label">Journal</span>
+                        <span class="option-desc">Personal reflection</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="idea">
+                    <div class="option-content">
+                        <span class="option-label">Idea</span>
+                        <span class="option-desc">Creative spark</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="dream">
+                    <div class="option-content">
+                        <span class="option-label">Dream</span>
+                        <span class="option-desc">Log a dream</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="mood">
+                    <div class="option-content">
+                        <span class="option-label">Mood</span>
+                        <span class="option-desc">How you're feeling</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="win">
+                    <div class="option-content">
+                        <span class="option-label">Win</span>
+                        <span class="option-desc">Something good happened</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="vent">
+                    <div class="option-content">
+                        <span class="option-label">Vent</span>
+                        <span class="option-desc">Need to get it out</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="gratitude">
+                    <div class="option-content">
+                        <span class="option-label">Gratitude</span>
+                        <span class="option-desc">Thankful for something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="question">
+                    <div class="option-content">
+                        <span class="option-label">Question</span>
+                        <span class="option-desc">Ask LUMI something</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="memory">
+                    <div class="option-content">
+                        <span class="option-label">Memory</span>
+                        <span class="option-desc">Something to remember</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="quote">
+                    <div class="option-content">
+                        <span class="option-label">Quote</span>
+                        <span class="option-desc">Words that hit</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="insight">
+                    <div class="option-content">
+                        <span class="option-label">Insight</span>
+                        <span class="option-desc">Realization or epiphany</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="goal">
+                    <div class="option-content">
+                        <span class="option-label">Goal</span>
+                        <span class="option-desc">Something to work toward</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="worry">
+                    <div class="option-content">
+                        <span class="option-label">Worry</span>
+                        <span class="option-desc">Anxiety to process</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="celebration">
+                    <div class="option-content">
+                        <span class="option-label">Celebration</span>
+                        <span class="option-desc">Mark a milestone</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="frustration">
+                    <div class="option-content">
+                        <span class="option-label">Frustration</span>
+                        <span class="option-desc">Log irritation</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="bookmark">
+                    <div class="option-content">
+                        <span class="option-label">Bookmark</span>
+                        <span class="option-desc">Save for later</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="reflection">
+                    <div class="option-content">
+                        <span class="option-label">Reflection</span>
+                        <span class="option-desc">End of day thoughts</span>
+                    </div>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="lumi" value="random">
+                    <div class="option-content">
+                        <span class="option-label">Random</span>
+                        <span class="option-desc">Miscellaneous capture</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+    </form>
+
+    <div class="summary">
+        <div class="summary-text">
+            <span class="summary-count" id="totalCount">0</span> categories selected
+        </div>
+        <button type="button" class="submit-btn" onclick="showSelections()">Show Selections</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('categoryForm');
+
+        function updateCounts() {
+            const sections = ['custody', 'calendar', 'todo', 'lumi'];
+            let total = 0;
+
+            sections.forEach(section => {
+                const count = form.querySelectorAll(`input[name="${section}"]:checked`).length;
+                document.querySelector(`.${section}-count`).textContent = `${count} selected`;
+                total += count;
+            });
+
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        form.addEventListener('change', updateCounts);
+
+        function showSelections() {
+            const sections = ['custody', 'calendar', 'todo', 'lumi'];
+            const selections = {};
+
+            sections.forEach(section => {
+                const checked = form.querySelectorAll(`input[name="${section}"]:checked`);
+                selections[section] = Array.from(checked).map(cb => {
+                    const label = cb.closest('.option').querySelector('.option-label').textContent;
+                    return label;
+                });
+            });
+
+            let message = 'Your selections:\n\n';
+            sections.forEach(section => {
+                if (selections[section].length > 0) {
+                    message += `${section.toUpperCase()}:\n`;
+                    selections[section].forEach(item => {
+                        message += `  - ${item}\n`;
+                    });
+                    message += '\n';
+                }
+            });
+
+            if (Object.values(selections).every(arr => arr.length === 0)) {
+                message = 'No categories selected yet.';
+            }
+
+            alert(message);
+
+            // Also log to console in a format easy to copy
+            console.log('Selected categories:', JSON.stringify(selections, null, 2));
+        }
+    </script>
+</body>
+</html>
