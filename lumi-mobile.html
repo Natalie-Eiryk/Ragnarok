@@ -2,367 +2,407 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>LUMI Quick</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#000000">
+    <title>LUMI</title>
     <link rel="stylesheet" href="css/lumi-mobile.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/lumi-192.png">
 </head>
 <body>
-    <!-- Quick Action Grid -->
-    <main class="quick-grid">
-        <!-- Header -->
-        <header class="mobile-header">
-            <span class="header-title">LUMI</span>
-            <span class="header-status" id="status-indicator">●</span>
+    <div class="app">
+        <!-- Status Bar Area -->
+        <header class="status-bar">
+            <div class="status-left">
+                <span class="status-dot online"></span>
+                <span class="status-text">LUMI</span>
+            </div>
+            <div class="status-right">
+                <span class="pending-count" id="pending-count"></span>
+            </div>
         </header>
 
-        <!-- Custody Quick Actions -->
-        <section class="action-section">
-            <div class="section-label">CUSTODY</div>
-            <div class="action-row">
-                <button class="quick-btn custody" data-action="custody:with_me" data-icon="🏠">
-                    <span class="btn-icon">🏠</span>
-                    <span class="btn-label">WITH ME</span>
-                </button>
-                <button class="quick-btn custody" data-action="custody:with_other" data-icon="🚗">
-                    <span class="btn-icon">🚗</span>
-                    <span class="btn-label">HANDOFF</span>
-                </button>
-                <button class="quick-btn custody" data-action="custody:pickup" data-icon="📍">
-                    <span class="btn-icon">📍</span>
-                    <span class="btn-label">PICKUP</span>
-                </button>
-                <button class="quick-btn custody" data-action="custody:dropoff" data-icon="👋">
-                    <span class="btn-icon">👋</span>
-                    <span class="btn-label">DROPOFF</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Calendar Quick Actions -->
-        <section class="action-section">
-            <div class="section-label">CALENDAR</div>
-            <div class="action-row">
-                <button class="quick-btn calendar" data-action="calendar:meeting" data-icon="👥">
-                    <span class="btn-icon">👥</span>
-                    <span class="btn-label">MEETING</span>
-                </button>
-                <button class="quick-btn calendar" data-action="calendar:appointment" data-icon="📅">
-                    <span class="btn-icon">📅</span>
-                    <span class="btn-label">APPT</span>
-                </button>
-                <button class="quick-btn calendar" data-action="calendar:block" data-icon="🚫">
-                    <span class="btn-icon">🚫</span>
-                    <span class="btn-label">BLOCK</span>
-                </button>
-                <button class="quick-btn calendar" data-action="calendar:reminder" data-icon="⏰">
-                    <span class="btn-icon">⏰</span>
-                    <span class="btn-label">REMIND</span>
-                </button>
-            </div>
-            <div class="action-row">
-                <button class="quick-btn calendar wide" data-action="calendar:today" data-icon="📆">
-                    <span class="btn-icon">📆</span>
-                    <span class="btn-label">TODAY</span>
-                </button>
-                <button class="quick-btn calendar wide" data-action="calendar:tomorrow" data-icon="➡️">
-                    <span class="btn-icon">➡️</span>
-                    <span class="btn-label">TOMORROW</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Todo Quick Actions -->
-        <section class="action-section">
-            <div class="section-label">TODO</div>
-            <div class="action-row">
-                <button class="quick-btn todo" data-action="todo:urgent" data-icon="🔴">
-                    <span class="btn-icon">🔴</span>
-                    <span class="btn-label">URGENT</span>
-                </button>
-                <button class="quick-btn todo" data-action="todo:task" data-icon="✅">
-                    <span class="btn-icon">✅</span>
-                    <span class="btn-label">TASK</span>
-                </button>
-                <button class="quick-btn todo" data-action="todo:buy" data-icon="🛒">
-                    <span class="btn-icon">🛒</span>
-                    <span class="btn-label">BUY</span>
-                </button>
-                <button class="quick-btn todo" data-action="todo:call" data-icon="📞">
-                    <span class="btn-icon">📞</span>
-                    <span class="btn-label">CALL</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- LUMI Quick Actions -->
-        <section class="action-section">
-            <div class="section-label">LUMI</div>
-            <div class="action-row">
-                <button class="quick-btn lumi" data-action="lumi:note" data-icon="📝">
-                    <span class="btn-icon">📝</span>
-                    <span class="btn-label">NOTE</span>
-                </button>
-                <button class="quick-btn lumi" data-action="lumi:idea" data-icon="💡">
-                    <span class="btn-icon">💡</span>
-                    <span class="btn-label">IDEA</span>
-                </button>
-                <button class="quick-btn lumi" data-action="lumi:message" data-icon="💬">
-                    <span class="btn-icon">💬</span>
-                    <span class="btn-label">MSG</span>
-                </button>
-                <button class="quick-btn lumi" data-action="lumi:status" data-icon="📊">
-                    <span class="btn-icon">📊</span>
-                    <span class="btn-label">STATUS</span>
-                </button>
-            </div>
-        </section>
-    </main>
-
-    <!-- Quick Input Modal -->
-    <div id="input-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-icon" id="modal-icon">📅</span>
-                <span class="modal-title" id="modal-title">Quick Add</span>
-                <button class="modal-close" onclick="closeModal()">✕</button>
-            </div>
-
-            <!-- Time Quick Picks -->
-            <div class="time-picks" id="time-picks">
-                <div class="picks-label">WHEN</div>
-                <div class="picks-row">
-                    <button class="pick-btn" data-time="now">NOW</button>
-                    <button class="pick-btn" data-time="30min">30 MIN</button>
-                    <button class="pick-btn" data-time="1hr">1 HR</button>
-                    <button class="pick-btn" data-time="2hr">2 HR</button>
+        <!-- Main Scroll Area -->
+        <main class="main-scroll">
+            <!-- Custody Section -->
+            <section class="card-group">
+                <div class="group-header">Custody</div>
+                <div class="card">
+                    <button class="list-item" data-action="custody:with_me">
+                        <div class="item-icon custody">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </div>
+                        <span class="item-label">With Me</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="custody:handoff">
+                        <div class="item-icon custody">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+                        </div>
+                        <span class="item-label">Handoff</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="custody:pickup">
+                        <div class="item-icon custody">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </div>
+                        <span class="item-label">Pickup</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item last" data-action="custody:dropoff">
+                        <div class="item-icon custody">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <span class="item-label">Drop Off</span>
+                        <span class="item-chevron">›</span>
+                    </button>
                 </div>
-                <div class="picks-row">
-                    <button class="pick-btn" data-time="today_noon">NOON</button>
-                    <button class="pick-btn" data-time="today_3pm">3 PM</button>
-                    <button class="pick-btn" data-time="today_6pm">6 PM</button>
-                    <button class="pick-btn" data-time="tonight">TONIGHT</button>
+            </section>
+
+            <!-- Calendar Section -->
+            <section class="card-group">
+                <div class="group-header">Calendar</div>
+                <div class="card">
+                    <button class="list-item" data-action="calendar:event">
+                        <div class="item-icon calendar">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                        </div>
+                        <span class="item-label">New Event</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="calendar:block">
+                        <div class="item-icon calendar">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
+                        </div>
+                        <span class="item-label">Block Time</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item last" data-action="calendar:reminder">
+                        <div class="item-icon calendar">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        </div>
+                        <span class="item-label">Reminder</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Quick Add Section -->
+            <section class="card-group">
+                <div class="group-header">Quick Add</div>
+                <div class="card">
+                    <button class="list-item" data-action="todo:task">
+                        <div class="item-icon todo">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <span class="item-label">Task</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="todo:urgent">
+                        <div class="item-icon urgent">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                        <span class="item-label">Urgent</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="todo:call">
+                        <div class="item-icon todo">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        </div>
+                        <span class="item-label">Call Someone</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item last" data-action="todo:buy">
+                        <div class="item-icon todo">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        </div>
+                        <span class="item-label">Buy Something</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- LUMI Section -->
+            <section class="card-group">
+                <div class="group-header">LUMI</div>
+                <div class="card">
+                    <button class="list-item" data-action="lumi:note">
+                        <div class="item-icon lumi">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </div>
+                        <span class="item-label">Quick Note</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item" data-action="lumi:message">
+                        <div class="item-icon lumi">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                        </div>
+                        <span class="item-label">Message LUMI</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                    <button class="list-item last" data-action="lumi:status">
+                        <div class="item-icon lumi">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                        </div>
+                        <span class="item-label">System Status</span>
+                        <span class="item-chevron">›</span>
+                    </button>
+                </div>
+            </section>
+
+            <div class="bottom-spacer"></div>
+        </main>
+    </div>
+
+    <!-- Sheet Modal -->
+    <div id="sheet" class="sheet">
+        <div class="sheet-backdrop" onclick="closeSheet()"></div>
+        <div class="sheet-content">
+            <div class="sheet-handle"></div>
+
+            <div class="sheet-header">
+                <div class="sheet-icon" id="sheet-icon"></div>
+                <div class="sheet-title" id="sheet-title">New Event</div>
+            </div>
+
+            <!-- When Picker -->
+            <div class="picker-section" id="when-section">
+                <div class="picker-label">When</div>
+                <div class="segmented-control" id="when-picker">
+                    <button class="segment active" data-when="now">Now</button>
+                    <button class="segment" data-when="soon">Soon</button>
+                    <button class="segment" data-when="later">Later</button>
+                    <button class="segment" data-when="tomorrow">Tomorrow</button>
+                </div>
+                <div class="time-detail" id="time-detail">
+                    <input type="time" id="time-input" class="time-input">
                 </div>
             </div>
 
-            <!-- Duration Quick Picks -->
-            <div class="duration-picks" id="duration-picks">
-                <div class="picks-label">HOW LONG</div>
-                <div class="picks-row">
-                    <button class="pick-btn" data-duration="15">15 MIN</button>
-                    <button class="pick-btn" data-duration="30">30 MIN</button>
-                    <button class="pick-btn" data-duration="60" selected>1 HR</button>
-                    <button class="pick-btn" data-duration="120">2 HR</button>
+            <!-- Duration Picker -->
+            <div class="picker-section" id="duration-section">
+                <div class="picker-label">Duration</div>
+                <div class="segmented-control" id="duration-picker">
+                    <button class="segment" data-duration="15">15m</button>
+                    <button class="segment" data-duration="30">30m</button>
+                    <button class="segment active" data-duration="60">1h</button>
+                    <button class="segment" data-duration="120">2h</button>
                 </div>
             </div>
 
-            <!-- Optional Text Input -->
-            <div class="text-input-section">
-                <input type="text" id="quick-text" class="quick-input" placeholder="Details (optional)...">
+            <!-- Details Input -->
+            <div class="input-section">
+                <input type="text" id="details-input" class="details-input" placeholder="Add details...">
             </div>
 
-            <!-- Submit -->
-            <button class="submit-btn" id="submit-btn" onclick="submitQuickAction()">
-                <span class="submit-icon">📡</span>
-                <span class="submit-text">SEND TO LUMI</span>
+            <!-- Action Button -->
+            <button class="action-button" id="action-button" onclick="submitAction()">
+                <span>Send to LUMI</span>
             </button>
         </div>
     </div>
 
-    <!-- Confirmation Toast -->
-    <div id="toast" class="toast hidden">
-        <span class="toast-icon">✓</span>
-        <span class="toast-text" id="toast-text">Sent!</span>
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <span class="toast-text" id="toast-text">Sent to LUMI</span>
     </div>
-
-    <!-- Pending Badge -->
-    <a href="command-console.html" class="pending-badge" id="pending-badge">
-        <span class="badge-count" id="badge-count">0</span>
-        <span class="badge-label">PENDING</span>
-    </a>
 
     <script>
         const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
 
         let currentAction = null;
-        let selectedTime = 'now';
+        let selectedWhen = 'now';
         let selectedDuration = 60;
 
-        // Quick button click handlers
-        document.querySelectorAll('.quick-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                const icon = btn.dataset.icon;
-                const label = btn.querySelector('.btn-label').textContent;
-
+        // List item handlers
+        document.querySelectorAll('.list-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const action = item.dataset.action;
                 currentAction = action;
 
-                // Determine what inputs to show
-                const showTime = action.startsWith('calendar:') || action.startsWith('custody:');
+                // Get icon and label
+                const icon = item.querySelector('.item-icon').innerHTML;
+                const label = item.querySelector('.item-label').textContent;
+
+                document.getElementById('sheet-icon').innerHTML = icon;
+                document.getElementById('sheet-icon').className = 'sheet-icon ' + action.split(':')[0];
+                document.getElementById('sheet-title').textContent = label;
+
+                // Show/hide sections based on action type
+                const showWhen = action.startsWith('calendar:') || action.startsWith('custody:');
                 const showDuration = action.startsWith('calendar:') && !action.includes('reminder');
 
-                document.getElementById('time-picks').style.display = showTime ? 'block' : 'none';
-                document.getElementById('duration-picks').style.display = showDuration ? 'block' : 'none';
+                document.getElementById('when-section').style.display = showWhen ? 'block' : 'none';
+                document.getElementById('duration-section').style.display = showDuration ? 'block' : 'none';
 
-                // Update modal
-                document.getElementById('modal-icon').textContent = icon;
-                document.getElementById('modal-title').textContent = label;
-                document.getElementById('quick-text').placeholder = getPlaceholder(action);
+                // Update placeholder
+                document.getElementById('details-input').placeholder = getPlaceholder(action);
 
-                // Show modal
-                document.getElementById('input-modal').classList.remove('hidden');
+                // Open sheet
+                openSheet();
 
-                // Haptic feedback if available
+                // Haptic
                 if (navigator.vibrate) navigator.vibrate(10);
             });
         });
 
-        // Time pick buttons
-        document.querySelectorAll('.pick-btn[data-time]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.pick-btn[data-time]').forEach(b => b.removeAttribute('selected'));
-                btn.setAttribute('selected', '');
-                selectedTime = btn.dataset.time;
+        // Segmented control handlers
+        document.querySelectorAll('.segment[data-when]').forEach(seg => {
+            seg.addEventListener('click', () => {
+                document.querySelectorAll('.segment[data-when]').forEach(s => s.classList.remove('active'));
+                seg.classList.add('active');
+                selectedWhen = seg.dataset.when;
+
+                // Show time input for "later"
+                document.getElementById('time-detail').style.display =
+                    (selectedWhen === 'later' || selectedWhen === 'soon') ? 'block' : 'none';
+
                 if (navigator.vibrate) navigator.vibrate(5);
             });
         });
 
-        // Duration pick buttons
-        document.querySelectorAll('.pick-btn[data-duration]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.pick-btn[data-duration]').forEach(b => b.removeAttribute('selected'));
-                btn.setAttribute('selected', '');
-                selectedDuration = parseInt(btn.dataset.duration);
+        document.querySelectorAll('.segment[data-duration]').forEach(seg => {
+            seg.addEventListener('click', () => {
+                document.querySelectorAll('.segment[data-duration]').forEach(s => s.classList.remove('active'));
+                seg.classList.add('active');
+                selectedDuration = parseInt(seg.dataset.duration);
                 if (navigator.vibrate) navigator.vibrate(5);
             });
         });
 
         function getPlaceholder(action) {
-            const placeholders = {
-                'custody:with_me': 'Notes (optional)...',
-                'custody:with_other': 'Notes (optional)...',
-                'custody:pickup': 'Location (optional)...',
-                'custody:dropoff': 'Location (optional)...',
-                'calendar:meeting': 'Who/What...',
-                'calendar:appointment': 'What for...',
-                'calendar:block': 'Reason (optional)...',
+            const map = {
+                'custody:with_me': 'Add a note...',
+                'custody:handoff': 'Add a note...',
+                'custody:pickup': 'Location...',
+                'custody:dropoff': 'Location...',
+                'calendar:event': 'What is it?',
+                'calendar:block': 'Reason...',
                 'calendar:reminder': 'Remind me to...',
-                'calendar:today': 'What...',
-                'calendar:tomorrow': 'What...',
-                'todo:urgent': 'What needs doing...',
-                'todo:task': 'Task...',
-                'todo:buy': 'What to buy...',
-                'todo:call': 'Who to call...',
-                'lumi:note': 'Note...',
-                'lumi:idea': 'Idea...',
+                'todo:task': 'What needs doing?',
+                'todo:urgent': 'What is urgent?',
+                'todo:call': 'Who to call?',
+                'todo:buy': 'What to buy?',
+                'lumi:note': 'Your note...',
                 'lumi:message': 'Message for LUMI...',
-                'lumi:status': '',
+                'lumi:status': 'Leave blank for status check',
             };
-            return placeholders[action] || 'Details...';
+            return map[action] || 'Details...';
         }
 
-        function closeModal() {
-            document.getElementById('input-modal').classList.add('hidden');
-            document.getElementById('quick-text').value = '';
+        function openSheet() {
+            document.getElementById('sheet').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSheet() {
+            document.getElementById('sheet').classList.remove('open');
+            document.body.style.overflow = '';
+            document.getElementById('details-input').value = '';
             currentAction = null;
         }
 
-        function computeDateTime(timePick) {
+        function computeDateTime() {
             const now = new Date();
             const today = now.toISOString().split('T')[0];
+            const timeInput = document.getElementById('time-input').value;
 
-            switch(timePick) {
-                case 'now': return { date: today, time: now.toTimeString().slice(0, 5) };
-                case '30min': now.setMinutes(now.getMinutes() + 30); return { date: today, time: now.toTimeString().slice(0, 5) };
-                case '1hr': now.setHours(now.getHours() + 1); return { date: today, time: now.toTimeString().slice(0, 5) };
-                case '2hr': now.setHours(now.getHours() + 2); return { date: today, time: now.toTimeString().slice(0, 5) };
-                case 'today_noon': return { date: today, time: '12:00' };
-                case 'today_3pm': return { date: today, time: '15:00' };
-                case 'today_6pm': return { date: today, time: '18:00' };
-                case 'tonight': return { date: today, time: '20:00' };
-                default: return { date: today, time: now.toTimeString().slice(0, 5) };
+            switch(selectedWhen) {
+                case 'now':
+                    return { date: today, time: now.toTimeString().slice(0,5) };
+                case 'soon':
+                    if (timeInput) return { date: today, time: timeInput };
+                    now.setMinutes(now.getMinutes() + 30);
+                    return { date: today, time: now.toTimeString().slice(0,5) };
+                case 'later':
+                    if (timeInput) return { date: today, time: timeInput };
+                    now.setHours(now.getHours() + 2);
+                    return { date: today, time: now.toTimeString().slice(0,5) };
+                case 'tomorrow':
+                    now.setDate(now.getDate() + 1);
+                    return { date: now.toISOString().split('T')[0], time: '09:00' };
+                default:
+                    return { date: today, time: now.toTimeString().slice(0,5) };
             }
         }
 
-        async function submitQuickAction() {
+        function submitAction() {
             if (!currentAction) return;
 
-            const text = document.getElementById('quick-text').value.trim();
-            const { date, time } = computeDateTime(selectedTime);
+            const details = document.getElementById('details-input').value.trim();
+            const { date, time } = computeDateTime();
 
-            // Build minimal issue body
-            const actionParts = currentAction.split(':');
-            const category = actionParts[0];
-            const type = actionParts[1];
+            const [category, type] = currentAction.split(':');
+            const title = `[QUICK:${currentAction}] ${details || type.toUpperCase()}`;
 
-            const title = `[QUICK:${currentAction}] ${text || type.toUpperCase()}`;
             const body = `## Quick Action
 \`${currentAction}\`
 
 ## When
 ${date} ${time}
 
-${selectedDuration ? `## Duration\n${selectedDuration} minutes\n` : ''}
+${selectedDuration ? `## Duration
+${selectedDuration} minutes
+` : ''}
 ## Details
-${text || '(none provided)'}
+${details || '(none)'}
 
 ---
-*Quick action from LUMI Mobile*
-*${new Date().toISOString()}*`;
+*LUMI Mobile • ${new Date().toISOString()}*`;
 
-            // Create GitHub issue URL
             const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
                 `labels=lumi-command,quick,${category}&` +
                 `title=${encodeURIComponent(title)}&` +
                 `body=${encodeURIComponent(body)}`;
 
-            // Open in new tab
             window.open(issueUrl, '_blank');
 
-            // Show toast
-            showToast('Sent! LUMI will follow up.');
-
-            // Haptic feedback
+            showToast('Sent to LUMI');
             if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
-
-            // Close modal
-            closeModal();
+            closeSheet();
         }
 
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-text').textContent = message;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3000);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
         // Load pending count
-        async function loadPendingCount() {
+        async function loadPending() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues?labels=lumi-command&state=open&per_page=100`);
                 const issues = await res.json();
                 const count = Array.isArray(issues) ? issues.length : 0;
-                document.getElementById('badge-count').textContent = count;
-                document.getElementById('pending-badge').style.display = count > 0 ? 'flex' : 'none';
+                const el = document.getElementById('pending-count');
+                if (count > 0) {
+                    el.textContent = count;
+                    el.style.display = 'flex';
+                } else {
+                    el.style.display = 'none';
+                }
             } catch (e) {
-                document.getElementById('pending-badge').style.display = 'none';
+                document.getElementById('pending-count').style.display = 'none';
             }
         }
 
-        // Click outside modal to close
-        document.getElementById('input-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'input-modal') closeModal();
+        // Swipe to close sheet
+        let touchStartY = 0;
+        const sheetContent = document.querySelector('.sheet-content');
+        sheetContent.addEventListener('touchstart', e => {
+            touchStartY = e.touches[0].clientY;
+        });
+        sheetContent.addEventListener('touchmove', e => {
+            const diff = e.touches[0].clientY - touchStartY;
+            if (diff > 100) closeSheet();
         });
 
-        // Init
-        loadPendingCount();
-        setInterval(loadPendingCount, 60000); // Refresh every minute
+        loadPending();
+        setInterval(loadPending, 60000);
     </script>
 </body>
 </html>
