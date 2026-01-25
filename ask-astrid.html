@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Astrid - Ragnarök</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lcars.css">
+    <link rel="stylesheet" href="css/ask-astrid.css">
+</head>
+<body class="ask-astrid-page">
+    <div class="scanlines"></div>
+
+    <!-- LCARS Header -->
+    <header class="lcars-header">
+        <div class="header-bar">
+            <div class="header-elbow"></div>
+            <a href="index.html" class="header-home">RAGNARÖK</a>
+            <div class="header-blocks">
+                <span class="block orange"></span>
+                <span class="block cyan"></span>
+                <span class="block purple"></span>
+            </div>
+            <div class="header-spacer"></div>
+            <a href="about.html" class="header-donate">ABOUT</a>
+            <div class="header-end"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="ask-container">
+        <!-- Intro Section -->
+        <section class="ask-intro">
+            <div class="astrid-avatar">
+                <div class="avatar-frame">
+                    <span class="avatar-icon">⚔️</span>
+                </div>
+            </div>
+            <div class="intro-text">
+                <h1 class="ask-title">ASK ASTRID</h1>
+                <p class="ask-subtitle">DIRECT TRANSMISSION LINE</p>
+                <div class="intro-message">
+                    <p>Got questions about the world of Ragnarök? Curious about life in Fjallheim? Want tactical advice or just need someone to talk to?</p>
+                    <p>Send your transmission. I read everything that comes through, though I can't promise I'll answer all of it. Some questions deserve more than a quick reply. Some don't deserve one at all.</p>
+                    <p class="signature">— Astrid</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submission Form -->
+        <section class="ask-form-section">
+            <div class="form-header">
+                <span class="form-icon">📡</span>
+                <span class="form-title">SUBMIT TRANSMISSION</span>
+            </div>
+            <form id="ask-form" class="ask-form">
+                <div class="form-field">
+                    <label for="sender-name">CALLSIGN (optional)</label>
+                    <input type="text" id="sender-name" name="name" placeholder="Anonymous works too...">
+                </div>
+                <div class="form-field">
+                    <label for="question">YOUR TRANSMISSION</label>
+                    <textarea id="question" name="question" rows="5" placeholder="What's on your mind?" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-icon">📤</span>
+                        <span class="btn-text">SEND TRANSMISSION</span>
+                    </button>
+                </div>
+                <div id="form-status" class="form-status"></div>
+            </form>
+        </section>
+
+        <!-- Archive Link -->
+        <section class="archive-section">
+            <a href="astrid-archive.html" class="archive-link">
+                <span class="archive-icon">📚</span>
+                <span class="archive-text">VIEW ANSWERED TRANSMISSIONS</span>
+                <span class="archive-arrow">→</span>
+            </a>
+        </section>
+
+        <!-- Guidelines -->
+        <section class="guidelines-section">
+            <div class="guidelines-header">TRANSMISSION PROTOCOLS</div>
+            <ul class="guidelines-list">
+                <li>Questions about the story, characters, and world are welcome</li>
+                <li>Astrid answers in character — expect her perspective, not the author's</li>
+                <li>Rude transmissions get deleted. I've got better things to do.</li>
+                <li>Patience. Good answers take time.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="lcars-footer">
+        <div class="footer-bar">
+            <div class="footer-elbow"></div>
+            <span class="footer-text">RAGNARÖK</span>
+            <div class="footer-spacer"></div>
+            <span class="footer-status">TRANSMISSIONS OPEN</span>
+            <div class="footer-end"></div>
+        </div>
+    </footer>
+
+    <script>
+        const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
+
+        document.getElementById('ask-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const statusEl = document.getElementById('form-status');
+            const submitBtn = this.querySelector('.submit-btn');
+            const name = document.getElementById('sender-name').value.trim() || 'Anonymous';
+            const question = document.getElementById('question').value.trim();
+
+            if (!question) {
+                statusEl.textContent = 'Transmission empty. Try again.';
+                statusEl.className = 'form-status error';
+                return;
+            }
+
+            // Disable form while submitting
+            submitBtn.disabled = true;
+            submitBtn.classList.add('sending');
+            statusEl.textContent = 'Transmitting...';
+            statusEl.className = 'form-status';
+
+            // Create issue via GitHub API (requires a serverless function or GitHub Action)
+            // For now, redirect to GitHub issue creation
+            const title = `[Fan Mail] ${question.substring(0, 50)}${question.length > 50 ? '...' : ''}`;
+            const body = `**From:** ${name}\n\n**Transmission:**\n${question}\n\n---\n*Submitted via Ask Astrid*`;
+
+            const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
+                `labels=fan-mail&` +
+                `title=${encodeURIComponent(title)}&` +
+                `body=${encodeURIComponent(body)}`;
+
+            // Open GitHub issue creation in new tab
+            window.open(issueUrl, '_blank');
+
+            // Reset form
+            statusEl.innerHTML = 'Transmission sent! <br><small>(You\'ll need a GitHub account to complete submission)</small>';
+            statusEl.className = 'form-status success';
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('sending');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

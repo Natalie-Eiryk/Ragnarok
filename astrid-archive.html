@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrid's Archive - Ragnarök</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lcars.css">
+    <link rel="stylesheet" href="css/ask-astrid.css">
+    <link rel="stylesheet" href="css/archive.css">
+</head>
+<body class="archive-page">
+    <div class="scanlines"></div>
+
+    <!-- LCARS Header -->
+    <header class="lcars-header">
+        <div class="header-bar">
+            <div class="header-elbow"></div>
+            <a href="index.html" class="header-home">RAGNARÖK</a>
+            <div class="header-blocks">
+                <span class="block orange"></span>
+                <span class="block cyan"></span>
+                <span class="block purple"></span>
+            </div>
+            <div class="header-spacer"></div>
+            <a href="about.html" class="header-donate">ABOUT</a>
+            <div class="header-end"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="archive-container">
+        <div class="archive-header-section">
+            <h1 class="archive-title">TRANSMISSION ARCHIVE</h1>
+            <p class="archive-subtitle">Answered questions from Astrid</p>
+            <a href="ask-astrid.html" class="ask-link">← Submit your own question</a>
+        </div>
+
+        <div class="archive-stats">
+            <div class="stat">
+                <span class="stat-number" id="total-answered">—</span>
+                <span class="stat-label">ANSWERED</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="total-pending">—</span>
+                <span class="stat-label">PENDING</span>
+            </div>
+        </div>
+
+        <div id="archive-loading" class="archive-loading">
+            <div class="loading-spinner"></div>
+            <span>Loading transmissions...</span>
+        </div>
+
+        <div id="archive-error" class="archive-error" style="display: none;">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">Failed to load archive. Try refreshing.</span>
+        </div>
+
+        <div id="archive-list" class="archive-list"></div>
+
+        <div id="archive-empty" class="archive-empty" style="display: none;">
+            <span class="empty-icon">📭</span>
+            <p>No answered transmissions yet.</p>
+            <p>Be the first to <a href="ask-astrid.html">ask a question</a>!</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="lcars-footer">
+        <div class="footer-bar">
+            <div class="footer-elbow"></div>
+            <span class="footer-text">RAGNARÖK</span>
+            <div class="footer-spacer"></div>
+            <span class="footer-status">ARCHIVE ACCESS</span>
+            <div class="footer-end"></div>
+        </div>
+    </footer>
+
+    <script>
+        const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
+        const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPO}/issues`;
+
+        async function loadArchive() {
+            const loadingEl = document.getElementById('archive-loading');
+            const errorEl = document.getElementById('archive-error');
+            const listEl = document.getElementById('archive-list');
+            const emptyEl = document.getElementById('archive-empty');
+            const totalAnswered = document.getElementById('total-answered');
+            const totalPending = document.getElementById('total-pending');
+
+            try {
+                // Fetch answered issues (with fan-mail AND answered labels)
+                const answeredRes = await fetch(`${GITHUB_API}?labels=fan-mail,answered&state=closed&per_page=50`);
+                const answered = await answeredRes.json();
+
+                // Fetch pending issues (with fan-mail label only, still open)
+                const pendingRes = await fetch(`${GITHUB_API}?labels=fan-mail&state=open&per_page=50`);
+                const pending = await pendingRes.json();
+
+                loadingEl.style.display = 'none';
+
+                // Update stats
+                totalAnswered.textContent = Array.isArray(answered) ? answered.length : 0;
+                totalPending.textContent = Array.isArray(pending) ? pending.length : 0;
+
+                if (!Array.isArray(answered) || answered.length === 0) {
+                    emptyEl.style.display = 'block';
+                    return;
+                }
+
+                // Render answered questions
+                for (const issue of answered) {
+                    // Fetch comments to get Astrid's response
+                    const commentsRes = await fetch(issue.comments_url);
+                    const comments = await commentsRes.json();
+
+                    // Find Astrid's response (first comment, or one with special marker)
+                    const astridResponse = comments.find(c =>
+                        c.body.includes('— Astrid') ||
+                        c.user.login === 'Natalie-Eiryk'
+                    ) || comments[0];
+
+                    // Parse the question from issue body
+                    const bodyLines = issue.body.split('\n');
+                    const fromLine = bodyLines.find(l => l.startsWith('**From:**'));
+                    const sender = fromLine ? fromLine.replace('**From:**', '').trim() : 'Anonymous';
+
+                    const transmissionIndex = bodyLines.findIndex(l => l.startsWith('**Transmission:**'));
+                    const question = transmissionIndex >= 0
+                        ? bodyLines.slice(transmissionIndex + 1).join('\n').split('---')[0].trim()
+                        : issue.body;
+
+                    const card = document.createElement('div');
+                    card.className = 'archive-card';
+                    card.innerHTML = `
+                        <div class="card-question">
+                            <div class="question-header">
+                                <span class="question-sender">${escapeHtml(sender)}</span>
+                                <span class="question-date">${formatDate(issue.created_at)}</span>
+                            </div>
+                            <div class="question-text">${escapeHtml(question)}</div>
+                        </div>
+                        <div class="card-answer">
+                            <div class="answer-header">
+                                <span class="answer-icon">⚔️</span>
+                                <span class="answer-label">ASTRID'S RESPONSE</span>
+                            </div>
+                            <div class="answer-text">${astridResponse ? formatMarkdown(astridResponse.body) : '<em>Response pending...</em>'}</div>
+                        </div>
+                    `;
+                    listEl.appendChild(card);
+                }
+
+            } catch (err) {
+                console.error('Failed to load archive:', err);
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'flex';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function formatMarkdown(text) {
+            // Basic markdown to HTML (bold, italic, line breaks)
+            return escapeHtml(text)
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadArchive);
+    </script>
+</body>
+</html>

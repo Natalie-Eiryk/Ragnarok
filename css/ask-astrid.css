@@ -1,0 +1,309 @@
+/* ============================================
+   RAGNARÖK - Ask Astrid Styles
+   Fan mail submission and archive
+   ============================================ */
+
+.ask-astrid-page {
+    padding-top: 50px;
+    min-height: 100vh;
+}
+
+.ask-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* === Intro Section === */
+.ask-intro {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.astrid-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-frame {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--lcars-purple), #9966cc);
+    border-radius: 20px 5px 20px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--lcars-cyan);
+    box-shadow: 0 0 30px rgba(204, 153, 255, 0.3);
+}
+
+.avatar-icon {
+    font-size: 3rem;
+}
+
+.intro-text {
+    flex: 1;
+}
+
+.ask-title {
+    font-family: var(--font-lcars);
+    font-size: 2.5rem;
+    color: var(--lcars-orange);
+    letter-spacing: 0.15em;
+    margin: 0 0 5px 0;
+}
+
+.ask-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--lcars-cyan);
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+}
+
+.intro-message {
+    font-family: var(--font-reading);
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.intro-message p {
+    margin-bottom: 15px;
+}
+
+.signature {
+    font-style: italic;
+    color: var(--lcars-purple);
+    text-align: right;
+}
+
+/* === Form Section === */
+.ask-form-section {
+    background: var(--bg-panel);
+    border: 2px solid var(--lcars-orange);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: var(--lcars-orange);
+    color: var(--bg-dark);
+    font-family: var(--font-lcars);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+}
+
+.form-icon {
+    font-size: 1.3rem;
+}
+
+.ask-form {
+    padding: 25px;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--lcars-cyan);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 15px;
+    background: var(--bg-card);
+    border: 1px solid var(--lcars-purple);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-reading);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--lcars-cyan);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.2);
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-actions {
+    margin-top: 25px;
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--lcars-purple), #9966cc);
+    color: white;
+    font-family: var(--font-lcars);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(204, 153, 255, 0.4);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.submit-btn.sending {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+.form-status {
+    margin-top: 15px;
+    padding: 12px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    border-radius: 8px;
+    min-height: 20px;
+}
+
+.form-status.success {
+    background: rgba(0, 255, 65, 0.1);
+    color: var(--matrix-green);
+    border: 1px solid var(--matrix-green);
+}
+
+.form-status.error {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
+
+/* === Archive Link === */
+.archive-section {
+    margin-bottom: 30px;
+}
+
+.archive-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--bg-panel);
+    border: 2px solid var(--lcars-cyan);
+    border-radius: 15px;
+    color: var(--lcars-cyan);
+    text-decoration: none;
+    font-family: var(--font-lcars);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+}
+
+.archive-link:hover {
+    background: var(--lcars-cyan);
+    color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3);
+}
+
+.archive-icon {
+    font-size: 1.5rem;
+}
+
+.archive-arrow {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+.archive-link:hover .archive-arrow {
+    transform: translateX(5px);
+}
+
+/* === Guidelines === */
+.guidelines-section {
+    background: var(--bg-panel);
+    border: 2px solid var(--text-dim);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.guidelines-header {
+    padding: 12px 20px;
+    background: var(--bg-dark);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    border-bottom: 1px solid var(--text-dim);
+}
+
+.guidelines-list {
+    padding: 20px 20px 20px 40px;
+    margin: 0;
+    font-family: var(--font-reading);
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+}
+
+.guidelines-list li {
+    margin-bottom: 8px;
+}
+
+.guidelines-list li::marker {
+    color: var(--lcars-purple);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .ask-intro {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .ask-title {
+        font-size: 2rem;
+    }
+
+    .signature {
+        text-align: center;
+    }
+}
