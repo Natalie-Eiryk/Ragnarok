@@ -16,11 +16,12 @@
             background: #000;
             color: #fff;
             padding: 20px;
+            padding-bottom: 120px;
             line-height: 1.5;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 8px;
             color: #ff9900;
         }
@@ -28,7 +29,7 @@
         .subtitle {
             color: rgba(255,255,255,0.6);
             margin-bottom: 30px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .section {
@@ -38,35 +39,65 @@
         .section-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 16px;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             border-bottom: 2px solid;
         }
 
-        .section-header.custody { border-color: #ff6b9d; }
-        .section-header.calendar { border-color: #00ccff; }
-        .section-header.todo { border-color: #ff9900; }
-        .section-header.lumi { border-color: #cc99ff; }
-
         .section-header h2 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
         }
 
-        .section-header.custody h2 { color: #ff6b9d; }
-        .section-header.calendar h2 { color: #00ccff; }
-        .section-header.todo h2 { color: #ff9900; }
-        .section-header.lumi h2 { color: #cc99ff; }
+        .section-desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+        }
 
         .count {
+            margin-left: auto;
             font-size: 13px;
             color: rgba(255,255,255,0.4);
         }
 
+        /* Section Colors */
+        .section-header.kids { border-color: #ff6b9d; }
+        .section-header.kids h2 { color: #ff6b9d; }
+
+        .section-header.me { border-color: #00ccff; }
+        .section-header.me h2 { color: #00ccff; }
+
+        .section-header.family { border-color: #cc99ff; }
+        .section-header.family h2 { color: #cc99ff; }
+
+        .section-header.calendar { border-color: #ff9900; }
+        .section-header.calendar h2 { color: #ff9900; }
+
+        .section-header.capture { border-color: #30d158; }
+        .section-header.capture h2 { color: #30d158; }
+
+        .section-header.misc { border-color: #8e8e93; }
+        .section-header.misc h2 { color: #8e8e93; }
+
+        .subsection {
+            margin-bottom: 20px;
+        }
+
+        .subsection-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+
         .options {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 8px;
         }
 
@@ -74,23 +105,30 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 12px 14px;
+            padding: 14px 16px;
             background: #1c1c1e;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.15s ease;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
         }
 
         .option:hover {
             background: #2c2c2e;
         }
 
+        .option:has(input:checked) {
+            border-color: rgba(255,255,255,0.2);
+            background: #2c2c2e;
+        }
+
         .option input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin-top: 2px;
+            width: 24px;
+            height: 24px;
+            margin-top: 1px;
             accent-color: #ff9900;
             flex-shrink: 0;
+            border-radius: 6px;
         }
 
         .option-content {
@@ -98,15 +136,15 @@
         }
 
         .option-label {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 500;
             display: block;
         }
 
         .option-desc {
-            font-size: 13px;
+            font-size: 14px;
             color: rgba(255,255,255,0.5);
-            margin-top: 2px;
+            margin-top: 3px;
         }
 
         .summary {
@@ -114,9 +152,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #1c1c1e;
+            background: rgba(28,28,30,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255,255,255,0.1);
             padding: 16px 20px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -129,10 +170,16 @@
         .summary-count {
             color: #ff9900;
             font-weight: 600;
+            font-size: 18px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
         }
 
         .submit-btn {
-            padding: 12px 24px;
+            padding: 12px 20px;
             background: #ff9900;
             border: none;
             border-radius: 10px;
@@ -141,682 +188,1299 @@
             font-weight: 600;
             color: #000;
             cursor: pointer;
+            transition: all 0.15s ease;
         }
 
         .submit-btn:hover {
             background: #ffaa22;
         }
 
-        .spacer {
-            height: 100px;
+        .submit-btn.secondary {
+            background: #3a3a3c;
+            color: #fff;
+        }
+
+        .submit-btn.secondary:hover {
+            background: #4a4a4c;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            margin: 12px 0;
+        }
+
+        @media (max-width: 500px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .summary {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .summary-text {
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>LUMI Mobile Categories</h1>
-    <p class="subtitle">Check the ones that feel right. Wording matters.</p>
+    <h1>LUMI Mobile Setup</h1>
+    <p class="subtitle">Check everything that fits your life. Wording matters - pick what clicks.</p>
 
     <form id="categoryForm">
-        <!-- CUSTODY -->
+
+        <!-- ==================== KIDS ==================== -->
         <div class="section">
-            <div class="section-header custody">
-                <h2>Custody</h2>
-                <span class="count custody-count">0 selected</span>
+            <div class="section-header kids">
+                <div>
+                    <h2>Kids</h2>
+                    <span class="section-desc">Jackson (6th) &amp; Henry (5th)</span>
+                </div>
+                <span class="count kids-count">0</span>
             </div>
-            <div class="options" data-section="custody">
-                <label class="option">
-                    <input type="checkbox" name="custody" value="with_me">
-                    <div class="option-content">
-                        <span class="option-label">With Me</span>
-                        <span class="option-desc">Kid is with you now</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="handoff">
-                    <div class="option-content">
-                        <span class="option-label">Handoff</span>
-                        <span class="option-desc">Transferring custody</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="pickup">
-                    <div class="option-content">
-                        <span class="option-label">Pickup</span>
-                        <span class="option-desc">You're picking them up</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="dropoff">
-                    <div class="option-content">
-                        <span class="option-label">Dropoff</span>
-                        <span class="option-desc">You're dropping them off</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="at_moms">
-                    <div class="option-content">
-                        <span class="option-label">At Mom's</span>
-                        <span class="option-desc">Log they're with the other parent</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="at_school">
-                    <div class="option-content">
-                        <span class="option-label">At School</span>
-                        <span class="option-desc">School hours started</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="sick_day">
-                    <div class="option-content">
-                        <span class="option-label">Sick Day</span>
-                        <span class="option-desc">Keeping them home</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="schedule_change">
-                    <div class="option-content">
-                        <span class="option-label">Schedule Change</span>
-                        <span class="option-desc">Deviation from normal</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="overnight">
-                    <div class="option-content">
-                        <span class="option-label">Overnight</span>
-                        <span class="option-desc">Extended stay logged</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="exchange_note">
-                    <div class="option-content">
-                        <span class="option-label">Exchange Note</span>
-                        <span class="option-desc">Something to communicate at handoff</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="running_late">
-                    <div class="option-content">
-                        <span class="option-label">Running Late</span>
-                        <span class="option-desc">Delay notification</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="early_pickup">
-                    <div class="option-content">
-                        <span class="option-label">Early Pickup</span>
-                        <span class="option-desc">Earlier than scheduled</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="weekend_start">
-                    <div class="option-content">
-                        <span class="option-label">Weekend Start</span>
-                        <span class="option-desc">Beginning weekend custody</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="weekend_end">
-                    <div class="option-content">
-                        <span class="option-label">Weekend End</span>
-                        <span class="option-desc">Ending weekend custody</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="holiday">
-                    <div class="option-content">
-                        <span class="option-label">Holiday</span>
-                        <span class="option-desc">Special custody day</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="emergency">
-                    <div class="option-content">
-                        <span class="option-label">Emergency</span>
-                        <span class="option-desc">Urgent custody situation</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="doctor_visit">
-                    <div class="option-content">
-                        <span class="option-label">Doctor Visit</span>
-                        <span class="option-desc">Medical appointment</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="activity">
-                    <div class="option-content">
-                        <span class="option-label">Activity</span>
-                        <span class="option-desc">Sports/lessons/etc</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="babysitter">
-                    <div class="option-content">
-                        <span class="option-label">Babysitter</span>
-                        <span class="option-desc">Third party has them</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="custody" value="travel">
-                    <div class="option-content">
-                        <span class="option-label">Travel</span>
-                        <span class="option-desc">Out of town with kid</span>
-                    </div>
-                </label>
+
+            <div class="subsection">
+                <div class="subsection-label">Who</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="both_boys">
+                        <div class="option-content">
+                            <span class="option-label">Both Boys</span>
+                            <span class="option-desc">Jackson and Henry together</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="jackson">
+                        <div class="option-content">
+                            <span class="option-label">Jackson</span>
+                            <span class="option-desc">Just Jackson (6th grade)</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="henry">
+                        <div class="option-content">
+                            <span class="option-label">Henry</span>
+                            <span class="option-desc">Just Henry (5th grade)</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Custody</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="with_me">
+                        <div class="option-content">
+                            <span class="option-label">With Me Now</span>
+                            <span class="option-desc">Kids are with me</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="with_mom">
+                        <div class="option-content">
+                            <span class="option-label">With Mom</span>
+                            <span class="option-desc">Kids are with co-parent</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="handoff">
+                        <div class="option-content">
+                            <span class="option-label">Handoff</span>
+                            <span class="option-desc">Transferring custody</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="schedule_change">
+                        <div class="option-content">
+                            <span class="option-label">Schedule Change</span>
+                            <span class="option-desc">Swap or deviation from normal</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="exchange_note">
+                        <div class="option-content">
+                            <span class="option-label">Exchange Note</span>
+                            <span class="option-desc">Info to communicate at handoff</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="running_late">
+                        <div class="option-content">
+                            <span class="option-label">Running Late</span>
+                            <span class="option-desc">Delay notification</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">School</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="school_pickup">
+                        <div class="option-content">
+                            <span class="option-label">School Pickup</span>
+                            <span class="option-desc">Picking up from school</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="school_dropoff">
+                        <div class="option-content">
+                            <span class="option-label">School Dropoff</span>
+                            <span class="option-desc">Dropping off at school</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="sick_day">
+                        <div class="option-content">
+                            <span class="option-label">Sick Day</span>
+                            <span class="option-desc">Keeping them home</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="school_event">
+                        <div class="option-content">
+                            <span class="option-label">School Event</span>
+                            <span class="option-desc">Play, concert, sports, etc</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="conference">
+                        <div class="option-content">
+                            <span class="option-label">Parent-Teacher Conference</span>
+                            <span class="option-desc">Meeting with teacher</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="early_release">
+                        <div class="option-content">
+                            <span class="option-label">Early Release</span>
+                            <span class="option-desc">Half day or early pickup</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="no_school">
+                        <div class="option-content">
+                            <span class="option-label">No School</span>
+                            <span class="option-desc">Holiday, snow day, break</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="homework">
+                        <div class="option-content">
+                            <span class="option-label">Homework Help</span>
+                            <span class="option-desc">Project or assignment due</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Health &amp; Activities</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="doctor">
+                        <div class="option-content">
+                            <span class="option-label">Doctor Appointment</span>
+                            <span class="option-desc">Pediatrician, checkup, sick visit</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="dentist">
+                        <div class="option-content">
+                            <span class="option-label">Dentist</span>
+                            <span class="option-desc">Dental appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="therapy">
+                        <div class="option-content">
+                            <span class="option-label">Therapy</span>
+                            <span class="option-desc">Counseling or specialist</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="medication">
+                        <div class="option-content">
+                            <span class="option-label">Medication</span>
+                            <span class="option-desc">Refill, dosage, reminder</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="activity">
+                        <div class="option-content">
+                            <span class="option-label">Activity / Sports</span>
+                            <span class="option-desc">Practice, game, lesson</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="playdate">
+                        <div class="option-content">
+                            <span class="option-label">Playdate</span>
+                            <span class="option-desc">Friend hangout</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="birthday_party">
+                        <div class="option-content">
+                            <span class="option-label">Birthday Party</span>
+                            <span class="option-desc">Attending a party</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="kids" value="sleepover">
+                        <div class="option-content">
+                            <span class="option-label">Sleepover</span>
+                            <span class="option-desc">Overnight at friend's</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <!-- CALENDAR -->
+        <!-- ==================== ME ==================== -->
+        <div class="section">
+            <div class="section-header me">
+                <div>
+                    <h2>Me</h2>
+                    <span class="section-desc">Your stuff - school, health, personal</span>
+                </div>
+                <span class="count me-count">0</span>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">School (Yours)</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_class">
+                        <div class="option-content">
+                            <span class="option-label">Class</span>
+                            <span class="option-desc">Attending class</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_assignment">
+                        <div class="option-content">
+                            <span class="option-label">Assignment Due</span>
+                            <span class="option-desc">Homework, paper, project</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_exam">
+                        <div class="option-content">
+                            <span class="option-label">Exam / Test</span>
+                            <span class="option-desc">Test or final</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="study_time">
+                        <div class="option-content">
+                            <span class="option-label">Study Time</span>
+                            <span class="option-desc">Block time to study</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="office_hours">
+                        <div class="option-content">
+                            <span class="option-label">Office Hours</span>
+                            <span class="option-desc">Professor meeting</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Health</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_doctor">
+                        <div class="option-content">
+                            <span class="option-label">Doctor</span>
+                            <span class="option-desc">Medical appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_dentist">
+                        <div class="option-content">
+                            <span class="option-label">Dentist</span>
+                            <span class="option-desc">Dental appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_therapy">
+                        <div class="option-content">
+                            <span class="option-label">Therapy</span>
+                            <span class="option-desc">Mental health appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_meds">
+                        <div class="option-content">
+                            <span class="option-label">Medication</span>
+                            <span class="option-desc">Refill or reminder</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="self_care">
+                        <div class="option-content">
+                            <span class="option-label">Self-Care</span>
+                            <span class="option-desc">Rest, recharge, decompress</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="workout">
+                        <div class="option-content">
+                            <span class="option-label">Workout</span>
+                            <span class="option-desc">Exercise, gym, walk</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Personal</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_errand">
+                        <div class="option-content">
+                            <span class="option-label">Errand</span>
+                            <span class="option-desc">Something to do out</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="my_appointment">
+                        <div class="option-content">
+                            <span class="option-label">Appointment</span>
+                            <span class="option-desc">Generic appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="haircut">
+                        <div class="option-content">
+                            <span class="option-label">Haircut</span>
+                            <span class="option-desc">Hair appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="date_night">
+                        <div class="option-content">
+                            <span class="option-label">Date Night</span>
+                            <span class="option-desc">Time with partner</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="friend_time">
+                        <div class="option-content">
+                            <span class="option-label">Friend Time</span>
+                            <span class="option-desc">Hanging with friends</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="me_time">
+                        <div class="option-content">
+                            <span class="option-label">Me Time</span>
+                            <span class="option-desc">Solo recharge</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Work / Creative</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="me" value="writing_time">
+                        <div class="option-content">
+                            <span class="option-label">Writing Time</span>
+                            <span class="option-desc">Ragnarok, blogging, etc</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="lumi_work">
+                        <div class="option-content">
+                            <span class="option-label">LUMI Work</span>
+                            <span class="option-desc">Development, coding</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="meeting">
+                        <div class="option-content">
+                            <span class="option-label">Meeting</span>
+                            <span class="option-desc">Work or project meeting</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="me" value="focus_block">
+                        <div class="option-content">
+                            <span class="option-label">Focus Block</span>
+                            <span class="option-desc">Protected deep work time</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== FAMILY ==================== -->
+        <div class="section">
+            <div class="section-header family">
+                <div>
+                    <h2>Family</h2>
+                    <span class="section-desc">Parents, brother's family, pets</span>
+                </div>
+                <span class="count family-count">0</span>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Parents (Next Door)</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="family" value="parents">
+                        <div class="option-content">
+                            <span class="option-label">Parents</span>
+                            <span class="option-desc">Visiting or helping</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="parents_watching_kids">
+                        <div class="option-content">
+                            <span class="option-label">Parents Watching Kids</span>
+                            <span class="option-desc">Grandparents babysitting</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="help_parents">
+                        <div class="option-content">
+                            <span class="option-label">Help Parents</span>
+                            <span class="option-desc">Errand or task for them</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="parent_doctor">
+                        <div class="option-content">
+                            <span class="option-label">Parent's Doctor</span>
+                            <span class="option-desc">Taking parent to appointment</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Brother's Family (10 min away)</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="family" value="brothers_family">
+                        <div class="option-content">
+                            <span class="option-label">Brother's Family</span>
+                            <span class="option-desc">Visiting or plans</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="nieces">
+                        <div class="option-content">
+                            <span class="option-label">Nieces</span>
+                            <span class="option-desc">Something with the nieces</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="nephew">
+                        <div class="option-content">
+                            <span class="option-label">Nephew</span>
+                            <span class="option-desc">Something with nephew</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="cousin_hangout">
+                        <div class="option-content">
+                            <span class="option-label">Cousin Hangout</span>
+                            <span class="option-desc">Kids playing with cousins</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="family_dinner">
+                        <div class="option-content">
+                            <span class="option-label">Family Dinner</span>
+                            <span class="option-desc">Meal with extended family</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="family_event">
+                        <div class="option-content">
+                            <span class="option-label">Family Event</span>
+                            <span class="option-desc">Birthday, holiday, gathering</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Pets</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="family" value="dogs">
+                        <div class="option-content">
+                            <span class="option-label">Dogs</span>
+                            <span class="option-desc">Both dogs - general</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="dog_walk">
+                        <div class="option-content">
+                            <span class="option-label">Dog Walk</span>
+                            <span class="option-desc">Walking the dogs</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="dog_vet">
+                        <div class="option-content">
+                            <span class="option-label">Dog Vet</span>
+                            <span class="option-desc">Vet appointment for dogs</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="dog_grooming">
+                        <div class="option-content">
+                            <span class="option-label">Dog Grooming</span>
+                            <span class="option-desc">Groomer appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="cat">
+                        <div class="option-content">
+                            <span class="option-label">Cat</span>
+                            <span class="option-desc">Cat - general</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="cat_vet">
+                        <div class="option-content">
+                            <span class="option-label">Cat Vet</span>
+                            <span class="option-desc">Vet appointment for cat</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="pet_sitter">
+                        <div class="option-content">
+                            <span class="option-label">Pet Sitter</span>
+                            <span class="option-desc">Someone watching pets</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="family" value="pet_food">
+                        <div class="option-content">
+                            <span class="option-label">Pet Food / Supplies</span>
+                            <span class="option-desc">Need to buy pet stuff</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CALENDAR / EVENTS ==================== -->
         <div class="section">
             <div class="section-header calendar">
-                <h2>Calendar</h2>
-                <span class="count calendar-count">0 selected</span>
+                <div>
+                    <h2>Calendar</h2>
+                    <span class="section-desc">Events, scheduling, time</span>
+                </div>
+                <span class="count calendar-count">0</span>
             </div>
-            <div class="options" data-section="calendar">
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="add_event">
-                    <div class="option-content">
-                        <span class="option-label">Add Event</span>
-                        <span class="option-desc">Generic new event</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="todays_schedule">
-                    <div class="option-content">
-                        <span class="option-label">Today's Schedule</span>
-                        <span class="option-desc">What's on for today</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="meeting">
-                    <div class="option-content">
-                        <span class="option-label">Meeting</span>
-                        <span class="option-desc">Work/personal meeting</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="appointment">
-                    <div class="option-content">
-                        <span class="option-label">Appointment</span>
-                        <span class="option-desc">Doctor, lawyer, etc</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="deadline">
-                    <div class="option-content">
-                        <span class="option-label">Deadline</span>
-                        <span class="option-desc">Something due</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="reminder">
-                    <div class="option-content">
-                        <span class="option-label">Reminder</span>
-                        <span class="option-desc">Future ping</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="block_time">
-                    <div class="option-content">
-                        <span class="option-label">Block Time</span>
-                        <span class="option-desc">Reserve focus time</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="reschedule">
-                    <div class="option-content">
-                        <span class="option-label">Reschedule</span>
-                        <span class="option-desc">Move something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="cancel">
-                    <div class="option-content">
-                        <span class="option-label">Cancel</span>
-                        <span class="option-desc">Remove an event</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="this_week">
-                    <div class="option-content">
-                        <span class="option-label">This Week</span>
-                        <span class="option-desc">Week overview</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="tomorrow">
-                    <div class="option-content">
-                        <span class="option-label">Tomorrow</span>
-                        <span class="option-desc">Tomorrow's view</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="recurring">
-                    <div class="option-content">
-                        <span class="option-label">Recurring</span>
-                        <span class="option-desc">Repeating event</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="travel_time">
-                    <div class="option-content">
-                        <span class="option-label">Travel Time</span>
-                        <span class="option-desc">Buffer for commute</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="all_day">
-                    <div class="option-content">
-                        <span class="option-label">All Day</span>
-                        <span class="option-desc">Full day event</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="birthday">
-                    <div class="option-content">
-                        <span class="option-label">Birthday</span>
-                        <span class="option-desc">Someone's birthday</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="anniversary">
-                    <div class="option-content">
-                        <span class="option-label">Anniversary</span>
-                        <span class="option-desc">Important date</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="bill_due">
-                    <div class="option-content">
-                        <span class="option-label">Bill Due</span>
-                        <span class="option-desc">Payment reminder</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="court_date">
-                    <div class="option-content">
-                        <span class="option-label">Court Date</span>
-                        <span class="option-desc">Legal appointment</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="school_event">
-                    <div class="option-content">
-                        <span class="option-label">School Event</span>
-                        <span class="option-desc">Kid's school thing</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="calendar" value="work_shift">
-                    <div class="option-content">
-                        <span class="option-label">Work Shift</span>
-                        <span class="option-desc">Clock in/out times</span>
-                    </div>
-                </label>
+
+            <div class="subsection">
+                <div class="subsection-label">Quick Views</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="today">
+                        <div class="option-content">
+                            <span class="option-label">Today's Schedule</span>
+                            <span class="option-desc">What's on for today</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="tomorrow">
+                        <div class="option-content">
+                            <span class="option-label">Tomorrow</span>
+                            <span class="option-desc">Tomorrow's view</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="this_week">
+                        <div class="option-content">
+                            <span class="option-label">This Week</span>
+                            <span class="option-desc">Week overview</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="next_week">
+                        <div class="option-content">
+                            <span class="option-label">Next Week</span>
+                            <span class="option-desc">Upcoming week preview</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Event Types</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="quick_event">
+                        <div class="option-content">
+                            <span class="option-label">Quick Event</span>
+                            <span class="option-desc">Generic new event</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="medical">
+                        <div class="option-content">
+                            <span class="option-label">Medical</span>
+                            <span class="option-desc">Any medical appointment</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="legal">
+                        <div class="option-content">
+                            <span class="option-label">Legal / Court</span>
+                            <span class="option-desc">Legal appointment or court date</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="deadline">
+                        <div class="option-content">
+                            <span class="option-label">Deadline</span>
+                            <span class="option-desc">Something due</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="reminder">
+                        <div class="option-content">
+                            <span class="option-label">Reminder</span>
+                            <span class="option-desc">Future ping for something</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="all_day">
+                        <div class="option-content">
+                            <span class="option-label">All Day Event</span>
+                            <span class="option-desc">Full day thing</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="recurring">
+                        <div class="option-content">
+                            <span class="option-label">Recurring</span>
+                            <span class="option-desc">Repeating event</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Manage</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="reschedule">
+                        <div class="option-content">
+                            <span class="option-label">Reschedule</span>
+                            <span class="option-desc">Move something</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="cancel">
+                        <div class="option-content">
+                            <span class="option-label">Cancel</span>
+                            <span class="option-desc">Remove an event</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="block_time">
+                        <div class="option-content">
+                            <span class="option-label">Block Time</span>
+                            <span class="option-desc">Reserve protected time</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="travel_time">
+                        <div class="option-content">
+                            <span class="option-label">Travel Time</span>
+                            <span class="option-desc">Buffer for commute</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Money / Admin</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="bill_due">
+                        <div class="option-content">
+                            <span class="option-label">Bill Due</span>
+                            <span class="option-desc">Payment due date</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="payday">
+                        <div class="option-content">
+                            <span class="option-label">Payday</span>
+                            <span class="option-desc">Income expected</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="subscription">
+                        <div class="option-content">
+                            <span class="option-label">Subscription Renews</span>
+                            <span class="option-desc">Auto-charge coming</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Special Dates</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="birthday">
+                        <div class="option-content">
+                            <span class="option-label">Birthday</span>
+                            <span class="option-desc">Someone's birthday</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="anniversary">
+                        <div class="option-content">
+                            <span class="option-label">Anniversary</span>
+                            <span class="option-desc">Important date</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="calendar" value="holiday">
+                        <div class="option-content">
+                            <span class="option-label">Holiday</span>
+                            <span class="option-desc">Holiday or observance</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <!-- TO-DO -->
+        <!-- ==================== CAPTURE / LUMI ==================== -->
         <div class="section">
-            <div class="section-header todo">
-                <h2>To-Do</h2>
-                <span class="count todo-count">0 selected</span>
+            <div class="section-header capture">
+                <div>
+                    <h2>Capture</h2>
+                    <span class="section-desc">Quick thoughts, notes, talk to LUMI</span>
+                </div>
+                <span class="count capture-count">0</span>
             </div>
-            <div class="options" data-section="todo">
-                <label class="option">
-                    <input type="checkbox" name="todo" value="urgent">
-                    <div class="option-content">
-                        <span class="option-label">Urgent</span>
-                        <span class="option-desc">Do it now</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="task">
-                    <div class="option-content">
-                        <span class="option-label">Task</span>
-                        <span class="option-desc">Generic to-do</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="call_someone">
-                    <div class="option-content">
-                        <span class="option-label">Call Someone</span>
-                        <span class="option-desc">Phone call needed</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="buy_something">
-                    <div class="option-content">
-                        <span class="option-label">Buy Something</span>
-                        <span class="option-desc">Shopping item</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="email">
-                    <div class="option-content">
-                        <span class="option-label">Email</span>
-                        <span class="option-desc">Need to send one</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="text">
-                    <div class="option-content">
-                        <span class="option-label">Text</span>
-                        <span class="option-desc">Message someone</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="research">
-                    <div class="option-content">
-                        <span class="option-label">Research</span>
-                        <span class="option-desc">Look into something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="book_it">
-                    <div class="option-content">
-                        <span class="option-label">Book It</span>
-                        <span class="option-desc">Make a reservation</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="fix">
-                    <div class="option-content">
-                        <span class="option-label">Fix</span>
-                        <span class="option-desc">Something needs repair</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="pay">
-                    <div class="option-content">
-                        <span class="option-label">Pay</span>
-                        <span class="option-desc">Bill or payment</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="return">
-                    <div class="option-content">
-                        <span class="option-label">Return</span>
-                        <span class="option-desc">Send something back</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="cancel">
-                    <div class="option-content">
-                        <span class="option-label">Cancel</span>
-                        <span class="option-desc">Cancel a subscription/service</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="schedule">
-                    <div class="option-content">
-                        <span class="option-label">Schedule</span>
-                        <span class="option-desc">Book an appointment</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="follow_up">
-                    <div class="option-content">
-                        <span class="option-label">Follow Up</span>
-                        <span class="option-desc">Check back on something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="decide">
-                    <div class="option-content">
-                        <span class="option-label">Decide</span>
-                        <span class="option-desc">Decision needed</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="prepare">
-                    <div class="option-content">
-                        <span class="option-label">Prepare</span>
-                        <span class="option-desc">Get ready for something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="document">
-                    <div class="option-content">
-                        <span class="option-label">Document</span>
-                        <span class="option-desc">Write something down properly</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="review">
-                    <div class="option-content">
-                        <span class="option-label">Review</span>
-                        <span class="option-desc">Look over something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="ask_lumi">
-                    <div class="option-content">
-                        <span class="option-label">Ask LUMI</span>
-                        <span class="option-desc">Question for later</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="todo" value="someday">
-                    <div class="option-content">
-                        <span class="option-label">Someday</span>
-                        <span class="option-desc">Not urgent, eventual</span>
-                    </div>
-                </label>
+
+            <div class="subsection">
+                <div class="subsection-label">Quick Capture</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="quick_note">
+                        <div class="option-content">
+                            <span class="option-label">Quick Note</span>
+                            <span class="option-desc">Fast thought capture</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="voice_note">
+                        <div class="option-content">
+                            <span class="option-label">Voice Note</span>
+                            <span class="option-desc">Audio capture</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="idea">
+                        <div class="option-content">
+                            <span class="option-label">Idea</span>
+                            <span class="option-desc">Creative spark to save</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="remember_this">
+                        <div class="option-content">
+                            <span class="option-label">Remember This</span>
+                            <span class="option-desc">Something to not forget</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="photo_note">
+                        <div class="option-content">
+                            <span class="option-label">Photo Note</span>
+                            <span class="option-desc">Picture with context</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">To-Do Quick Add</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="urgent_todo">
+                        <div class="option-content">
+                            <span class="option-label">Urgent</span>
+                            <span class="option-desc">Do it now / ASAP</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="task">
+                        <div class="option-content">
+                            <span class="option-label">Task</span>
+                            <span class="option-desc">Generic to-do item</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="call_someone">
+                        <div class="option-content">
+                            <span class="option-label">Call Someone</span>
+                            <span class="option-desc">Phone call to make</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="text_someone">
+                        <div class="option-content">
+                            <span class="option-label">Text Someone</span>
+                            <span class="option-desc">Message to send</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="buy">
+                        <div class="option-content">
+                            <span class="option-label">Buy Something</span>
+                            <span class="option-desc">Shopping item</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="follow_up">
+                        <div class="option-content">
+                            <span class="option-label">Follow Up</span>
+                            <span class="option-desc">Check back on something</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="look_into">
+                        <div class="option-content">
+                            <span class="option-label">Look Into</span>
+                            <span class="option-desc">Research or investigate</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="someday">
+                        <div class="option-content">
+                            <span class="option-label">Someday</span>
+                            <span class="option-desc">Not urgent, eventual</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Talk to LUMI</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="question">
+                        <div class="option-content">
+                            <span class="option-label">Question</span>
+                            <span class="option-desc">Ask LUMI something</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="vent">
+                        <div class="option-content">
+                            <span class="option-label">Vent</span>
+                            <span class="option-desc">Need to get it out</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="win">
+                        <div class="option-content">
+                            <span class="option-label">Win</span>
+                            <span class="option-desc">Something good happened</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="worry">
+                        <div class="option-content">
+                            <span class="option-label">Worry</span>
+                            <span class="option-desc">Anxiety to process</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="gratitude">
+                        <div class="option-content">
+                            <span class="option-label">Gratitude</span>
+                            <span class="option-desc">Thankful for something</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="journal">
+                        <div class="option-content">
+                            <span class="option-label">Journal</span>
+                            <span class="option-desc">Personal reflection</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="mood">
+                        <div class="option-content">
+                            <span class="option-label">Mood Check</span>
+                            <span class="option-desc">How am I feeling</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="capture" value="dream">
+                        <div class="option-content">
+                            <span class="option-label">Dream</span>
+                            <span class="option-desc">Log a dream</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <!-- LUMI -->
+        <!-- ==================== MISC ==================== -->
         <div class="section">
-            <div class="section-header lumi">
-                <h2>LUMI</h2>
-                <span class="count lumi-count">0 selected</span>
+            <div class="section-header misc">
+                <div>
+                    <h2>Miscellaneous</h2>
+                    <span class="section-desc">Other stuff that might be useful</span>
+                </div>
+                <span class="count misc-count">0</span>
             </div>
-            <div class="options" data-section="lumi">
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="quick_note">
-                    <div class="option-content">
-                        <span class="option-label">Quick Note</span>
-                        <span class="option-desc">Fast thought capture</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="voice_message">
-                    <div class="option-content">
-                        <span class="option-label">Voice Message</span>
-                        <span class="option-desc">Audio note idea</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="journal">
-                    <div class="option-content">
-                        <span class="option-label">Journal</span>
-                        <span class="option-desc">Personal reflection</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="idea">
-                    <div class="option-content">
-                        <span class="option-label">Idea</span>
-                        <span class="option-desc">Creative spark</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="dream">
-                    <div class="option-content">
-                        <span class="option-label">Dream</span>
-                        <span class="option-desc">Log a dream</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="mood">
-                    <div class="option-content">
-                        <span class="option-label">Mood</span>
-                        <span class="option-desc">How you're feeling</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="win">
-                    <div class="option-content">
-                        <span class="option-label">Win</span>
-                        <span class="option-desc">Something good happened</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="vent">
-                    <div class="option-content">
-                        <span class="option-label">Vent</span>
-                        <span class="option-desc">Need to get it out</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="gratitude">
-                    <div class="option-content">
-                        <span class="option-label">Gratitude</span>
-                        <span class="option-desc">Thankful for something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="question">
-                    <div class="option-content">
-                        <span class="option-label">Question</span>
-                        <span class="option-desc">Ask LUMI something</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="memory">
-                    <div class="option-content">
-                        <span class="option-label">Memory</span>
-                        <span class="option-desc">Something to remember</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="quote">
-                    <div class="option-content">
-                        <span class="option-label">Quote</span>
-                        <span class="option-desc">Words that hit</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="insight">
-                    <div class="option-content">
-                        <span class="option-label">Insight</span>
-                        <span class="option-desc">Realization or epiphany</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="goal">
-                    <div class="option-content">
-                        <span class="option-label">Goal</span>
-                        <span class="option-desc">Something to work toward</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="worry">
-                    <div class="option-content">
-                        <span class="option-label">Worry</span>
-                        <span class="option-desc">Anxiety to process</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="celebration">
-                    <div class="option-content">
-                        <span class="option-label">Celebration</span>
-                        <span class="option-desc">Mark a milestone</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="frustration">
-                    <div class="option-content">
-                        <span class="option-label">Frustration</span>
-                        <span class="option-desc">Log irritation</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="bookmark">
-                    <div class="option-content">
-                        <span class="option-label">Bookmark</span>
-                        <span class="option-desc">Save for later</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="reflection">
-                    <div class="option-content">
-                        <span class="option-label">Reflection</span>
-                        <span class="option-desc">End of day thoughts</span>
-                    </div>
-                </label>
-                <label class="option">
-                    <input type="checkbox" name="lumi" value="random">
-                    <div class="option-content">
-                        <span class="option-label">Random</span>
-                        <span class="option-desc">Miscellaneous capture</span>
-                    </div>
-                </label>
+
+            <div class="subsection">
+                <div class="subsection-label">Home</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="grocery">
+                        <div class="option-content">
+                            <span class="option-label">Grocery Run</span>
+                            <span class="option-desc">Need groceries</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="meal_plan">
+                        <div class="option-content">
+                            <span class="option-label">Meal Plan</span>
+                            <span class="option-desc">Plan what to eat</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="chore">
+                        <div class="option-content">
+                            <span class="option-label">Chore</span>
+                            <span class="option-desc">Household task</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="laundry">
+                        <div class="option-content">
+                            <span class="option-label">Laundry</span>
+                            <span class="option-desc">Wash day</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="home_repair">
+                        <div class="option-content">
+                            <span class="option-label">Home Repair</span>
+                            <span class="option-desc">Something needs fixing</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="package">
+                        <div class="option-content">
+                            <span class="option-label">Package Coming</span>
+                            <span class="option-desc">Delivery expected</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="return_item">
+                        <div class="option-content">
+                            <span class="option-label">Return Item</span>
+                            <span class="option-desc">Send something back</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Car</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="gas">
+                        <div class="option-content">
+                            <span class="option-label">Get Gas</span>
+                            <span class="option-desc">Need to fill up</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="car_maintenance">
+                        <div class="option-content">
+                            <span class="option-label">Car Maintenance</span>
+                            <span class="option-desc">Oil change, service, etc</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="car_wash">
+                        <div class="option-content">
+                            <span class="option-label">Car Wash</span>
+                            <span class="option-desc">Clean the car</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Social / Communication</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="reply_needed">
+                        <div class="option-content">
+                            <span class="option-label">Reply Needed</span>
+                            <span class="option-desc">Owe someone a response</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="rsvp">
+                        <div class="option-content">
+                            <span class="option-label">RSVP</span>
+                            <span class="option-desc">Need to respond to invite</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="send_card">
+                        <div class="option-content">
+                            <span class="option-label">Send Card / Gift</span>
+                            <span class="option-desc">Card or gift to send</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="thank_you">
+                        <div class="option-content">
+                            <span class="option-label">Thank You</span>
+                            <span class="option-desc">Send appreciation</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Weather / Seasonal</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="weather_alert">
+                        <div class="option-content">
+                            <span class="option-label">Weather Alert</span>
+                            <span class="option-desc">Storm, snow, extreme weather</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="pack_for">
+                        <div class="option-content">
+                            <span class="option-label">Pack For</span>
+                            <span class="option-desc">Prep for trip or activity</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Money</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="expense">
+                        <div class="option-content">
+                            <span class="option-label">Log Expense</span>
+                            <span class="option-desc">Track a purchase</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="budget_check">
+                        <div class="option-content">
+                            <span class="option-label">Budget Check</span>
+                            <span class="option-desc">Review spending</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="reimburse">
+                        <div class="option-content">
+                            <span class="option-label">Get Reimbursed</span>
+                            <span class="option-desc">Submit for reimbursement</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-label">Wild Cards</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="book_club">
+                        <div class="option-content">
+                            <span class="option-label">Book Club</span>
+                            <span class="option-desc">Reading or meeting</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="movie_night">
+                        <div class="option-content">
+                            <span class="option-label">Movie Night</span>
+                            <span class="option-desc">Family movie time</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="game_night">
+                        <div class="option-content">
+                            <span class="option-label">Game Night</span>
+                            <span class="option-desc">Board games, video games</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="outside_time">
+                        <div class="option-content">
+                            <span class="option-label">Outside Time</span>
+                            <span class="option-desc">Park, yard, nature</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="road_trip">
+                        <div class="option-content">
+                            <span class="option-label">Road Trip</span>
+                            <span class="option-desc">Day trip or travel</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="restaurant">
+                        <div class="option-content">
+                            <span class="option-label">Restaurant</span>
+                            <span class="option-desc">Eating out</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="celebration">
+                        <div class="option-content">
+                            <span class="option-label">Celebration</span>
+                            <span class="option-desc">Mark a milestone</span>
+                        </div>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="misc" value="just_because">
+                        <div class="option-content">
+                            <span class="option-label">Just Because</span>
+                            <span class="option-desc">Random nice thing</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="spacer"></div>
     </form>
 
     <div class="summary">
         <div class="summary-text">
-            <span class="summary-count" id="totalCount">0</span> categories selected
+            <span class="summary-count" id="totalCount">0</span> selected
         </div>
-        <button type="button" class="submit-btn" onclick="showSelections()">Show Selections</button>
+        <div class="btn-group">
+            <button type="button" class="submit-btn secondary" onclick="clearAll()">Clear</button>
+            <button type="button" class="submit-btn" onclick="showSelections()">Show Selections</button>
+        </div>
     </div>
 
     <script>
         const form = document.getElementById('categoryForm');
+        const sections = ['kids', 'me', 'family', 'calendar', 'capture', 'misc'];
 
         function updateCounts() {
-            const sections = ['custody', 'calendar', 'todo', 'lumi'];
             let total = 0;
-
             sections.forEach(section => {
                 const count = form.querySelectorAll(`input[name="${section}"]:checked`).length;
-                document.querySelector(`.${section}-count`).textContent = `${count} selected`;
+                document.querySelector(`.${section}-count`).textContent = count;
                 total += count;
             });
-
             document.getElementById('totalCount').textContent = total;
         }
 
         form.addEventListener('change', updateCounts);
 
-        function showSelections() {
-            const sections = ['custody', 'calendar', 'todo', 'lumi'];
-            const selections = {};
+        function clearAll() {
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updateCounts();
+        }
 
+        function showSelections() {
+            const selections = {};
             sections.forEach(section => {
                 const checked = form.querySelectorAll(`input[name="${section}"]:checked`);
-                selections[section] = Array.from(checked).map(cb => {
-                    const label = cb.closest('.option').querySelector('.option-label').textContent;
-                    return label;
-                });
-            });
-
-            let message = 'Your selections:\n\n';
-            sections.forEach(section => {
-                if (selections[section].length > 0) {
-                    message += `${section.toUpperCase()}:\n`;
-                    selections[section].forEach(item => {
-                        message += `  - ${item}\n`;
+                if (checked.length > 0) {
+                    selections[section] = Array.from(checked).map(cb => {
+                        const label = cb.closest('.option').querySelector('.option-label').textContent;
+                        const value = cb.value;
+                        return { label, value };
                     });
-                    message += '\n';
                 }
             });
 
-            if (Object.values(selections).every(arr => arr.length === 0)) {
-                message = 'No categories selected yet.';
+            let message = '=== YOUR SELECTIONS ===\n\n';
+
+            if (Object.keys(selections).length === 0) {
+                message = 'No categories selected yet.\n\nGo through and check everything that fits your life!';
+            } else {
+                Object.entries(selections).forEach(([section, items]) => {
+                    message += `${section.toUpperCase()}:\n`;
+                    items.forEach(item => {
+                        message += `  • ${item.label}\n`;
+                    });
+                    message += '\n';
+                });
             }
 
             alert(message);
 
-            // Also log to console in a format easy to copy
+            // Log JSON for easy copy
             console.log('Selected categories:', JSON.stringify(selections, null, 2));
         }
+
+        // Save to localStorage on change
+        form.addEventListener('change', () => {
+            const state = {};
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb.checked) {
+                    if (!state[cb.name]) state[cb.name] = [];
+                    state[cb.name].push(cb.value);
+                }
+            });
+            localStorage.setItem('lumi-mobile-selections', JSON.stringify(state));
+        });
+
+        // Load from localStorage on page load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('lumi-mobile-selections');
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    Object.entries(state).forEach(([name, values]) => {
+                        values.forEach(value => {
+                            const cb = form.querySelector(`input[name="${name}"][value="${value}"]`);
+                            if (cb) cb.checked = true;
+                        });
+                    });
+                    updateCounts();
+                } catch (e) {
+                    console.error('Failed to load saved selections:', e);
+                }
+            }
+        });
     </script>
 </body>
 </html>
