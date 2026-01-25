@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Horizons - Ragnarök</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/lcars.css">
+    <link rel="stylesheet" href="../css/chapters.css">
+    <link rel="stylesheet" href="../css/pdf-reader.css">
+</head>
+<body class="pdf-reader">
+    <div class="scanlines"></div>
+
+    <!-- LCARS Header -->
+    <header class="lcars-header">
+        <div class="header-bar">
+            <div class="header-elbow"></div>
+            <a href="../index.html" class="header-home">RAGNARÖK</a>
+            <div class="header-blocks">
+                <span class="block orange"></span>
+                <span class="block cyan"></span>
+                <span class="block purple"></span>
+            </div>
+            <div class="header-spacer"></div>
+            <a href="../about.html" class="header-donate">ABOUT</a>
+            <div class="header-end"></div>
+        </div>
+    </header>
+
+    <!-- Main Reader -->
+    <div class="reader-container">
+        <!-- PDF Panel -->
+        <div class="pdf-panel">
+            <div class="pdf-header">
+                <div class="pdf-chapter-info">
+                    <div class="pdf-chapter-number">CHAPTER 1.13</div>
+                    <div class="pdf-chapter-title">New Horizons</div>
+                </div>
+                <div class="pdf-controls">
+                    <button class="pdf-control-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
+                    <a href="pdf/1-13.pdf" class="pdf-control-btn" download>DOWNLOAD</a>
+                </div>
+            </div>
+
+            <div class="pdf-embed-container">
+                <div class="pdf-loading">LOADING TRANSMISSION...</div>
+                <embed
+                    src="pdf/1-13.pdf"
+                    type="application/pdf"
+                    class="pdf-embed"
+                    onload="document.querySelector('.pdf-loading').style.display='none'"
+                >
+            </div>
+
+            <div class="pdf-nav-footer">
+                <a href="1-12.html" class="pdf-nav-btn prev ">← Previous</a>
+                <a href="index.html" class="pdf-nav-btn pdf-index-btn">INDEX</a>
+                <a href="1-14.html" class="pdf-nav-btn next ">Next →</a>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <!-- Support Card -->
+            <div class="support-card">
+                <div class="support-header">SUPPORT THE WORK</div>
+                <div class="support-content">
+                    <p class="support-text">
+                        Enjoying the story? This work is offered freely, but your support helps keep the transmissions flowing.
+                    </p>
+                    <a href="https://www.natalie-eiryk.com" class="support-btn primary" target="_blank">
+                        VISIT MAIN SITE
+                    </a>
+                    <a href="https://ko-fi.com/natalieeiryk" class="support-btn" target="_blank">
+                        BUY A COFFEE
+                    </a>
+                </div>
+            </div>
+
+            <!-- Reading Progress -->
+            <div class="progress-card">
+                <div class="progress-label">READING PROGRESS</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 82%;"></div>
+                </div>
+                <div class="progress-text">14 / 17 CHAPTERS</div>
+            </div>
+
+            <!-- Chapter Quick Nav -->
+            <div class="chapters-card">
+                <div class="chapters-header">CHAPTERS</div>
+                <div class="chapters-list">
+                                        <a href="1-00.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.00</span>
+                        <span>Recursive Recursion</span>
+                    </a>
+                    <a href="1-01.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.01</span>
+                        <span>Ragnarök</span>
+                    </a>
+                    <a href="1-02.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.02</span>
+                        <span>Stories of Yesteryear</span>
+                    </a>
+                    <a href="1-03.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.03</span>
+                        <span>Incoming</span>
+                    </a>
+                    <a href="1-04.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.04</span>
+                        <span>Heinrikr</span>
+                    </a>
+                    <a href="1-05.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.05</span>
+                        <span>The Bet</span>
+                    </a>
+                    <a href="1-06.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.06</span>
+                        <span>Reprieve</span>
+                    </a>
+                    <a href="1-07.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.07</span>
+                        <span>Something New</span>
+                    </a>
+                    <a href="1-08.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.08</span>
+                        <span>The Elder</span>
+                    </a>
+                    <a href="1-09.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.09</span>
+                        <span>Aftermath</span>
+                    </a>
+                    <a href="1-10.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.10</span>
+                        <span>The Kárak</span>
+                    </a>
+                    <a href="1-11.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.11</span>
+                        <span>In the Morning</span>
+                    </a>
+                    <a href="1-12.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.12</span>
+                        <span>New Beginnings</span>
+                    </a>
+                    <a href="1-13.html" class="chapter-mini-link active">
+                        <span class="chapter-mini-num">1.13</span>
+                        <span>New Horizons</span>
+                    </a>
+                    <a href="1-14.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.14</span>
+                        <span>Work in Progress</span>
+                    </a>
+                    <a href="1-15.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.15</span>
+                        <span>The Truth Will Set You Free</span>
+                    </a>
+                    <a href="1-16.html" class="chapter-mini-link ">
+                        <span class="chapter-mini-num">1.16</span>
+                        <span>Chapter 1.16</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lcars-footer">
+        <div class="footer-bar">
+            <div class="footer-elbow"></div>
+            <span class="footer-text">RAGNARÖK</span>
+            <div class="footer-spacer"></div>
+            <span class="footer-status">FREE TO READ</span>
+            <div class="footer-end"></div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFullscreen() {
+            const embed = document.querySelector('.pdf-embed-container');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                embed.requestFullscreen();
+            }
+        }
+
+        // Hide loading indicator when PDF loads
+        document.querySelector('.pdf-embed').addEventListener('load', function() {
+            document.querySelector('.pdf-loading').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
