@@ -140,10 +140,11 @@
             localStorage.setItem('ragnarok-reader-dark', isDark ? 'true' : 'false');
         }
 
-        // Load saved preference
+        // Load saved preference (default to dark mode)
         document.addEventListener('DOMContentLoaded', function() {
             const savedDark = localStorage.getItem('ragnarok-reader-dark');
-            if (savedDark === 'true') {
+            // Default to dark mode unless explicitly set to light
+            if (savedDark !== 'false') {
                 toggleDarkMode();
             }
         });
