@@ -40,6 +40,10 @@
                     <div class="pdf-chapter-title">Chapter 1.16</div>
                 </div>
                 <div class="pdf-controls">
+                    <button class="pdf-control-btn dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle reading mode">
+                        <span class="mode-icon">🌙</span>
+                        <span class="mode-text">DARK</span>
+                    </button>
                     <button class="pdf-control-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
                     <a href="pdf/1-16.pdf" class="pdf-control-btn" download>DOWNLOAD</a>
                 </div>
@@ -161,6 +165,7 @@
                         <span class="chapter-mini-num">1.16</span>
                         <span>Chapter 1.16</span>
                     </a>
+
                 </div>
             </div>
         </div>
@@ -186,6 +191,30 @@
                 embed.requestFullscreen();
             }
         }
+
+        function toggleDarkMode() {
+            const container = document.querySelector('.pdf-embed-container');
+            const btn = document.querySelector('.dark-mode-toggle');
+            const icon = btn.querySelector('.mode-icon');
+            const text = btn.querySelector('.mode-text');
+
+            container.classList.toggle('dark-mode');
+            const isDark = container.classList.contains('dark-mode');
+
+            icon.textContent = isDark ? '☀️' : '🌙';
+            text.textContent = isDark ? 'LIGHT' : 'DARK';
+
+            // Save preference
+            localStorage.setItem('ragnarok-reader-dark', isDark ? 'true' : 'false');
+        }
+
+        // Load saved preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedDark = localStorage.getItem('ragnarok-reader-dark');
+            if (savedDark === 'true') {
+                toggleDarkMode();
+            }
+        });
 
         // Hide loading indicator when PDF loads
         document.querySelector('.pdf-embed').addEventListener('load', function() {

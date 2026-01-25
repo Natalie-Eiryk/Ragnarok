@@ -86,7 +86,32 @@
     flex: 1;
     position: relative;
     min-height: 70vh;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+/* === Dark Mode for PDF Reader === */
+.pdf-embed-container.dark-mode {
     background: #1a1a1a;
+}
+
+.pdf-embed-container.dark-mode .pdf-embed {
+    filter: invert(0.88) hue-rotate(180deg);
+}
+
+/* Dark mode toggle button styling */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dark-mode-toggle .mode-icon {
+    font-size: 1rem;
+}
+
+.dark-mode-toggle .mode-text {
+    font-size: 0.75rem;
 }
 
 .pdf-embed {
