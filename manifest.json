@@ -1,0 +1,22 @@
+{
+    "name": "LUMI Quick",
+    "short_name": "LUMI",
+    "description": "Quick actions for LUMI-OS",
+    "start_url": "/Ragnarok/lumi-mobile.html",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#0a0a0a",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "icons/lumi-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/lumi-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

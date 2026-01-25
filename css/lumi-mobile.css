@@ -1,0 +1,424 @@
+/* ============================================
+   LUMI Mobile - Quick Action Interface
+   Mobile-first, tap-friendly, minimal typing
+   ============================================ */
+
+:root {
+    --bg-dark: #0a0a0a;
+    --bg-card: #151515;
+    --bg-panel: #0d0d0d;
+    --lcars-orange: #ff9900;
+    --lcars-cyan: #00ccff;
+    --lcars-purple: #cc99ff;
+    --matrix-green: #00ff41;
+    --text-primary: #e0e0e0;
+    --text-dim: #666;
+
+    --custody-color: #ff6b9d;
+    --calendar-color: #00ccff;
+    --todo-color: #ff9900;
+    --lumi-color: #cc99ff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    touch-action: manipulation;
+}
+
+/* === Header === */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: var(--bg-panel);
+    border-bottom: 2px solid var(--lcars-orange);
+}
+
+.header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--lcars-orange);
+    letter-spacing: 0.2em;
+}
+
+.header-status {
+    font-size: 1rem;
+    color: var(--matrix-green);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* === Quick Grid === */
+.quick-grid {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 80px;
+}
+
+/* === Action Sections === */
+.action-section {
+    padding: 15px;
+}
+
+.section-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* === Quick Buttons === */
+.quick-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 10px;
+    background: var(--bg-card);
+    border: 2px solid var(--text-dim);
+    border-radius: 15px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 90px;
+}
+
+.quick-btn.wide {
+    flex: 2;
+}
+
+.quick-btn:active {
+    transform: scale(0.95);
+}
+
+.quick-btn .btn-icon {
+    font-size: 2rem;
+}
+
+.quick-btn .btn-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+}
+
+/* Category Colors */
+.quick-btn.custody {
+    border-color: var(--custody-color);
+}
+.quick-btn.custody:active {
+    background: rgba(255, 107, 157, 0.2);
+    box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+}
+.quick-btn.custody .btn-label { color: var(--custody-color); }
+
+.quick-btn.calendar {
+    border-color: var(--calendar-color);
+}
+.quick-btn.calendar:active {
+    background: rgba(0, 204, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+}
+.quick-btn.calendar .btn-label { color: var(--calendar-color); }
+
+.quick-btn.todo {
+    border-color: var(--todo-color);
+}
+.quick-btn.todo:active {
+    background: rgba(255, 153, 0, 0.2);
+    box-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
+}
+.quick-btn.todo .btn-label { color: var(--todo-color); }
+
+.quick-btn.lumi {
+    border-color: var(--lumi-color);
+}
+.quick-btn.lumi:active {
+    background: rgba(204, 153, 255, 0.2);
+    box-shadow: 0 0 20px rgba(204, 153, 255, 0.3);
+}
+.quick-btn.lumi .btn-label { color: var(--lumi-color); }
+
+/* === Modal === */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: flex-end;
+    z-index: 100;
+    transition: opacity 0.2s;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    width: 100%;
+    background: var(--bg-panel);
+    border-top: 3px solid var(--lcars-cyan);
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.modal-icon {
+    font-size: 2rem;
+}
+
+.modal-title {
+    flex: 1;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    color: var(--lcars-cyan);
+    letter-spacing: 0.1em;
+}
+
+.modal-close {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--text-dim);
+    border-radius: 50%;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* === Time/Duration Picks === */
+.time-picks,
+.duration-picks {
+    margin-bottom: 20px;
+}
+
+.picks-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+}
+
+.picks-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.pick-btn {
+    flex: 1;
+    padding: 12px 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--text-dim);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.pick-btn:active {
+    transform: scale(0.95);
+}
+
+.pick-btn[selected] {
+    background: var(--lcars-cyan);
+    border-color: var(--lcars-cyan);
+    color: var(--bg-dark);
+}
+
+/* === Text Input === */
+.text-input-section {
+    margin-bottom: 20px;
+}
+
+.quick-input {
+    width: 100%;
+    padding: 15px;
+    background: var(--bg-card);
+    border: 2px solid var(--lcars-purple);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+}
+
+.quick-input:focus {
+    outline: none;
+    border-color: var(--lcars-cyan);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+}
+
+.quick-input::placeholder {
+    color: var(--text-dim);
+}
+
+/* === Submit Button === */
+.submit-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--lcars-orange), #cc7700);
+    border: none;
+    border-radius: 12px;
+    color: var(--bg-dark);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 30px rgba(255, 153, 0, 0.5);
+}
+
+.submit-icon {
+    font-size: 1.2rem;
+}
+
+/* === Toast === */
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: var(--matrix-green);
+    color: var(--bg-dark);
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    border-radius: 30px;
+    box-shadow: 0 5px 30px rgba(0, 255, 65, 0.4);
+    z-index: 200;
+    transition: all 0.3s;
+}
+
+.toast.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    pointer-events: none;
+}
+
+.toast-icon {
+    font-size: 1.2rem;
+}
+
+/* === Pending Badge === */
+.pending-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+    background: var(--bg-panel);
+    border: 2px solid var(--lcars-purple);
+    border-radius: 15px;
+    text-decoration: none;
+    z-index: 50;
+}
+
+.badge-count {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: var(--lcars-purple);
+}
+
+.badge-label {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+/* === Responsive === */
+@media (min-width: 600px) {
+    .quick-grid {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .quick-btn {
+        min-height: 100px;
+    }
+
+    .quick-btn .btn-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* === Safe Areas (notch phones) === */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .mobile-header {
+        padding-top: calc(15px + env(safe-area-inset-top));
+    }
+
+    .quick-grid {
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+
+    .modal-content {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+
+    .pending-badge {
+        bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+}

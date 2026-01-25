@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>LUMI Quick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lumi-mobile.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <!-- Quick Action Grid -->
+    <main class="quick-grid">
+        <!-- Header -->
+        <header class="mobile-header">
+            <span class="header-title">LUMI</span>
+            <span class="header-status" id="status-indicator">●</span>
+        </header>
+
+        <!-- Custody Quick Actions -->
+        <section class="action-section">
+            <div class="section-label">CUSTODY</div>
+            <div class="action-row">
+                <button class="quick-btn custody" data-action="custody:with_me" data-icon="🏠">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-label">WITH ME</span>
+                </button>
+                <button class="quick-btn custody" data-action="custody:with_other" data-icon="🚗">
+                    <span class="btn-icon">🚗</span>
+                    <span class="btn-label">HANDOFF</span>
+                </button>
+                <button class="quick-btn custody" data-action="custody:pickup" data-icon="📍">
+                    <span class="btn-icon">📍</span>
+                    <span class="btn-label">PICKUP</span>
+                </button>
+                <button class="quick-btn custody" data-action="custody:dropoff" data-icon="👋">
+                    <span class="btn-icon">👋</span>
+                    <span class="btn-label">DROPOFF</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Calendar Quick Actions -->
+        <section class="action-section">
+            <div class="section-label">CALENDAR</div>
+            <div class="action-row">
+                <button class="quick-btn calendar" data-action="calendar:meeting" data-icon="👥">
+                    <span class="btn-icon">👥</span>
+                    <span class="btn-label">MEETING</span>
+                </button>
+                <button class="quick-btn calendar" data-action="calendar:appointment" data-icon="📅">
+                    <span class="btn-icon">📅</span>
+                    <span class="btn-label">APPT</span>
+                </button>
+                <button class="quick-btn calendar" data-action="calendar:block" data-icon="🚫">
+                    <span class="btn-icon">🚫</span>
+                    <span class="btn-label">BLOCK</span>
+                </button>
+                <button class="quick-btn calendar" data-action="calendar:reminder" data-icon="⏰">
+                    <span class="btn-icon">⏰</span>
+                    <span class="btn-label">REMIND</span>
+                </button>
+            </div>
+            <div class="action-row">
+                <button class="quick-btn calendar wide" data-action="calendar:today" data-icon="📆">
+                    <span class="btn-icon">📆</span>
+                    <span class="btn-label">TODAY</span>
+                </button>
+                <button class="quick-btn calendar wide" data-action="calendar:tomorrow" data-icon="➡️">
+                    <span class="btn-icon">➡️</span>
+                    <span class="btn-label">TOMORROW</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Todo Quick Actions -->
+        <section class="action-section">
+            <div class="section-label">TODO</div>
+            <div class="action-row">
+                <button class="quick-btn todo" data-action="todo:urgent" data-icon="🔴">
+                    <span class="btn-icon">🔴</span>
+                    <span class="btn-label">URGENT</span>
+                </button>
+                <button class="quick-btn todo" data-action="todo:task" data-icon="✅">
+                    <span class="btn-icon">✅</span>
+                    <span class="btn-label">TASK</span>
+                </button>
+                <button class="quick-btn todo" data-action="todo:buy" data-icon="🛒">
+                    <span class="btn-icon">🛒</span>
+                    <span class="btn-label">BUY</span>
+                </button>
+                <button class="quick-btn todo" data-action="todo:call" data-icon="📞">
+                    <span class="btn-icon">📞</span>
+                    <span class="btn-label">CALL</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- LUMI Quick Actions -->
+        <section class="action-section">
+            <div class="section-label">LUMI</div>
+            <div class="action-row">
+                <button class="quick-btn lumi" data-action="lumi:note" data-icon="📝">
+                    <span class="btn-icon">📝</span>
+                    <span class="btn-label">NOTE</span>
+                </button>
+                <button class="quick-btn lumi" data-action="lumi:idea" data-icon="💡">
+                    <span class="btn-icon">💡</span>
+                    <span class="btn-label">IDEA</span>
+                </button>
+                <button class="quick-btn lumi" data-action="lumi:message" data-icon="💬">
+                    <span class="btn-icon">💬</span>
+                    <span class="btn-label">MSG</span>
+                </button>
+                <button class="quick-btn lumi" data-action="lumi:status" data-icon="📊">
+                    <span class="btn-icon">📊</span>
+                    <span class="btn-label">STATUS</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Quick Input Modal -->
+    <div id="input-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-icon" id="modal-icon">📅</span>
+                <span class="modal-title" id="modal-title">Quick Add</span>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+
+            <!-- Time Quick Picks -->
+            <div class="time-picks" id="time-picks">
+                <div class="picks-label">WHEN</div>
+                <div class="picks-row">
+                    <button class="pick-btn" data-time="now">NOW</button>
+                    <button class="pick-btn" data-time="30min">30 MIN</button>
+                    <button class="pick-btn" data-time="1hr">1 HR</button>
+                    <button class="pick-btn" data-time="2hr">2 HR</button>
+                </div>
+                <div class="picks-row">
+                    <button class="pick-btn" data-time="today_noon">NOON</button>
+                    <button class="pick-btn" data-time="today_3pm">3 PM</button>
+                    <button class="pick-btn" data-time="today_6pm">6 PM</button>
+                    <button class="pick-btn" data-time="tonight">TONIGHT</button>
+                </div>
+            </div>
+
+            <!-- Duration Quick Picks -->
+            <div class="duration-picks" id="duration-picks">
+                <div class="picks-label">HOW LONG</div>
+                <div class="picks-row">
+                    <button class="pick-btn" data-duration="15">15 MIN</button>
+                    <button class="pick-btn" data-duration="30">30 MIN</button>
+                    <button class="pick-btn" data-duration="60" selected>1 HR</button>
+                    <button class="pick-btn" data-duration="120">2 HR</button>
+                </div>
+            </div>
+
+            <!-- Optional Text Input -->
+            <div class="text-input-section">
+                <input type="text" id="quick-text" class="quick-input" placeholder="Details (optional)...">
+            </div>
+
+            <!-- Submit -->
+            <button class="submit-btn" id="submit-btn" onclick="submitQuickAction()">
+                <span class="submit-icon">📡</span>
+                <span class="submit-text">SEND TO LUMI</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Confirmation Toast -->
+    <div id="toast" class="toast hidden">
+        <span class="toast-icon">✓</span>
+        <span class="toast-text" id="toast-text">Sent!</span>
+    </div>
+
+    <!-- Pending Badge -->
+    <a href="command-console.html" class="pending-badge" id="pending-badge">
+        <span class="badge-count" id="badge-count">0</span>
+        <span class="badge-label">PENDING</span>
+    </a>
+
+    <script>
+        const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
+
+        let currentAction = null;
+        let selectedTime = 'now';
+        let selectedDuration = 60;
+
+        // Quick button click handlers
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                const icon = btn.dataset.icon;
+                const label = btn.querySelector('.btn-label').textContent;
+
+                currentAction = action;
+
+                // Determine what inputs to show
+                const showTime = action.startsWith('calendar:') || action.startsWith('custody:');
+                const showDuration = action.startsWith('calendar:') && !action.includes('reminder');
+
+                document.getElementById('time-picks').style.display = showTime ? 'block' : 'none';
+                document.getElementById('duration-picks').style.display = showDuration ? 'block' : 'none';
+
+                // Update modal
+                document.getElementById('modal-icon').textContent = icon;
+                document.getElementById('modal-title').textContent = label;
+                document.getElementById('quick-text').placeholder = getPlaceholder(action);
+
+                // Show modal
+                document.getElementById('input-modal').classList.remove('hidden');
+
+                // Haptic feedback if available
+                if (navigator.vibrate) navigator.vibrate(10);
+            });
+        });
+
+        // Time pick buttons
+        document.querySelectorAll('.pick-btn[data-time]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pick-btn[data-time]').forEach(b => b.removeAttribute('selected'));
+                btn.setAttribute('selected', '');
+                selectedTime = btn.dataset.time;
+                if (navigator.vibrate) navigator.vibrate(5);
+            });
+        });
+
+        // Duration pick buttons
+        document.querySelectorAll('.pick-btn[data-duration]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pick-btn[data-duration]').forEach(b => b.removeAttribute('selected'));
+                btn.setAttribute('selected', '');
+                selectedDuration = parseInt(btn.dataset.duration);
+                if (navigator.vibrate) navigator.vibrate(5);
+            });
+        });
+
+        function getPlaceholder(action) {
+            const placeholders = {
+                'custody:with_me': 'Notes (optional)...',
+                'custody:with_other': 'Notes (optional)...',
+                'custody:pickup': 'Location (optional)...',
+                'custody:dropoff': 'Location (optional)...',
+                'calendar:meeting': 'Who/What...',
+                'calendar:appointment': 'What for...',
+                'calendar:block': 'Reason (optional)...',
+                'calendar:reminder': 'Remind me to...',
+                'calendar:today': 'What...',
+                'calendar:tomorrow': 'What...',
+                'todo:urgent': 'What needs doing...',
+                'todo:task': 'Task...',
+                'todo:buy': 'What to buy...',
+                'todo:call': 'Who to call...',
+                'lumi:note': 'Note...',
+                'lumi:idea': 'Idea...',
+                'lumi:message': 'Message for LUMI...',
+                'lumi:status': '',
+            };
+            return placeholders[action] || 'Details...';
+        }
+
+        function closeModal() {
+            document.getElementById('input-modal').classList.add('hidden');
+            document.getElementById('quick-text').value = '';
+            currentAction = null;
+        }
+
+        function computeDateTime(timePick) {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+
+            switch(timePick) {
+                case 'now': return { date: today, time: now.toTimeString().slice(0, 5) };
+                case '30min': now.setMinutes(now.getMinutes() + 30); return { date: today, time: now.toTimeString().slice(0, 5) };
+                case '1hr': now.setHours(now.getHours() + 1); return { date: today, time: now.toTimeString().slice(0, 5) };
+                case '2hr': now.setHours(now.getHours() + 2); return { date: today, time: now.toTimeString().slice(0, 5) };
+                case 'today_noon': return { date: today, time: '12:00' };
+                case 'today_3pm': return { date: today, time: '15:00' };
+                case 'today_6pm': return { date: today, time: '18:00' };
+                case 'tonight': return { date: today, time: '20:00' };
+                default: return { date: today, time: now.toTimeString().slice(0, 5) };
+            }
+        }
+
+        async function submitQuickAction() {
+            if (!currentAction) return;
+
+            const text = document.getElementById('quick-text').value.trim();
+            const { date, time } = computeDateTime(selectedTime);
+
+            // Build minimal issue body
+            const actionParts = currentAction.split(':');
+            const category = actionParts[0];
+            const type = actionParts[1];
+
+            const title = `[QUICK:${currentAction}] ${text || type.toUpperCase()}`;
+            const body = `## Quick Action
+\`${currentAction}\`
+
+## When
+${date} ${time}
+
+${selectedDuration ? `## Duration\n${selectedDuration} minutes\n` : ''}
+## Details
+${text || '(none provided)'}
+
+---
+*Quick action from LUMI Mobile*
+*${new Date().toISOString()}*`;
+
+            // Create GitHub issue URL
+            const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
+                `labels=lumi-command,quick,${category}&` +
+                `title=${encodeURIComponent(title)}&` +
+                `body=${encodeURIComponent(body)}`;
+
+            // Open in new tab
+            window.open(issueUrl, '_blank');
+
+            // Show toast
+            showToast('Sent! LUMI will follow up.');
+
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
+
+            // Close modal
+            closeModal();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // Load pending count
+        async function loadPendingCount() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues?labels=lumi-command&state=open&per_page=100`);
+                const issues = await res.json();
+                const count = Array.isArray(issues) ? issues.length : 0;
+                document.getElementById('badge-count').textContent = count;
+                document.getElementById('pending-badge').style.display = count > 0 ? 'flex' : 'none';
+            } catch (e) {
+                document.getElementById('pending-badge').style.display = 'none';
+            }
+        }
+
+        // Click outside modal to close
+        document.getElementById('input-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'input-modal') closeModal();
+        });
+
+        // Init
+        loadPendingCount();
+        setInterval(loadPendingCount, 60000); // Refresh every minute
+    </script>
+</body>
+</html>
