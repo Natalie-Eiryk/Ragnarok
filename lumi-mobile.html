@@ -49,12 +49,14 @@
         .header-left { display: flex; align-items: center; gap: 10px; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lcars-green); }
         .header-title { font-size: 20px; font-weight: 600; }
-        .reset-btn {
+        .header-actions { display: flex; gap: 8px; }
+        .back-btn, .reset-btn {
             background: var(--bg-tertiary); border: none; border-radius: 8px;
             padding: 8px 14px; font-family: inherit; font-size: 14px; font-weight: 500;
             color: var(--text-secondary); cursor: pointer; display: none;
         }
-        .reset-btn:active { background: var(--bg-elevated); }
+        .back-btn:active, .reset-btn:active { background: var(--bg-elevated); }
+        .back-btn { padding: 8px 12px; }
 
         /* Main */
         .main-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
@@ -79,14 +81,18 @@
         }
         .step-question { font-size: 28px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
 
-        /* Selection summary */
+        /* Selection summary - tappable chips */
         .selection-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .selection-chip {
             background: var(--bg-tertiary); border-radius: 16px; padding: 6px 12px;
             font-size: 13px; font-weight: 500; color: var(--text-secondary);
             display: flex; align-items: center; gap: 6px;
+            cursor: pointer; border: none; font-family: inherit;
+            transition: all 0.15s;
         }
+        .selection-chip:active { background: var(--bg-elevated); transform: scale(0.95); }
         .selection-chip .chip-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .selection-chip .chip-edit { font-size: 10px; opacity: 0.5; margin-left: 2px; }
 
         /* Options list */
         .options-list { display: flex; flex-direction: column; gap: 8px; }
@@ -196,7 +202,10 @@
                 <span class="status-dot"></span>
                 <span class="header-title">LUMI</span>
             </div>
-            <button class="reset-btn" id="reset-btn" onclick="resetWizard()">Start Over</button>
+            <div class="header-actions">
+                <button class="back-btn" id="back-btn" onclick="goBack()">← Back</button>
+                <button class="reset-btn" id="reset-btn" onclick="resetWizard()">Start Over</button>
+            </div>
         </header>
 
         <main class="main-scroll">
@@ -926,12 +935,53 @@
         }
 
         function goToStep(step) {
+            // Clear selections from this step onward when going back
+            if (step <= currentStep) {
+                if (step <= 1) {
+                    selections.who = { value: '', label: '', color: '' };
+                    selections.category = { value: '', label: '' };
+                    selections.action = { value: '', label: '' };
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                }
+                if (step <= 2) {
+                    selections.category = { value: '', label: '' };
+                    selections.action = { value: '', label: '' };
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                }
+                if (step <= 3) {
+                    selections.action = { value: '', label: '' };
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                }
+                if (step <= 4) {
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                }
+                if (step <= 5) {
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                }
+                updateSelectionChips();
+            }
+
             currentStep = step;
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
             updateProgress();
+
+            // Show/hide navigation buttons
+            document.getElementById('back-btn').style.display = step > 1 ? 'block' : 'none';
             document.getElementById('reset-btn').style.display = step > 1 ? 'block' : 'none';
+
             document.querySelector('.main-scroll').scrollTop = 0;
+            if (navigator.vibrate) navigator.vibrate(5);
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
         }
 
         function updateProgress() {
@@ -949,19 +999,19 @@
 
             if (selections.who.label) {
                 const colorVar = `var(--lcars-${selections.who.color})`;
-                html += `<div class="selection-chip"><span class="chip-dot" style="background:${colorVar}"></span>${selections.who.label}</div>`;
+                html += `<button class="selection-chip" onclick="goToStep(1)"><span class="chip-dot" style="background:${colorVar}"></span>${selections.who.label}<span class="chip-edit">✎</span></button>`;
             }
             if (selections.category.label) {
-                html += `<div class="selection-chip">${selections.category.label}</div>`;
+                html += `<button class="selection-chip" onclick="goToStep(2)">${selections.category.label}<span class="chip-edit">✎</span></button>`;
             }
             if (selections.action.label) {
-                html += `<div class="selection-chip">${selections.action.label}</div>`;
+                html += `<button class="selection-chip" onclick="goToStep(3)">${selections.action.label}<span class="chip-edit">✎</span></button>`;
             }
             if (selections.when.label) {
-                html += `<div class="selection-chip">${selections.when.label}</div>`;
+                html += `<button class="selection-chip" onclick="goToStep(4)">${selections.when.label}<span class="chip-edit">✎</span></button>`;
             }
             if (selections.where.label) {
-                html += `<div class="selection-chip">${selections.where.label}</div>`;
+                html += `<button class="selection-chip" onclick="goToStep(5)">${selections.where.label}<span class="chip-edit">✎</span></button>`;
             }
 
             container.innerHTML = html;
