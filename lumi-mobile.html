@@ -41,131 +41,154 @@
         /* Header */
         .header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 16px; padding-top: calc(12px + var(--safe-top));
+            padding: 12px 20px; padding-top: calc(12px + var(--safe-top));
             background: var(--bg-primary); border-bottom: 1px solid var(--separator);
         }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lcars-green); }
         .header-title { font-size: 20px; font-weight: 600; }
-        .pending-badge {
-            background: var(--lcars-purple); color: #000; font-size: 12px; font-weight: 600;
-            padding: 4px 8px; border-radius: 10px; display: none;
+        .reset-btn {
+            background: var(--bg-tertiary); border: none; border-radius: 8px;
+            padding: 8px 14px; font-family: inherit; font-size: 14px; font-weight: 500;
+            color: var(--text-secondary); cursor: pointer; display: none;
+        }
+        .reset-btn:active { background: var(--bg-elevated); }
+
+        /* Main */
+        .main-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
+
+        /* Progress */
+        .progress-bar {
+            display: flex; gap: 6px; margin-bottom: 24px;
+        }
+        .progress-step {
+            flex: 1; height: 4px; background: var(--bg-tertiary); border-radius: 2px;
+            transition: background 0.3s;
+        }
+        .progress-step.active { background: var(--lcars-orange); }
+        .progress-step.done { background: var(--lcars-green); }
+
+        /* Step */
+        .step { display: none; animation: fadeIn 0.3s ease; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .step-label {
+            font-size: 13px; font-weight: 600; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+        }
+        .step-question {
+            font-size: 28px; font-weight: 700; margin-bottom: 20px; line-height: 1.2;
         }
 
-        /* Main scroll */
-        .main-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px 16px; }
-
-        /* Section */
-        .section { margin-bottom: 16px; }
-        .section-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; background: var(--bg-secondary); border-radius: 10px;
-            cursor: pointer; margin-bottom: 8px;
+        /* Selection summary */
+        .selection-summary {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
         }
-        .section-header:active { background: var(--bg-tertiary); }
-        .section-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .section-title .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .section-chevron { color: var(--text-tertiary); font-size: 18px; transition: transform 0.2s; }
-        .section.open .section-chevron { transform: rotate(90deg); }
-        .section-content { display: none; }
-        .section.open .section-content { display: block; }
-
-        /* Subsection */
-        .subsection-label {
-            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
-            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px 6px;
+        .selection-chip {
+            background: var(--bg-tertiary); border-radius: 16px; padding: 6px 12px;
+            font-size: 13px; font-weight: 500; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .selection-chip .chip-dot {
+            width: 8px; height: 8px; border-radius: 50%;
         }
 
-        /* Items grid */
-        .items-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 4px 12px; }
-        .item-btn {
-            background: var(--bg-secondary); border: none; border-radius: 8px;
-            padding: 10px 14px; font-family: inherit; font-size: 14px; font-weight: 500;
-            color: var(--text-primary); cursor: pointer; transition: all 0.15s;
+        /* Options list */
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-btn {
+            display: flex; align-items: center; gap: 14px;
+            width: 100%; padding: 16px; background: var(--bg-secondary);
+            border: 2px solid transparent; border-radius: 12px;
+            text-align: left; font-family: inherit; cursor: pointer;
+            transition: all 0.15s;
         }
-        .item-btn:active { background: var(--bg-elevated); transform: scale(0.97); }
+        .option-btn:active { background: var(--bg-tertiary); transform: scale(0.98); }
+        .option-btn.selected { border-color: var(--lcars-orange); background: var(--bg-tertiary); }
+        .option-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        }
+        .option-text { flex: 1; }
+        .option-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+        .option-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
+        .option-chevron { color: var(--text-tertiary); font-size: 20px; }
 
-        /* Color coding */
-        .kids .dot, .kids .item-btn { border-left: 3px solid var(--lcars-pink); }
-        .me .dot, .me .item-btn { border-left: 3px solid var(--lcars-cyan); }
-        .family .dot, .family .item-btn { border-left: 3px solid var(--lcars-purple); }
-        .calendar .dot, .calendar .item-btn { border-left: 3px solid var(--lcars-orange); }
-        .capture .dot, .capture .item-btn { border-left: 3px solid var(--lcars-green); }
-        .kids .dot { background: var(--lcars-pink); }
-        .me .dot { background: var(--lcars-cyan); }
-        .family .dot { background: var(--lcars-purple); }
-        .calendar .dot { background: var(--lcars-orange); }
-        .capture .dot { background: var(--lcars-green); }
+        /* Color variants */
+        .option-btn.pink .option-icon { background: var(--lcars-pink); }
+        .option-btn.cyan .option-icon { background: var(--lcars-cyan); }
+        .option-btn.purple .option-icon { background: var(--lcars-purple); }
+        .option-btn.orange .option-icon { background: var(--lcars-orange); }
+        .option-btn.green .option-icon { background: var(--lcars-green); }
+        .option-btn.red .option-icon { background: var(--lcars-red); }
 
-        /* Bottom spacer */
-        .bottom-spacer { height: calc(20px + var(--safe-bottom)); }
+        /* Subsection within options */
+        .options-section-label {
+            font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 16px 0 8px; margin-top: 8px;
+            border-top: 1px solid var(--separator);
+        }
+        .options-section-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
-        /* Sheet Modal */
-        .sheet { position: fixed; inset: 0; z-index: 100; pointer-events: none; }
-        .sheet.open { pointer-events: auto; }
-        .sheet-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; }
-        .sheet.open .sheet-backdrop { opacity: 1; }
-        .sheet-content {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: var(--bg-secondary); border-radius: 14px 14px 0 0;
-            padding: 12px 20px; padding-bottom: calc(24px + var(--safe-bottom));
-            transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-            max-height: 85vh; overflow-y: auto;
+        /* Text input step */
+        .text-input-area { margin-top: 16px; }
+        .text-input {
+            width: 100%; padding: 16px; background: var(--bg-secondary);
+            border: 2px solid var(--bg-tertiary); border-radius: 12px;
+            font-family: inherit; font-size: 17px; color: var(--text-primary);
+            resize: none; min-height: 100px;
         }
-        .sheet.open .sheet-content { transform: translateY(0); }
-        .sheet-handle { width: 36px; height: 5px; background: var(--bg-elevated); border-radius: 3px; margin: 0 auto 16px; }
-        .sheet-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .sheet-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .sheet-icon svg { width: 22px; height: 22px; }
-        .sheet-title { font-size: 20px; font-weight: 600; }
+        .text-input:focus { outline: none; border-color: var(--lcars-cyan); }
+        .text-input::placeholder { color: var(--text-tertiary); }
 
-        /* Form elements */
-        .picker-section { margin-bottom: 20px; }
-        .picker-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; }
-        .segmented-control { display: flex; background: var(--bg-tertiary); border-radius: 8px; padding: 2px; }
-        .segment {
-            flex: 1; padding: 10px 6px; background: transparent; border: none; border-radius: 6px;
-            font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer;
+        /* Final summary */
+        .summary-card {
+            background: var(--bg-secondary); border-radius: 16px; padding: 20px;
+            margin-bottom: 20px;
         }
-        .segment.active { background: var(--bg-elevated); color: var(--text-primary); }
-        .time-detail { display: none; margin-top: 10px; }
-        .time-input, .details-input {
-            width: 100%; padding: 14px; background: var(--bg-tertiary); border: none; border-radius: 10px;
-            font-family: inherit; font-size: 16px; color: var(--text-primary);
+        .summary-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 12px 0; border-bottom: 1px solid var(--separator);
         }
-        .details-input::placeholder { color: var(--text-tertiary); }
-        .details-input:focus { outline: none; box-shadow: 0 0 0 2px var(--lcars-cyan); }
-        .input-section { margin-bottom: 20px; }
-        .action-button {
-            width: 100%; padding: 16px; background: var(--lcars-orange); border: none; border-radius: 12px;
-            font-family: inherit; font-size: 17px; font-weight: 600; color: #000; cursor: pointer;
-        }
-        .action-button:active { opacity: 0.9; transform: scale(0.98); }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-label { font-size: 14px; color: var(--text-secondary); }
+        .summary-value { font-size: 16px; font-weight: 500; text-align: right; max-width: 60%; }
 
-        /* Who picker */
-        .who-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-        .who-btn {
-            padding: 8px 16px; background: var(--bg-tertiary); border: 2px solid transparent;
-            border-radius: 20px; font-family: inherit; font-size: 14px; font-weight: 500;
-            color: var(--text-secondary); cursor: pointer;
+        /* Action button */
+        .action-btn {
+            width: 100%; padding: 18px; background: var(--lcars-orange);
+            border: none; border-radius: 14px; font-family: inherit;
+            font-size: 18px; font-weight: 600; color: #000; cursor: pointer;
+            margin-top: 20px;
         }
-        .who-btn.active { border-color: var(--lcars-pink); color: var(--text-primary); background: var(--bg-elevated); }
+        .action-btn:active { opacity: 0.9; transform: scale(0.98); }
+        .action-btn:disabled { background: var(--bg-tertiary); color: var(--text-tertiary); }
+
+        /* Skip link */
+        .skip-link {
+            display: block; text-align: center; padding: 16px;
+            color: var(--text-secondary); font-size: 15px; cursor: pointer;
+        }
+        .skip-link:active { color: var(--text-primary); }
 
         /* Toast */
         .toast {
             position: fixed; bottom: calc(50px + var(--safe-bottom)); left: 50%;
             transform: translateX(-50%) translateY(100px); display: flex; align-items: center; gap: 10px;
             padding: 14px 20px; background: var(--bg-elevated); border-radius: 14px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0; transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1); z-index: 200;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1); z-index: 200;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .toast-icon { width: 22px; height: 22px; color: var(--lcars-green); }
         .toast-text { font-size: 15px; font-weight: 500; }
 
+        .bottom-spacer { height: calc(20px + var(--safe-bottom)); }
+
         @media (min-width: 500px) {
             .main-scroll { max-width: 500px; margin: 0 auto; }
-            .sheet-content { max-width: 500px; left: 50%; transform: translateX(-50%) translateY(100%); }
-            .sheet.open .sheet-content { transform: translateX(-50%) translateY(0); }
         }
     </style>
 </head>
@@ -176,331 +199,342 @@
                 <span class="status-dot"></span>
                 <span class="header-title">LUMI</span>
             </div>
-            <span class="pending-badge" id="pending-badge">0</span>
+            <button class="reset-btn" id="reset-btn" onclick="resetWizard()">Start Over</button>
         </header>
 
         <main class="main-scroll">
-            <!-- KIDS -->
-            <div class="section kids open">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-title"><span class="dot"></span>Kids</span>
-                    <span class="section-chevron">›</span>
-                </div>
-                <div class="section-content">
-                    <div class="subsection-label">Who</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="kids:the_kids">The Kids</button>
-                        <button class="item-btn" data-action="kids:jackson">Jackson</button>
-                        <button class="item-btn" data-action="kids:henry">Henry</button>
-                    </div>
-                    <div class="subsection-label">Custody</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="kids:home_with_me">Home With Me</button>
-                        <button class="item-btn" data-action="kids:at_moms">At Mom's</button>
-                        <button class="item-btn" data-action="kids:transfer">Transfer</button>
-                        <button class="item-btn" data-action="kids:pickup">Pickup</button>
-                        <button class="item-btn" data-action="kids:dropoff">Dropoff</button>
-                        <button class="item-btn" data-action="kids:schedule_change">Schedule Change</button>
-                        <button class="item-btn" data-action="kids:swap_days">Swap Days</button>
-                        <button class="item-btn" data-action="kids:exchange_note">Exchange Note</button>
-                        <button class="item-btn" data-action="kids:delayed">Delayed</button>
-                    </div>
-                    <div class="subsection-label">School</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="kids:school_pickup">School Pickup</button>
-                        <button class="item-btn" data-action="kids:get_from_school">Get From School</button>
-                        <button class="item-btn" data-action="kids:after_school">After School</button>
-                        <button class="item-btn" data-action="kids:school_dropoff">School Dropoff</button>
-                        <button class="item-btn" data-action="kids:take_to_school">Take to School</button>
-                        <button class="item-btn" data-action="kids:sick_day">Sick Day</button>
-                        <button class="item-btn" data-action="kids:school_event">School Event</button>
-                        <button class="item-btn" data-action="kids:school_thing">School Thing</button>
-                        <button class="item-btn" data-action="kids:school_program">School Program</button>
-                        <button class="item-btn" data-action="kids:field_trip">Field Trip</button>
-                        <button class="item-btn" data-action="kids:conference">Parent-Teacher</button>
-                        <button class="item-btn" data-action="kids:no_school">No School</button>
-                        <button class="item-btn" data-action="kids:school_closed">School Closed</button>
-                        <button class="item-btn" data-action="kids:snow_day">Snow Day</button>
-                        <button class="item-btn" data-action="kids:homework">Homework Help</button>
-                        <button class="item-btn" data-action="kids:project_due">Project Due</button>
-                    </div>
-                    <div class="subsection-label">Health</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="kids:doctor">Doctor Appt</button>
-                        <button class="item-btn" data-action="kids:dentist">Dentist</button>
-                        <button class="item-btn" data-action="kids:orthodontist">Orthodontist</button>
-                        <button class="item-btn" data-action="kids:eye_doctor">Eye Doctor</button>
-                        <button class="item-btn" data-action="kids:therapy">Therapy</button>
-                        <button class="item-btn" data-action="kids:er">ER</button>
-                    </div>
-                    <div class="subsection-label">Activities</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="kids:activity">Activity / Sports</button>
-                        <button class="item-btn" data-action="kids:practice">Practice</button>
-                        <button class="item-btn" data-action="kids:game">Game</button>
-                        <button class="item-btn" data-action="kids:lesson">Lesson</button>
-                        <button class="item-btn" data-action="kids:class">Class</button>
-                        <button class="item-btn" data-action="kids:tournament">Tournament</button>
-                        <button class="item-btn" data-action="kids:friend_over">Friend Over</button>
-                        <button class="item-btn" data-action="kids:at_friends">At Friend's</button>
-                        <button class="item-btn" data-action="kids:party">Party</button>
-                        <button class="item-btn" data-action="kids:overnight">Overnight</button>
-                    </div>
+            <!-- Progress bar -->
+            <div class="progress-bar">
+                <div class="progress-step" data-step="1"></div>
+                <div class="progress-step" data-step="2"></div>
+                <div class="progress-step" data-step="3"></div>
+                <div class="progress-step" data-step="4"></div>
+                <div class="progress-step" data-step="5"></div>
+            </div>
+
+            <!-- Selection summary (shows what you've picked) -->
+            <div class="selection-summary" id="selection-summary"></div>
+
+            <!-- STEP 1: WHO -->
+            <div class="step active" data-step="1">
+                <div class="step-label">Step 1 of 5</div>
+                <div class="step-question">Who is this about?</div>
+                <div class="options-list" id="who-options">
+                    <div class="options-section-label">Kids</div>
+                    <button class="option-btn pink" data-value="both_kids" data-label="The Kids" data-color="pink">
+                        <div class="option-icon">👧👦</div>
+                        <div class="option-text">
+                            <div class="option-title">The Kids</div>
+                            <div class="option-subtitle">Both Jackson & Henry</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn pink" data-value="jackson" data-label="Jackson" data-color="pink">
+                        <div class="option-icon">👦</div>
+                        <div class="option-text">
+                            <div class="option-title">Jackson</div>
+                            <div class="option-subtitle">6th grade</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn pink" data-value="henry" data-label="Henry" data-color="pink">
+                        <div class="option-icon">👧</div>
+                        <div class="option-text">
+                            <div class="option-title">Henry</div>
+                            <div class="option-subtitle">5th grade</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+
+                    <div class="options-section-label">Me</div>
+                    <button class="option-btn cyan" data-value="me" data-label="Me" data-color="cyan">
+                        <div class="option-icon">🙋‍♀️</div>
+                        <div class="option-text">
+                            <div class="option-title">Me</div>
+                            <div class="option-subtitle">Personal stuff</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+
+                    <div class="options-section-label">Family</div>
+                    <button class="option-btn purple" data-value="mom_dad" data-label="Mom & Dad" data-color="purple">
+                        <div class="option-icon">👨‍👩</div>
+                        <div class="option-text">
+                            <div class="option-title">Mom & Dad</div>
+                            <div class="option-subtitle">Parents next door</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn purple" data-value="my_mom" data-label="My Mom" data-color="purple">
+                        <div class="option-icon">👩</div>
+                        <div class="option-text">
+                            <div class="option-title">My Mom</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn purple" data-value="my_dad" data-label="My Dad" data-color="purple">
+                        <div class="option-icon">👨</div>
+                        <div class="option-text">
+                            <div class="option-title">My Dad</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn purple" data-value="brothers_family" data-label="Brother's Family" data-color="purple">
+                        <div class="option-icon">👨‍👩‍👧‍👦</div>
+                        <div class="option-text">
+                            <div class="option-title">Brother's Family</div>
+                            <div class="option-subtitle">Nieces, nephew, SIL</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+
+                    <div class="options-section-label">Pets</div>
+                    <button class="option-btn orange" data-value="dogs" data-label="Dogs" data-color="orange">
+                        <div class="option-icon">🐕</div>
+                        <div class="option-text">
+                            <div class="option-title">Dogs</div>
+                            <div class="option-subtitle">Both pups</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="cat" data-label="Cat" data-color="orange">
+                        <div class="option-icon">🐈</div>
+                        <div class="option-text">
+                            <div class="option-title">Cat</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+
+                    <div class="options-section-label">Other</div>
+                    <button class="option-btn green" data-value="household" data-label="Household" data-color="green">
+                        <div class="option-icon">🏠</div>
+                        <div class="option-text">
+                            <div class="option-title">Household</div>
+                            <div class="option-subtitle">Home stuff</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn green" data-value="general" data-label="General" data-color="green">
+                        <div class="option-icon">📋</div>
+                        <div class="option-text">
+                            <div class="option-title">General</div>
+                            <div class="option-subtitle">Not person-specific</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- ME -->
-            <div class="section me">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-title"><span class="dot"></span>Me</span>
-                    <span class="section-chevron">›</span>
-                </div>
-                <div class="section-content">
-                    <div class="subsection-label">School</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="me:lecture">Lecture</button>
-                        <button class="item-btn" data-action="me:lab">Lab</button>
-                        <button class="item-btn" data-action="me:assignment_due">Assignment Due</button>
-                        <button class="item-btn" data-action="me:homework_due">Homework Due</button>
-                        <button class="item-btn" data-action="me:paper_due">Paper Due</button>
-                        <button class="item-btn" data-action="me:project_due">Project Due</button>
-                        <button class="item-btn" data-action="me:exam">Exam / Test</button>
-                        <button class="item-btn" data-action="me:quiz">Quiz</button>
-                        <button class="item-btn" data-action="me:study_time">Study Time</button>
-                        <button class="item-btn" data-action="me:study_group">Study Group</button>
-                    </div>
-                    <div class="subsection-label">Health</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="me:doctor">Doctor</button>
-                        <button class="item-btn" data-action="me:dentist">Dentist</button>
-                        <button class="item-btn" data-action="me:eye_doctor">Eye Doctor</button>
-                        <button class="item-btn" data-action="me:therapy">Therapy</button>
-                        <button class="item-btn" data-action="me:medication">Medication</button>
-                        <button class="item-btn" data-action="me:self_care">Self-Care</button>
-                        <button class="item-btn" data-action="me:mental_health_day">Mental Health Day</button>
-                        <button class="item-btn" data-action="me:workout">Workout</button>
-                        <button class="item-btn" data-action="me:gym">Gym</button>
-                        <button class="item-btn" data-action="me:walk">Walk</button>
-                        <button class="item-btn" data-action="me:run">Run</button>
-                    </div>
-                    <div class="subsection-label">Personal</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="me:errand">Errand</button>
-                        <button class="item-btn" data-action="me:appointment">Appointment</button>
-                        <button class="item-btn" data-action="me:date">Date</button>
-                        <button class="item-btn" data-action="me:lunch">Lunch</button>
-                        <button class="item-btn" data-action="me:dinner_out">Dinner Out</button>
-                    </div>
-                    <div class="subsection-label">Work</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="me:writing">Writing</button>
-                        <button class="item-btn" data-action="me:meeting">Meeting</button>
-                        <button class="item-btn" data-action="me:call">Call</button>
-                        <button class="item-btn" data-action="me:zoom">Zoom</button>
-                        <button class="item-btn" data-action="me:interview">Interview</button>
-                        <button class="item-btn" data-action="me:do_not_disturb">Do Not Disturb</button>
-                    </div>
+            <!-- STEP 2: WHAT -->
+            <div class="step" data-step="2">
+                <div class="step-label">Step 2 of 5</div>
+                <div class="step-question">What's happening?</div>
+                <div class="options-list" id="what-options">
+                    <!-- Populated dynamically based on WHO -->
                 </div>
             </div>
 
-            <!-- FAMILY -->
-            <div class="section family">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-title"><span class="dot"></span>Family</span>
-                    <span class="section-chevron">›</span>
-                </div>
-                <div class="section-content">
-                    <div class="subsection-label">Parents</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="family:mom_dad">Mom & Dad</button>
-                        <button class="item-btn" data-action="family:my_mom">My Mom</button>
-                        <button class="item-btn" data-action="family:my_dad">My Dad</button>
-                        <button class="item-btn" data-action="family:parent_appt">Parent's Appt</button>
-                        <button class="item-btn" data-action="family:dinner_parents">Dinner at Parents</button>
-                    </div>
-                    <div class="subsection-label">Brother's Family</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="family:brothers_family">Brother's Family</button>
-                        <button class="item-btn" data-action="family:cousin_hangout">Cousin Hangout</button>
-                        <button class="item-btn" data-action="family:family_event">Family Event</button>
-                        <button class="item-btn" data-action="family:family_gathering">Family Gathering</button>
-                    </div>
-                    <div class="subsection-label">Pets</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="family:dogs">Dogs</button>
-                        <button class="item-btn" data-action="family:vet_dogs">Vet - Dogs</button>
-                        <button class="item-btn" data-action="family:cat">Cat</button>
-                        <button class="item-btn" data-action="family:vet_cat">Vet - Cat</button>
-                        <button class="item-btn" data-action="family:litter_box">Litter Box</button>
-                        <button class="item-btn" data-action="family:pet_food">Pet Food / Supplies</button>
-                        <button class="item-btn" data-action="family:need_dog_food">Need Dog Food</button>
-                        <button class="item-btn" data-action="family:need_cat_food">Need Cat Food</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CALENDAR -->
-            <div class="section calendar">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-title"><span class="dot"></span>Calendar</span>
-                    <span class="section-chevron">›</span>
-                </div>
-                <div class="section-content">
-                    <div class="subsection-label">Views</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="calendar:today">Today's Schedule</button>
-                        <button class="item-btn" data-action="calendar:whats_tomorrow">What's Tomorrow</button>
-                        <button class="item-btn" data-action="calendar:this_week">This Week</button>
-                        <button class="item-btn" data-action="calendar:week_view">Week View</button>
-                        <button class="item-btn" data-action="calendar:next_week">Next Week</button>
-                        <button class="item-btn" data-action="calendar:this_month">This Month</button>
-                    </div>
-                    <div class="subsection-label">Events</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="calendar:add_event">Add Event</button>
-                        <button class="item-btn" data-action="calendar:legal">Legal / Court</button>
-                        <button class="item-btn" data-action="calendar:deadline">Deadline</button>
-                        <button class="item-btn" data-action="calendar:reminder">Reminder</button>
-                        <button class="item-btn" data-action="calendar:dont_forget">Don't Forget</button>
-                        <button class="item-btn" data-action="calendar:all_day">All Day Event</button>
-                        <button class="item-btn" data-action="calendar:recurring">Recurring</button>
-                        <button class="item-btn" data-action="calendar:repeating">Repeating</button>
-                        <button class="item-btn" data-action="calendar:every_week">Every Week</button>
-                    </div>
-                    <div class="subsection-label">Manage</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="calendar:reschedule">Reschedule</button>
-                        <button class="item-btn" data-action="calendar:move">Move</button>
-                        <button class="item-btn" data-action="calendar:change_time">Change Time</button>
-                        <button class="item-btn" data-action="calendar:cancel">Cancel</button>
-                        <button class="item-btn" data-action="calendar:cancelled">Cancelled</button>
-                        <button class="item-btn" data-action="calendar:delete">Delete</button>
-                        <button class="item-btn" data-action="calendar:block_time">Block Time</button>
-                        <button class="item-btn" data-action="calendar:busy">Busy</button>
-                        <button class="item-btn" data-action="calendar:tentative">Tentative</button>
-                        <button class="item-btn" data-action="calendar:maybe">Maybe</button>
-                        <button class="item-btn" data-action="calendar:confirmed">Confirmed</button>
-                        <button class="item-btn" data-action="calendar:travel_time">Travel Time</button>
-                        <button class="item-btn" data-action="calendar:buffer">Buffer</button>
-                    </div>
-                    <div class="subsection-label">Money</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="calendar:payment">Payment</button>
-                        <button class="item-btn" data-action="calendar:payday">Payday</button>
-                        <button class="item-btn" data-action="calendar:subscription">Subscription Renews</button>
-                        <button class="item-btn" data-action="calendar:auto_pay">Auto-Pay</button>
-                    </div>
-                    <div class="subsection-label">Special</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="calendar:birthday">Birthday</button>
-                        <button class="item-btn" data-action="calendar:kids_bday">Kids' Birthday</button>
-                        <button class="item-btn" data-action="calendar:special_date">Special Date</button>
-                        <button class="item-btn" data-action="calendar:holiday">Holiday</button>
-                        <button class="item-btn" data-action="calendar:christmas">Christmas</button>
-                        <button class="item-btn" data-action="calendar:thanksgiving">Thanksgiving</button>
-                        <button class="item-btn" data-action="calendar:easter">Easter</button>
-                        <button class="item-btn" data-action="calendar:memorial_day">Memorial Day</button>
-                        <button class="item-btn" data-action="calendar:july_4th">4th of July</button>
-                        <button class="item-btn" data-action="calendar:labor_day">Labor Day</button>
-                        <button class="item-btn" data-action="calendar:new_years">New Year's</button>
-                        <button class="item-btn" data-action="calendar:halloween">Halloween</button>
-                        <button class="item-btn" data-action="calendar:spring_break">Spring Break</button>
-                    </div>
+            <!-- STEP 3: WHEN -->
+            <div class="step" data-step="3">
+                <div class="step-label">Step 3 of 5</div>
+                <div class="step-question">When?</div>
+                <div class="options-list" id="when-options">
+                    <button class="option-btn orange" data-value="now" data-label="Now">
+                        <div class="option-icon">⚡</div>
+                        <div class="option-text">
+                            <div class="option-title">Right Now</div>
+                            <div class="option-subtitle">Happening currently</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="today" data-label="Today">
+                        <div class="option-icon">📅</div>
+                        <div class="option-text">
+                            <div class="option-title">Today</div>
+                            <div class="option-subtitle">Later today</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="tomorrow" data-label="Tomorrow">
+                        <div class="option-icon">🌅</div>
+                        <div class="option-text">
+                            <div class="option-title">Tomorrow</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="this_week" data-label="This Week">
+                        <div class="option-icon">📆</div>
+                        <div class="option-text">
+                            <div class="option-title">This Week</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="next_week" data-label="Next Week">
+                        <div class="option-icon">➡️</div>
+                        <div class="option-text">
+                            <div class="option-title">Next Week</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="upcoming" data-label="Upcoming">
+                        <div class="option-icon">🗓️</div>
+                        <div class="option-text">
+                            <div class="option-title">Upcoming</div>
+                            <div class="option-subtitle">Future date</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="recurring" data-label="Recurring">
+                        <div class="option-icon">🔄</div>
+                        <div class="option-text">
+                            <div class="option-title">Recurring</div>
+                            <div class="option-subtitle">Repeating event</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn orange" data-value="no_time" data-label="No specific time">
+                        <div class="option-icon">∞</div>
+                        <div class="option-text">
+                            <div class="option-title">No Specific Time</div>
+                            <div class="option-subtitle">Just a note/reminder</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- CAPTURE -->
-            <div class="section capture">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-title"><span class="dot"></span>Capture</span>
-                    <span class="section-chevron">›</span>
+            <!-- STEP 4: WHERE -->
+            <div class="step" data-step="4">
+                <div class="step-label">Step 4 of 5</div>
+                <div class="step-question">Where?</div>
+                <div class="options-list" id="where-options">
+                    <button class="option-btn cyan" data-value="home" data-label="Home">
+                        <div class="option-icon">🏠</div>
+                        <div class="option-text">
+                            <div class="option-title">Home</div>
+                            <div class="option-subtitle">My house</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="moms_house" data-label="Mom's House">
+                        <div class="option-icon">🏡</div>
+                        <div class="option-text">
+                            <div class="option-title">Mom's House</div>
+                            <div class="option-subtitle">Co-parent's place</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="parents_house" data-label="Parents' House">
+                        <div class="option-icon">🏘️</div>
+                        <div class="option-text">
+                            <div class="option-title">Parents' House</div>
+                            <div class="option-subtitle">Mom & Dad next door</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="school" data-label="School">
+                        <div class="option-icon">🏫</div>
+                        <div class="option-text">
+                            <div class="option-title">School</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="doctor" data-label="Doctor/Medical">
+                        <div class="option-icon">🏥</div>
+                        <div class="option-text">
+                            <div class="option-title">Doctor / Medical</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="dentist" data-label="Dentist">
+                        <div class="option-icon">🦷</div>
+                        <div class="option-text">
+                            <div class="option-title">Dentist</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="vet" data-label="Vet">
+                        <div class="option-icon">🐾</div>
+                        <div class="option-text">
+                            <div class="option-title">Vet</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="store" data-label="Store">
+                        <div class="option-icon">🛒</div>
+                        <div class="option-text">
+                            <div class="option-title">Store / Shopping</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="out" data-label="Out">
+                        <div class="option-icon">🚗</div>
+                        <div class="option-text">
+                            <div class="option-title">Out / Errand</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="online" data-label="Online/Remote">
+                        <div class="option-icon">💻</div>
+                        <div class="option-text">
+                            <div class="option-title">Online / Remote</div>
+                            <div class="option-subtitle">Virtual, Zoom, etc.</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="other_location" data-label="Other">
+                        <div class="option-icon">📍</div>
+                        <div class="option-text">
+                            <div class="option-title">Other Location</div>
+                            <div class="option-subtitle">I'll specify</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                    <button class="option-btn cyan" data-value="na" data-label="N/A">
+                        <div class="option-icon">—</div>
+                        <div class="option-text">
+                            <div class="option-title">Not Applicable</div>
+                            <div class="option-subtitle">Location doesn't matter</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
                 </div>
-                <div class="section-content">
-                    <div class="subsection-label">Quick</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="capture:note">Note</button>
-                        <button class="item-btn" data-action="capture:thought">Thought</button>
-                        <button class="item-btn" data-action="capture:idea">Idea</button>
-                        <button class="item-btn" data-action="capture:photo_note">Photo Note</button>
-                        <button class="item-btn" data-action="capture:screenshot">Screenshot</button>
+            </div>
+
+            <!-- STEP 5: WHY / Details -->
+            <div class="step" data-step="5">
+                <div class="step-label">Step 5 of 5</div>
+                <div class="step-question">Any details?</div>
+
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span class="summary-label">Who</span>
+                        <span class="summary-value" id="sum-who">—</span>
                     </div>
-                    <div class="subsection-label">To-Do</div>
-                    <div class="items-grid">
-                        <button class="item-btn" data-action="capture:urgent">Urgent</button>
-                        <button class="item-btn" data-action="capture:asap">ASAP</button>
-                        <button class="item-btn" data-action="capture:task">Task</button>
-                        <button class="item-btn" data-action="capture:todo">To-Do</button>
-                        <button class="item-btn" data-action="capture:add_task">Add Task</button>
-                        <button class="item-btn" data-action="capture:call_someone">Call Someone</button>
-                        <button class="item-btn" data-action="capture:text_someone">Text Someone</button>
-                        <button class="item-btn" data-action="capture:email">Email</button>
-                        <button class="item-btn" data-action="capture:buy">Buy Something</button>
-                        <button class="item-btn" data-action="capture:follow_up">Follow Up</button>
-                        <button class="item-btn" data-action="capture:figure_out">Figure Out</button>
-                        <button class="item-btn" data-action="capture:backlog">Backlog</button>
+                    <div class="summary-row">
+                        <span class="summary-label">What</span>
+                        <span class="summary-value" id="sum-what">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">When</span>
+                        <span class="summary-value" id="sum-when">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Where</span>
+                        <span class="summary-value" id="sum-where">—</span>
                     </div>
                 </div>
+
+                <div class="text-input-area">
+                    <textarea class="text-input" id="details-input" placeholder="Add any extra details, notes, or context..."></textarea>
+                </div>
+
+                <button class="action-btn" onclick="submitToLumi()">Send to LUMI</button>
+                <div class="skip-link" onclick="submitToLumi()">or skip details and send</div>
             </div>
 
             <div class="bottom-spacer"></div>
         </main>
-    </div>
-
-    <!-- Sheet Modal -->
-    <div id="sheet" class="sheet">
-        <div class="sheet-backdrop" onclick="closeSheet()"></div>
-        <div class="sheet-content">
-            <div class="sheet-handle"></div>
-            <div class="sheet-header">
-                <div class="sheet-icon" id="sheet-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                </div>
-                <div class="sheet-title" id="sheet-title">Quick Action</div>
-            </div>
-
-            <!-- Who picker (for kids actions) -->
-            <div class="picker-section" id="who-section" style="display:none;">
-                <div class="picker-label">Who</div>
-                <div class="who-picker">
-                    <button class="who-btn active" data-who="both">Both</button>
-                    <button class="who-btn" data-who="jackson">Jackson</button>
-                    <button class="who-btn" data-who="henry">Henry</button>
-                </div>
-            </div>
-
-            <!-- When Picker -->
-            <div class="picker-section" id="when-section">
-                <div class="picker-label">When</div>
-                <div class="segmented-control" id="when-picker">
-                    <button class="segment active" data-when="now">Now</button>
-                    <button class="segment" data-when="soon">Soon</button>
-                    <button class="segment" data-when="later">Later</button>
-                    <button class="segment" data-when="tomorrow">Tomorrow</button>
-                </div>
-                <div class="time-detail" id="time-detail">
-                    <input type="time" id="time-input" class="time-input">
-                </div>
-            </div>
-
-            <!-- Duration Picker -->
-            <div class="picker-section" id="duration-section" style="display:none;">
-                <div class="picker-label">Duration</div>
-                <div class="segmented-control" id="duration-picker">
-                    <button class="segment" data-duration="15">15m</button>
-                    <button class="segment" data-duration="30">30m</button>
-                    <button class="segment active" data-duration="60">1h</button>
-                    <button class="segment" data-duration="120">2h</button>
-                </div>
-            </div>
-
-            <!-- Details Input -->
-            <div class="input-section">
-                <input type="text" id="details-input" class="details-input" placeholder="Add details...">
-            </div>
-
-            <!-- Action Button -->
-            <button class="action-button" onclick="submitAction()">Send to LUMI</button>
-        </div>
     </div>
 
     <!-- Toast -->
@@ -511,145 +545,339 @@
 
     <script>
         const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
-        let currentAction = null;
-        let selectedWho = 'both';
-        let selectedWhen = 'now';
-        let selectedDuration = 60;
 
-        function toggleSection(header) {
-            header.parentElement.classList.toggle('open');
-            if (navigator.vibrate) navigator.vibrate(5);
+        // State
+        let currentStep = 1;
+        let selections = {
+            who: { value: '', label: '', color: '' },
+            what: { value: '', label: '' },
+            when: { value: '', label: '' },
+            where: { value: '', label: '' },
+            details: ''
+        };
+
+        // WHAT options based on WHO
+        const whatOptions = {
+            // Kids
+            both_kids: [
+                { section: 'Custody', items: [
+                    { value: 'home_with_me', label: 'Home With Me', icon: '🏠' },
+                    { value: 'at_moms', label: "At Mom's", icon: '🏡' },
+                    { value: 'transfer', label: 'Transfer / Exchange', icon: '🔄' },
+                    { value: 'pickup', label: 'Pickup', icon: '🚗' },
+                    { value: 'dropoff', label: 'Dropoff', icon: '📍' },
+                    { value: 'schedule_change', label: 'Schedule Change', icon: '📅' },
+                    { value: 'swap_days', label: 'Swap Days', icon: '🔀' },
+                ]},
+                { section: 'School', items: [
+                    { value: 'school_pickup', label: 'School Pickup', icon: '🚗' },
+                    { value: 'school_dropoff', label: 'School Dropoff', icon: '🏫' },
+                    { value: 'school_event', label: 'School Event', icon: '🎭' },
+                    { value: 'conference', label: 'Parent-Teacher', icon: '👩‍🏫' },
+                    { value: 'no_school', label: 'No School', icon: '🏖️' },
+                    { value: 'sick_day', label: 'Sick Day', icon: '🤒' },
+                    { value: 'homework', label: 'Homework Help', icon: '📚' },
+                    { value: 'project_due', label: 'Project Due', icon: '📋' },
+                ]},
+                { section: 'Health', items: [
+                    { value: 'doctor', label: 'Doctor Appt', icon: '👨‍⚕️' },
+                    { value: 'dentist', label: 'Dentist', icon: '🦷' },
+                    { value: 'orthodontist', label: 'Orthodontist', icon: '😁' },
+                    { value: 'therapy', label: 'Therapy', icon: '💭' },
+                ]},
+                { section: 'Activities', items: [
+                    { value: 'activity', label: 'Activity / Sports', icon: '⚽' },
+                    { value: 'practice', label: 'Practice', icon: '🏃' },
+                    { value: 'game', label: 'Game', icon: '🏆' },
+                    { value: 'lesson', label: 'Lesson', icon: '🎵' },
+                    { value: 'friend_over', label: 'Friend Over', icon: '👋' },
+                    { value: 'at_friends', label: "At Friend's", icon: '🏠' },
+                    { value: 'party', label: 'Party', icon: '🎉' },
+                ]},
+            ],
+            jackson: 'both_kids', // Same as both
+            henry: 'both_kids',   // Same as both
+
+            // Me
+            me: [
+                { section: 'School', items: [
+                    { value: 'lecture', label: 'Lecture', icon: '🎓' },
+                    { value: 'lab', label: 'Lab', icon: '🔬' },
+                    { value: 'exam', label: 'Exam / Test', icon: '📝' },
+                    { value: 'assignment_due', label: 'Assignment Due', icon: '📄' },
+                    { value: 'study_time', label: 'Study Time', icon: '📚' },
+                    { value: 'study_group', label: 'Study Group', icon: '👥' },
+                ]},
+                { section: 'Health', items: [
+                    { value: 'doctor', label: 'Doctor', icon: '👨‍⚕️' },
+                    { value: 'dentist', label: 'Dentist', icon: '🦷' },
+                    { value: 'therapy', label: 'Therapy', icon: '💭' },
+                    { value: 'self_care', label: 'Self-Care', icon: '🧘' },
+                    { value: 'mental_health_day', label: 'Mental Health Day', icon: '🌸' },
+                    { value: 'workout', label: 'Workout', icon: '💪' },
+                ]},
+                { section: 'Personal', items: [
+                    { value: 'errand', label: 'Errand', icon: '🚗' },
+                    { value: 'appointment', label: 'Appointment', icon: '📅' },
+                    { value: 'date', label: 'Date', icon: '❤️' },
+                    { value: 'dinner_out', label: 'Dinner Out', icon: '🍽️' },
+                    { value: 'do_not_disturb', label: 'Do Not Disturb', icon: '🔕' },
+                ]},
+                { section: 'Work/Creative', items: [
+                    { value: 'writing', label: 'Writing', icon: '✍️' },
+                    { value: 'meeting', label: 'Meeting', icon: '👥' },
+                    { value: 'call', label: 'Call', icon: '📞' },
+                    { value: 'zoom', label: 'Zoom', icon: '💻' },
+                ]},
+            ],
+
+            // Family
+            mom_dad: [
+                { section: 'Events', items: [
+                    { value: 'visit', label: 'Visiting', icon: '👋' },
+                    { value: 'dinner', label: 'Dinner There', icon: '🍽️' },
+                    { value: 'help_needed', label: 'Help Needed', icon: '🆘' },
+                    { value: 'their_appt', label: "Their Appt", icon: '📅' },
+                    { value: 'health_issue', label: 'Health Issue', icon: '🏥' },
+                ]},
+            ],
+            my_mom: 'mom_dad',
+            my_dad: 'mom_dad',
+            brothers_family: [
+                { section: 'Events', items: [
+                    { value: 'cousin_hangout', label: 'Cousin Hangout', icon: '👧👦' },
+                    { value: 'family_gathering', label: 'Family Gathering', icon: '👨‍👩‍👧‍👦' },
+                    { value: 'family_event', label: 'Family Event', icon: '🎉' },
+                    { value: 'visit', label: 'Visit', icon: '👋' },
+                ]},
+            ],
+
+            // Pets
+            dogs: [
+                { section: 'Care', items: [
+                    { value: 'vet', label: 'Vet Appt', icon: '🏥' },
+                    { value: 'grooming', label: 'Grooming', icon: '✂️' },
+                    { value: 'walk', label: 'Walk', icon: '🚶' },
+                    { value: 'need_food', label: 'Need Dog Food', icon: '🦴' },
+                    { value: 'medication', label: 'Medication', icon: '💊' },
+                ]},
+            ],
+            cat: [
+                { section: 'Care', items: [
+                    { value: 'vet', label: 'Vet Appt', icon: '🏥' },
+                    { value: 'litter_box', label: 'Litter Box', icon: '🧹' },
+                    { value: 'need_food', label: 'Need Cat Food', icon: '🐟' },
+                    { value: 'medication', label: 'Medication', icon: '💊' },
+                ]},
+            ],
+
+            // Other
+            household: [
+                { section: 'Tasks', items: [
+                    { value: 'cleaning', label: 'Cleaning', icon: '🧹' },
+                    { value: 'laundry', label: 'Laundry', icon: '👕' },
+                    { value: 'groceries', label: 'Groceries', icon: '🛒' },
+                    { value: 'repair', label: 'Repair/Fix', icon: '🔧' },
+                    { value: 'bill_due', label: 'Bill Due', icon: '💵' },
+                    { value: 'payment', label: 'Payment', icon: '💳' },
+                ]},
+            ],
+            general: [
+                { section: 'Capture', items: [
+                    { value: 'note', label: 'Note', icon: '📝' },
+                    { value: 'thought', label: 'Thought', icon: '💭' },
+                    { value: 'idea', label: 'Idea', icon: '💡' },
+                    { value: 'reminder', label: 'Reminder', icon: '⏰' },
+                    { value: 'todo', label: 'To-Do', icon: '✅' },
+                    { value: 'urgent', label: 'Urgent', icon: '🚨' },
+                    { value: 'follow_up', label: 'Follow Up', icon: '📞' },
+                ]},
+                { section: 'Calendar', items: [
+                    { value: 'add_event', label: 'Add Event', icon: '📅' },
+                    { value: 'deadline', label: 'Deadline', icon: '⏰' },
+                    { value: 'birthday', label: 'Birthday', icon: '🎂' },
+                    { value: 'holiday', label: 'Holiday', icon: '🎄' },
+                    { value: 'legal', label: 'Legal / Court', icon: '⚖️' },
+                ]},
+            ],
+        };
+
+        // Initialize
+        updateProgress();
+        bindOptionClicks();
+
+        function bindOptionClicks() {
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => handleOptionClick(btn));
+            });
         }
 
-        // Item button handlers
-        document.querySelectorAll('.item-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                currentAction = btn.dataset.action;
-                const label = btn.textContent;
-                const [category] = currentAction.split(':');
+        function handleOptionClick(btn) {
+            const value = btn.dataset.value;
+            const label = btn.dataset.label || btn.querySelector('.option-title').textContent;
+            const color = btn.dataset.color || 'orange';
 
-                document.getElementById('sheet-title').textContent = label;
+            if (navigator.vibrate) navigator.vibrate(10);
 
-                // Color the icon
-                const iconEl = document.getElementById('sheet-icon');
-                iconEl.style.background = getComputedStyle(document.documentElement)
-                    .getPropertyValue(`--lcars-${category === 'kids' ? 'pink' : category === 'me' ? 'cyan' : category === 'family' ? 'purple' : category === 'calendar' ? 'orange' : 'green'}`);
-                iconEl.style.color = '#000';
-
-                // Show/hide sections
-                document.getElementById('who-section').style.display = category === 'kids' ? 'block' : 'none';
-                document.getElementById('duration-section').style.display = category === 'calendar' ? 'block' : 'none';
-
-                // Set placeholder
-                document.getElementById('details-input').placeholder = getPlaceholder(currentAction);
-
-                openSheet();
-                if (navigator.vibrate) navigator.vibrate(10);
-            });
-        });
-
-        // Who picker
-        document.querySelectorAll('.who-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.who-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                selectedWho = btn.dataset.who;
-                if (navigator.vibrate) navigator.vibrate(5);
-            });
-        });
-
-        // Segmented controls
-        document.querySelectorAll('.segment[data-when]').forEach(seg => {
-            seg.addEventListener('click', () => {
-                document.querySelectorAll('.segment[data-when]').forEach(s => s.classList.remove('active'));
-                seg.classList.add('active');
-                selectedWhen = seg.dataset.when;
-                document.getElementById('time-detail').style.display =
-                    (selectedWhen === 'later' || selectedWhen === 'soon') ? 'block' : 'none';
-                if (navigator.vibrate) navigator.vibrate(5);
-            });
-        });
-
-        document.querySelectorAll('.segment[data-duration]').forEach(seg => {
-            seg.addEventListener('click', () => {
-                document.querySelectorAll('.segment[data-duration]').forEach(s => s.classList.remove('active'));
-                seg.classList.add('active');
-                selectedDuration = parseInt(seg.dataset.duration);
-                if (navigator.vibrate) navigator.vibrate(5);
-            });
-        });
-
-        function getPlaceholder(action) {
-            if (action.includes('note') || action.includes('thought') || action.includes('idea')) return 'What\'s on your mind?';
-            if (action.includes('call')) return 'Who to call?';
-            if (action.includes('text') || action.includes('email')) return 'Who and what?';
-            if (action.includes('buy')) return 'What to buy?';
-            if (action.includes('pickup') || action.includes('dropoff')) return 'Location?';
-            if (action.includes('transfer') || action.includes('exchange')) return 'Notes for handoff...';
-            return 'Details...';
-        }
-
-        function openSheet() {
-            document.getElementById('sheet').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeSheet() {
-            document.getElementById('sheet').classList.remove('open');
-            document.body.style.overflow = '';
-            document.getElementById('details-input').value = '';
-            currentAction = null;
-        }
-
-        function computeDateTime() {
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
-            const timeInput = document.getElementById('time-input').value;
-
-            switch(selectedWhen) {
-                case 'now': return { date: today, time: now.toTimeString().slice(0,5) };
-                case 'soon':
-                    if (timeInput) return { date: today, time: timeInput };
-                    now.setMinutes(now.getMinutes() + 30);
-                    return { date: today, time: now.toTimeString().slice(0,5) };
-                case 'later':
-                    if (timeInput) return { date: today, time: timeInput };
-                    now.setHours(now.getHours() + 2);
-                    return { date: today, time: now.toTimeString().slice(0,5) };
-                case 'tomorrow':
-                    now.setDate(now.getDate() + 1);
-                    return { date: now.toISOString().split('T')[0], time: '09:00' };
-                default: return { date: today, time: now.toTimeString().slice(0,5) };
+            switch(currentStep) {
+                case 1: // WHO
+                    selections.who = { value, label, color };
+                    populateWhatOptions(value);
+                    goToStep(2);
+                    break;
+                case 2: // WHAT
+                    selections.what = { value, label };
+                    goToStep(3);
+                    break;
+                case 3: // WHEN
+                    selections.when = { value, label };
+                    goToStep(4);
+                    break;
+                case 4: // WHERE
+                    selections.where = { value, label };
+                    populateSummary();
+                    goToStep(5);
+                    break;
             }
+
+            updateSelectionChips();
         }
 
-        function submitAction() {
-            if (!currentAction) return;
+        function populateWhatOptions(whoValue) {
+            const container = document.getElementById('what-options');
+            let options = whatOptions[whoValue];
 
+            // Handle aliases
+            if (typeof options === 'string') {
+                options = whatOptions[options];
+            }
+
+            let html = '';
+            options.forEach(section => {
+                html += `<div class="options-section-label">${section.section}</div>`;
+                section.items.forEach(item => {
+                    html += `
+                        <button class="option-btn orange" data-value="${item.value}" data-label="${item.label}">
+                            <div class="option-icon">${item.icon}</div>
+                            <div class="option-text">
+                                <div class="option-title">${item.label}</div>
+                            </div>
+                            <span class="option-chevron">›</span>
+                        </button>
+                    `;
+                });
+            });
+
+            container.innerHTML = html;
+            bindOptionClicks();
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+            updateProgress();
+
+            // Show reset button after step 1
+            document.getElementById('reset-btn').style.display = step > 1 ? 'block' : 'none';
+
+            // Scroll to top
+            document.querySelector('.main-scroll').scrollTop = 0;
+        }
+
+        function updateProgress() {
+            document.querySelectorAll('.progress-step').forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                step.classList.remove('active', 'done');
+                if (stepNum < currentStep) step.classList.add('done');
+                if (stepNum === currentStep) step.classList.add('active');
+            });
+        }
+
+        function updateSelectionChips() {
+            const container = document.getElementById('selection-summary');
+            let html = '';
+
+            if (selections.who.label) {
+                const colorVar = `var(--lcars-${selections.who.color})`;
+                html += `<div class="selection-chip"><span class="chip-dot" style="background:${colorVar}"></span>${selections.who.label}</div>`;
+            }
+            if (selections.what.label) {
+                html += `<div class="selection-chip">${selections.what.label}</div>`;
+            }
+            if (selections.when.label) {
+                html += `<div class="selection-chip">${selections.when.label}</div>`;
+            }
+            if (selections.where.label) {
+                html += `<div class="selection-chip">${selections.where.label}</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function populateSummary() {
+            document.getElementById('sum-who').textContent = selections.who.label || '—';
+            document.getElementById('sum-what').textContent = selections.what.label || '—';
+            document.getElementById('sum-when').textContent = selections.when.label || '—';
+            document.getElementById('sum-where').textContent = selections.where.label || '—';
+        }
+
+        function resetWizard() {
+            selections = {
+                who: { value: '', label: '', color: '' },
+                what: { value: '', label: '' },
+                when: { value: '', label: '' },
+                where: { value: '', label: '' },
+                details: ''
+            };
+            document.getElementById('details-input').value = '';
+            goToStep(1);
+            updateSelectionChips();
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+
+        function submitToLumi() {
             const details = document.getElementById('details-input').value.trim();
-            const { date, time } = computeDateTime();
-            const [category, type] = currentAction.split(':');
-            const label = document.getElementById('sheet-title').textContent;
+            selections.details = details;
 
-            let title = `[QUICK:${currentAction}] ${label}`;
-            if (details) title += ` - ${details.substring(0, 50)}`;
+            // Build title
+            let title = `[QUICK] ${selections.who.label}: ${selections.what.label}`;
+            if (selections.when.label !== 'No specific time') {
+                title += ` (${selections.when.label})`;
+            }
 
-            let body = `## Quick Action\n\`${currentAction}\`\n\n`;
-            if (category === 'kids') body += `## Who\n${selectedWho}\n\n`;
-            body += `## When\n${date} ${time}\n\n`;
-            if (category === 'calendar') body += `## Duration\n${selectedDuration} minutes\n\n`;
-            body += `## Details\n${details || '(none)'}\n\n`;
-            body += `---\n*LUMI Mobile • ${new Date().toISOString()}*`;
+            // Build body
+            let body = `## Quick Command\n\n`;
+            body += `| Field | Value |\n|-------|-------|\n`;
+            body += `| **Who** | ${selections.who.label} |\n`;
+            body += `| **What** | ${selections.what.label} |\n`;
+            body += `| **When** | ${selections.when.label} |\n`;
+            body += `| **Where** | ${selections.where.label} |\n\n`;
+
+            if (details) {
+                body += `## Details\n${details}\n\n`;
+            }
+
+            body += `---\n*LUMI Mobile • ${new Date().toLocaleString()}*`;
+
+            // Build labels
+            const labels = ['lumi-command', 'quick'];
+            if (['both_kids', 'jackson', 'henry'].includes(selections.who.value)) labels.push('kids');
+            if (selections.who.value === 'me') labels.push('personal');
+            if (['mom_dad', 'my_mom', 'my_dad', 'brothers_family'].includes(selections.who.value)) labels.push('family');
+            if (['dogs', 'cat'].includes(selections.who.value)) labels.push('pets');
 
             const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
-                `labels=lumi-command,quick,${category}&` +
+                `labels=${labels.join(',')}&` +
                 `title=${encodeURIComponent(title)}&` +
                 `body=${encodeURIComponent(body)}`;
 
             window.open(issueUrl, '_blank');
-            showToast('Sent to LUMI');
+            showToast('Opening GitHub...');
             if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
-            closeSheet();
+
+            // Reset after a moment
+            setTimeout(resetWizard, 500);
         }
 
         function showToast(message) {
@@ -658,28 +886,6 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
-
-        // Swipe to close
-        let touchStartY = 0;
-        const sheetContent = document.querySelector('.sheet-content');
-        sheetContent.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
-        sheetContent.addEventListener('touchmove', e => {
-            if (e.touches[0].clientY - touchStartY > 100) closeSheet();
-        });
-
-        // Load pending count
-        async function loadPending() {
-            try {
-                const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues?labels=lumi-command&state=open&per_page=100`);
-                const issues = await res.json();
-                const count = Array.isArray(issues) ? issues.length : 0;
-                const el = document.getElementById('pending-badge');
-                if (count > 0) { el.textContent = count; el.style.display = 'inline'; }
-                else { el.style.display = 'none'; }
-            } catch (e) { document.getElementById('pending-badge').style.display = 'none'; }
-        }
-        loadPending();
-        setInterval(loadPending, 60000);
     </script>
 </body>
 </html>
