@@ -815,23 +815,35 @@
 
             switch(currentStep) {
                 case 1: // WHO
+                    // Clear all downstream selections
                     selections.who = { value, label, color };
+                    selections.category = { value: '', label: '' };
+                    selections.action = { value: '', label: '' };
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
                     populateCategories(value);
-                    goToStep(2);
+                    goToStepForward(2);
                     break;
                 case 2: // CATEGORY
+                    // Clear downstream selections
                     selections.category = { value, label };
+                    selections.action = { value: '', label: '' };
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
                     populateActions(value);
-                    goToStep(3);
+                    goToStepForward(3);
                     break;
                 case 3: // ACTION
                     selections.action = { value, label };
-                    goToStep(4);
+                    selections.when = { value: '', label: '' };
+                    selections.where = { value: '', label: '', mapUrl: '' };
+                    goToStepForward(4);
                     break;
                 case 4: // WHEN
                     selections.when = { value, label };
+                    selections.where = { value: '', label: '', mapUrl: '' };
                     populateWhereOptions();
-                    goToStep(5);
+                    goToStepForward(5);
                     break;
                 case 5: // WHERE
                     selections.where = {
@@ -840,7 +852,7 @@
                         mapUrl: btn.dataset.mapSearch ? `https://maps.google.com/maps?q=${encodeURIComponent(btn.dataset.mapSearch)}` : ''
                     };
                     populateSummary();
-                    goToStep(6);
+                    goToStepForward(6);
                     break;
             }
 
@@ -934,43 +946,56 @@
             bindOptionClicks();
         }
 
+        // goToStepForward - moving forward in wizard (don't clear anything)
+        function goToStepForward(step) {
+            currentStep = step;
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+            updateProgress();
+
+            document.getElementById('back-btn').style.display = step > 1 ? 'block' : 'none';
+            document.getElementById('reset-btn').style.display = step > 1 ? 'block' : 'none';
+
+            document.querySelector('.main-scroll').scrollTop = 0;
+        }
+
+        // goToStep - going back to a step (clear downstream and repopulate)
         function goToStep(step) {
-            // Clear selections from this step onward when going back
-            if (step <= currentStep) {
-                if (step <= 1) {
-                    selections.who = { value: '', label: '', color: '' };
-                    selections.category = { value: '', label: '' };
-                    selections.action = { value: '', label: '' };
-                    selections.when = { value: '', label: '' };
-                    selections.where = { value: '', label: '', mapUrl: '' };
-                }
-                if (step <= 2) {
-                    selections.category = { value: '', label: '' };
-                    selections.action = { value: '', label: '' };
-                    selections.when = { value: '', label: '' };
-                    selections.where = { value: '', label: '', mapUrl: '' };
-                }
-                if (step <= 3) {
-                    selections.action = { value: '', label: '' };
-                    selections.when = { value: '', label: '' };
-                    selections.where = { value: '', label: '', mapUrl: '' };
-                }
-                if (step <= 4) {
-                    selections.when = { value: '', label: '' };
-                    selections.where = { value: '', label: '', mapUrl: '' };
-                }
-                if (step <= 5) {
-                    selections.where = { value: '', label: '', mapUrl: '' };
-                }
-                updateSelectionChips();
+            // Clear selections from this step onward
+            if (step === 1) {
+                selections.who = { value: '', label: '', color: '' };
             }
+            if (step <= 2) {
+                selections.category = { value: '', label: '' };
+            }
+            if (step <= 3) {
+                selections.action = { value: '', label: '' };
+            }
+            if (step <= 4) {
+                selections.when = { value: '', label: '' };
+            }
+            if (step <= 5) {
+                selections.where = { value: '', label: '', mapUrl: '' };
+            }
+
+            // Repopulate the step's options based on prior selections
+            if (step === 2 && selections.who.value) {
+                populateCategories(selections.who.value);
+            }
+            if (step === 3 && selections.category.value) {
+                populateActions(selections.category.value);
+            }
+            if (step === 5) {
+                populateWhereOptions();
+            }
+
+            updateSelectionChips();
 
             currentStep = step;
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
             updateProgress();
 
-            // Show/hide navigation buttons
             document.getElementById('back-btn').style.display = step > 1 ? 'block' : 'none';
             document.getElementById('reset-btn').style.display = step > 1 ? 'block' : 'none';
 
