@@ -7,150 +7,440 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <title>LUMI</title>
-    <link rel="stylesheet" href="css/lumi-mobile.css">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/lumi-192.png">
+    <style>
+        :root {
+            --lcars-orange: #ff9900;
+            --lcars-cyan: #00ccff;
+            --lcars-purple: #cc99ff;
+            --lcars-pink: #ff6b9d;
+            --lcars-green: #30d158;
+            --lcars-red: #ff453a;
+            --bg-primary: #000000;
+            --bg-secondary: #1c1c1e;
+            --bg-tertiary: #2c2c2e;
+            --bg-elevated: #3a3a3c;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.6);
+            --text-tertiary: rgba(255,255,255,0.3);
+            --separator: rgba(255,255,255,0.08);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; overflow: hidden; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+        .app { height: 100%; display: flex; flex-direction: column; }
+
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; padding-top: calc(12px + var(--safe-top));
+            background: var(--bg-primary); border-bottom: 1px solid var(--separator);
+        }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lcars-green); }
+        .header-title { font-size: 20px; font-weight: 600; }
+        .pending-badge {
+            background: var(--lcars-purple); color: #000; font-size: 12px; font-weight: 600;
+            padding: 4px 8px; border-radius: 10px; display: none;
+        }
+
+        /* Main scroll */
+        .main-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px 16px; }
+
+        /* Section */
+        .section { margin-bottom: 16px; }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: var(--bg-secondary); border-radius: 10px;
+            cursor: pointer; margin-bottom: 8px;
+        }
+        .section-header:active { background: var(--bg-tertiary); }
+        .section-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .section-title .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .section-chevron { color: var(--text-tertiary); font-size: 18px; transition: transform 0.2s; }
+        .section.open .section-chevron { transform: rotate(90deg); }
+        .section-content { display: none; }
+        .section.open .section-content { display: block; }
+
+        /* Subsection */
+        .subsection-label {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px 6px;
+        }
+
+        /* Items grid */
+        .items-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 4px 12px; }
+        .item-btn {
+            background: var(--bg-secondary); border: none; border-radius: 8px;
+            padding: 10px 14px; font-family: inherit; font-size: 14px; font-weight: 500;
+            color: var(--text-primary); cursor: pointer; transition: all 0.15s;
+        }
+        .item-btn:active { background: var(--bg-elevated); transform: scale(0.97); }
+
+        /* Color coding */
+        .kids .dot, .kids .item-btn { border-left: 3px solid var(--lcars-pink); }
+        .me .dot, .me .item-btn { border-left: 3px solid var(--lcars-cyan); }
+        .family .dot, .family .item-btn { border-left: 3px solid var(--lcars-purple); }
+        .calendar .dot, .calendar .item-btn { border-left: 3px solid var(--lcars-orange); }
+        .capture .dot, .capture .item-btn { border-left: 3px solid var(--lcars-green); }
+        .kids .dot { background: var(--lcars-pink); }
+        .me .dot { background: var(--lcars-cyan); }
+        .family .dot { background: var(--lcars-purple); }
+        .calendar .dot { background: var(--lcars-orange); }
+        .capture .dot { background: var(--lcars-green); }
+
+        /* Bottom spacer */
+        .bottom-spacer { height: calc(20px + var(--safe-bottom)); }
+
+        /* Sheet Modal */
+        .sheet { position: fixed; inset: 0; z-index: 100; pointer-events: none; }
+        .sheet.open { pointer-events: auto; }
+        .sheet-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; }
+        .sheet.open .sheet-backdrop { opacity: 1; }
+        .sheet-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: var(--bg-secondary); border-radius: 14px 14px 0 0;
+            padding: 12px 20px; padding-bottom: calc(24px + var(--safe-bottom));
+            transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .sheet.open .sheet-content { transform: translateY(0); }
+        .sheet-handle { width: 36px; height: 5px; background: var(--bg-elevated); border-radius: 3px; margin: 0 auto 16px; }
+        .sheet-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .sheet-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .sheet-icon svg { width: 22px; height: 22px; }
+        .sheet-title { font-size: 20px; font-weight: 600; }
+
+        /* Form elements */
+        .picker-section { margin-bottom: 20px; }
+        .picker-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; }
+        .segmented-control { display: flex; background: var(--bg-tertiary); border-radius: 8px; padding: 2px; }
+        .segment {
+            flex: 1; padding: 10px 6px; background: transparent; border: none; border-radius: 6px;
+            font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer;
+        }
+        .segment.active { background: var(--bg-elevated); color: var(--text-primary); }
+        .time-detail { display: none; margin-top: 10px; }
+        .time-input, .details-input {
+            width: 100%; padding: 14px; background: var(--bg-tertiary); border: none; border-radius: 10px;
+            font-family: inherit; font-size: 16px; color: var(--text-primary);
+        }
+        .details-input::placeholder { color: var(--text-tertiary); }
+        .details-input:focus { outline: none; box-shadow: 0 0 0 2px var(--lcars-cyan); }
+        .input-section { margin-bottom: 20px; }
+        .action-button {
+            width: 100%; padding: 16px; background: var(--lcars-orange); border: none; border-radius: 12px;
+            font-family: inherit; font-size: 17px; font-weight: 600; color: #000; cursor: pointer;
+        }
+        .action-button:active { opacity: 0.9; transform: scale(0.98); }
+
+        /* Who picker */
+        .who-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .who-btn {
+            padding: 8px 16px; background: var(--bg-tertiary); border: 2px solid transparent;
+            border-radius: 20px; font-family: inherit; font-size: 14px; font-weight: 500;
+            color: var(--text-secondary); cursor: pointer;
+        }
+        .who-btn.active { border-color: var(--lcars-pink); color: var(--text-primary); background: var(--bg-elevated); }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: calc(50px + var(--safe-bottom)); left: 50%;
+            transform: translateX(-50%) translateY(100px); display: flex; align-items: center; gap: 10px;
+            padding: 14px 20px; background: var(--bg-elevated); border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0; transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1); z-index: 200;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-icon { width: 22px; height: 22px; color: var(--lcars-green); }
+        .toast-text { font-size: 15px; font-weight: 500; }
+
+        @media (min-width: 500px) {
+            .main-scroll { max-width: 500px; margin: 0 auto; }
+            .sheet-content { max-width: 500px; left: 50%; transform: translateX(-50%) translateY(100%); }
+            .sheet.open .sheet-content { transform: translateX(-50%) translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <div class="app">
-        <!-- Status Bar Area -->
-        <header class="status-bar">
-            <div class="status-left">
-                <span class="status-dot online"></span>
-                <span class="status-text">LUMI</span>
+        <header class="header">
+            <div class="header-left">
+                <span class="status-dot"></span>
+                <span class="header-title">LUMI</span>
             </div>
-            <div class="status-right">
-                <span class="pending-count" id="pending-count"></span>
-            </div>
+            <span class="pending-badge" id="pending-badge">0</span>
         </header>
 
-        <!-- Main Scroll Area -->
         <main class="main-scroll">
-            <!-- Custody Section -->
-            <section class="card-group">
-                <div class="group-header">Custody</div>
-                <div class="card">
-                    <button class="list-item" data-action="custody:with_me">
-                        <div class="item-icon custody">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                        </div>
-                        <span class="item-label">With Me</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="custody:handoff">
-                        <div class="item-icon custody">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
-                        </div>
-                        <span class="item-label">Handoff</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="custody:pickup">
-                        <div class="item-icon custody">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        </div>
-                        <span class="item-label">Pickup</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item last" data-action="custody:dropoff">
-                        <div class="item-icon custody">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        </div>
-                        <span class="item-label">Drop Off</span>
-                        <span class="item-chevron">›</span>
-                    </button>
+            <!-- KIDS -->
+            <div class="section kids open">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title"><span class="dot"></span>Kids</span>
+                    <span class="section-chevron">›</span>
                 </div>
-            </section>
+                <div class="section-content">
+                    <div class="subsection-label">Who</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="kids:the_kids">The Kids</button>
+                        <button class="item-btn" data-action="kids:jackson">Jackson</button>
+                        <button class="item-btn" data-action="kids:henry">Henry</button>
+                    </div>
+                    <div class="subsection-label">Custody</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="kids:home_with_me">Home With Me</button>
+                        <button class="item-btn" data-action="kids:at_moms">At Mom's</button>
+                        <button class="item-btn" data-action="kids:transfer">Transfer</button>
+                        <button class="item-btn" data-action="kids:pickup">Pickup</button>
+                        <button class="item-btn" data-action="kids:dropoff">Dropoff</button>
+                        <button class="item-btn" data-action="kids:schedule_change">Schedule Change</button>
+                        <button class="item-btn" data-action="kids:swap_days">Swap Days</button>
+                        <button class="item-btn" data-action="kids:exchange_note">Exchange Note</button>
+                        <button class="item-btn" data-action="kids:delayed">Delayed</button>
+                    </div>
+                    <div class="subsection-label">School</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="kids:school_pickup">School Pickup</button>
+                        <button class="item-btn" data-action="kids:get_from_school">Get From School</button>
+                        <button class="item-btn" data-action="kids:after_school">After School</button>
+                        <button class="item-btn" data-action="kids:school_dropoff">School Dropoff</button>
+                        <button class="item-btn" data-action="kids:take_to_school">Take to School</button>
+                        <button class="item-btn" data-action="kids:sick_day">Sick Day</button>
+                        <button class="item-btn" data-action="kids:school_event">School Event</button>
+                        <button class="item-btn" data-action="kids:school_thing">School Thing</button>
+                        <button class="item-btn" data-action="kids:school_program">School Program</button>
+                        <button class="item-btn" data-action="kids:field_trip">Field Trip</button>
+                        <button class="item-btn" data-action="kids:conference">Parent-Teacher</button>
+                        <button class="item-btn" data-action="kids:no_school">No School</button>
+                        <button class="item-btn" data-action="kids:school_closed">School Closed</button>
+                        <button class="item-btn" data-action="kids:snow_day">Snow Day</button>
+                        <button class="item-btn" data-action="kids:homework">Homework Help</button>
+                        <button class="item-btn" data-action="kids:project_due">Project Due</button>
+                    </div>
+                    <div class="subsection-label">Health</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="kids:doctor">Doctor Appt</button>
+                        <button class="item-btn" data-action="kids:dentist">Dentist</button>
+                        <button class="item-btn" data-action="kids:orthodontist">Orthodontist</button>
+                        <button class="item-btn" data-action="kids:eye_doctor">Eye Doctor</button>
+                        <button class="item-btn" data-action="kids:therapy">Therapy</button>
+                        <button class="item-btn" data-action="kids:er">ER</button>
+                    </div>
+                    <div class="subsection-label">Activities</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="kids:activity">Activity / Sports</button>
+                        <button class="item-btn" data-action="kids:practice">Practice</button>
+                        <button class="item-btn" data-action="kids:game">Game</button>
+                        <button class="item-btn" data-action="kids:lesson">Lesson</button>
+                        <button class="item-btn" data-action="kids:class">Class</button>
+                        <button class="item-btn" data-action="kids:tournament">Tournament</button>
+                        <button class="item-btn" data-action="kids:friend_over">Friend Over</button>
+                        <button class="item-btn" data-action="kids:at_friends">At Friend's</button>
+                        <button class="item-btn" data-action="kids:party">Party</button>
+                        <button class="item-btn" data-action="kids:overnight">Overnight</button>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Calendar Section -->
-            <section class="card-group">
-                <div class="group-header">Calendar</div>
-                <div class="card">
-                    <button class="list-item" data-action="calendar:event">
-                        <div class="item-icon calendar">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
-                        </div>
-                        <span class="item-label">New Event</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="calendar:block">
-                        <div class="item-icon calendar">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
-                        </div>
-                        <span class="item-label">Block Time</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item last" data-action="calendar:reminder">
-                        <div class="item-icon calendar">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-                        </div>
-                        <span class="item-label">Reminder</span>
-                        <span class="item-chevron">›</span>
-                    </button>
+            <!-- ME -->
+            <div class="section me">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title"><span class="dot"></span>Me</span>
+                    <span class="section-chevron">›</span>
                 </div>
-            </section>
+                <div class="section-content">
+                    <div class="subsection-label">School</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="me:lecture">Lecture</button>
+                        <button class="item-btn" data-action="me:lab">Lab</button>
+                        <button class="item-btn" data-action="me:assignment_due">Assignment Due</button>
+                        <button class="item-btn" data-action="me:homework_due">Homework Due</button>
+                        <button class="item-btn" data-action="me:paper_due">Paper Due</button>
+                        <button class="item-btn" data-action="me:project_due">Project Due</button>
+                        <button class="item-btn" data-action="me:exam">Exam / Test</button>
+                        <button class="item-btn" data-action="me:quiz">Quiz</button>
+                        <button class="item-btn" data-action="me:study_time">Study Time</button>
+                        <button class="item-btn" data-action="me:study_group">Study Group</button>
+                    </div>
+                    <div class="subsection-label">Health</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="me:doctor">Doctor</button>
+                        <button class="item-btn" data-action="me:dentist">Dentist</button>
+                        <button class="item-btn" data-action="me:eye_doctor">Eye Doctor</button>
+                        <button class="item-btn" data-action="me:therapy">Therapy</button>
+                        <button class="item-btn" data-action="me:medication">Medication</button>
+                        <button class="item-btn" data-action="me:self_care">Self-Care</button>
+                        <button class="item-btn" data-action="me:mental_health_day">Mental Health Day</button>
+                        <button class="item-btn" data-action="me:workout">Workout</button>
+                        <button class="item-btn" data-action="me:gym">Gym</button>
+                        <button class="item-btn" data-action="me:walk">Walk</button>
+                        <button class="item-btn" data-action="me:run">Run</button>
+                    </div>
+                    <div class="subsection-label">Personal</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="me:errand">Errand</button>
+                        <button class="item-btn" data-action="me:appointment">Appointment</button>
+                        <button class="item-btn" data-action="me:date">Date</button>
+                        <button class="item-btn" data-action="me:lunch">Lunch</button>
+                        <button class="item-btn" data-action="me:dinner_out">Dinner Out</button>
+                    </div>
+                    <div class="subsection-label">Work</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="me:writing">Writing</button>
+                        <button class="item-btn" data-action="me:meeting">Meeting</button>
+                        <button class="item-btn" data-action="me:call">Call</button>
+                        <button class="item-btn" data-action="me:zoom">Zoom</button>
+                        <button class="item-btn" data-action="me:interview">Interview</button>
+                        <button class="item-btn" data-action="me:do_not_disturb">Do Not Disturb</button>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Quick Add Section -->
-            <section class="card-group">
-                <div class="group-header">Quick Add</div>
-                <div class="card">
-                    <button class="list-item" data-action="todo:task">
-                        <div class="item-icon todo">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        </div>
-                        <span class="item-label">Task</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="todo:urgent">
-                        <div class="item-icon urgent">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        </div>
-                        <span class="item-label">Urgent</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="todo:call">
-                        <div class="item-icon todo">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                        </div>
-                        <span class="item-label">Call Someone</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item last" data-action="todo:buy">
-                        <div class="item-icon todo">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                        </div>
-                        <span class="item-label">Buy Something</span>
-                        <span class="item-chevron">›</span>
-                    </button>
+            <!-- FAMILY -->
+            <div class="section family">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title"><span class="dot"></span>Family</span>
+                    <span class="section-chevron">›</span>
                 </div>
-            </section>
+                <div class="section-content">
+                    <div class="subsection-label">Parents</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="family:mom_dad">Mom & Dad</button>
+                        <button class="item-btn" data-action="family:my_mom">My Mom</button>
+                        <button class="item-btn" data-action="family:my_dad">My Dad</button>
+                        <button class="item-btn" data-action="family:parent_appt">Parent's Appt</button>
+                        <button class="item-btn" data-action="family:dinner_parents">Dinner at Parents</button>
+                    </div>
+                    <div class="subsection-label">Brother's Family</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="family:brothers_family">Brother's Family</button>
+                        <button class="item-btn" data-action="family:cousin_hangout">Cousin Hangout</button>
+                        <button class="item-btn" data-action="family:family_event">Family Event</button>
+                        <button class="item-btn" data-action="family:family_gathering">Family Gathering</button>
+                    </div>
+                    <div class="subsection-label">Pets</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="family:dogs">Dogs</button>
+                        <button class="item-btn" data-action="family:vet_dogs">Vet - Dogs</button>
+                        <button class="item-btn" data-action="family:cat">Cat</button>
+                        <button class="item-btn" data-action="family:vet_cat">Vet - Cat</button>
+                        <button class="item-btn" data-action="family:litter_box">Litter Box</button>
+                        <button class="item-btn" data-action="family:pet_food">Pet Food / Supplies</button>
+                        <button class="item-btn" data-action="family:need_dog_food">Need Dog Food</button>
+                        <button class="item-btn" data-action="family:need_cat_food">Need Cat Food</button>
+                    </div>
+                </div>
+            </div>
 
-            <!-- LUMI Section -->
-            <section class="card-group">
-                <div class="group-header">LUMI</div>
-                <div class="card">
-                    <button class="list-item" data-action="lumi:note">
-                        <div class="item-icon lumi">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                        </div>
-                        <span class="item-label">Quick Note</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item" data-action="lumi:message">
-                        <div class="item-icon lumi">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-                        </div>
-                        <span class="item-label">Message LUMI</span>
-                        <span class="item-chevron">›</span>
-                    </button>
-                    <button class="list-item last" data-action="lumi:status">
-                        <div class="item-icon lumi">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
-                        </div>
-                        <span class="item-label">System Status</span>
-                        <span class="item-chevron">›</span>
-                    </button>
+            <!-- CALENDAR -->
+            <div class="section calendar">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title"><span class="dot"></span>Calendar</span>
+                    <span class="section-chevron">›</span>
                 </div>
-            </section>
+                <div class="section-content">
+                    <div class="subsection-label">Views</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="calendar:today">Today's Schedule</button>
+                        <button class="item-btn" data-action="calendar:whats_tomorrow">What's Tomorrow</button>
+                        <button class="item-btn" data-action="calendar:this_week">This Week</button>
+                        <button class="item-btn" data-action="calendar:week_view">Week View</button>
+                        <button class="item-btn" data-action="calendar:next_week">Next Week</button>
+                        <button class="item-btn" data-action="calendar:this_month">This Month</button>
+                    </div>
+                    <div class="subsection-label">Events</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="calendar:add_event">Add Event</button>
+                        <button class="item-btn" data-action="calendar:legal">Legal / Court</button>
+                        <button class="item-btn" data-action="calendar:deadline">Deadline</button>
+                        <button class="item-btn" data-action="calendar:reminder">Reminder</button>
+                        <button class="item-btn" data-action="calendar:dont_forget">Don't Forget</button>
+                        <button class="item-btn" data-action="calendar:all_day">All Day Event</button>
+                        <button class="item-btn" data-action="calendar:recurring">Recurring</button>
+                        <button class="item-btn" data-action="calendar:repeating">Repeating</button>
+                        <button class="item-btn" data-action="calendar:every_week">Every Week</button>
+                    </div>
+                    <div class="subsection-label">Manage</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="calendar:reschedule">Reschedule</button>
+                        <button class="item-btn" data-action="calendar:move">Move</button>
+                        <button class="item-btn" data-action="calendar:change_time">Change Time</button>
+                        <button class="item-btn" data-action="calendar:cancel">Cancel</button>
+                        <button class="item-btn" data-action="calendar:cancelled">Cancelled</button>
+                        <button class="item-btn" data-action="calendar:delete">Delete</button>
+                        <button class="item-btn" data-action="calendar:block_time">Block Time</button>
+                        <button class="item-btn" data-action="calendar:busy">Busy</button>
+                        <button class="item-btn" data-action="calendar:tentative">Tentative</button>
+                        <button class="item-btn" data-action="calendar:maybe">Maybe</button>
+                        <button class="item-btn" data-action="calendar:confirmed">Confirmed</button>
+                        <button class="item-btn" data-action="calendar:travel_time">Travel Time</button>
+                        <button class="item-btn" data-action="calendar:buffer">Buffer</button>
+                    </div>
+                    <div class="subsection-label">Money</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="calendar:payment">Payment</button>
+                        <button class="item-btn" data-action="calendar:payday">Payday</button>
+                        <button class="item-btn" data-action="calendar:subscription">Subscription Renews</button>
+                        <button class="item-btn" data-action="calendar:auto_pay">Auto-Pay</button>
+                    </div>
+                    <div class="subsection-label">Special</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="calendar:birthday">Birthday</button>
+                        <button class="item-btn" data-action="calendar:kids_bday">Kids' Birthday</button>
+                        <button class="item-btn" data-action="calendar:special_date">Special Date</button>
+                        <button class="item-btn" data-action="calendar:holiday">Holiday</button>
+                        <button class="item-btn" data-action="calendar:christmas">Christmas</button>
+                        <button class="item-btn" data-action="calendar:thanksgiving">Thanksgiving</button>
+                        <button class="item-btn" data-action="calendar:easter">Easter</button>
+                        <button class="item-btn" data-action="calendar:memorial_day">Memorial Day</button>
+                        <button class="item-btn" data-action="calendar:july_4th">4th of July</button>
+                        <button class="item-btn" data-action="calendar:labor_day">Labor Day</button>
+                        <button class="item-btn" data-action="calendar:new_years">New Year's</button>
+                        <button class="item-btn" data-action="calendar:halloween">Halloween</button>
+                        <button class="item-btn" data-action="calendar:spring_break">Spring Break</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPTURE -->
+            <div class="section capture">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title"><span class="dot"></span>Capture</span>
+                    <span class="section-chevron">›</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection-label">Quick</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="capture:note">Note</button>
+                        <button class="item-btn" data-action="capture:thought">Thought</button>
+                        <button class="item-btn" data-action="capture:idea">Idea</button>
+                        <button class="item-btn" data-action="capture:photo_note">Photo Note</button>
+                        <button class="item-btn" data-action="capture:screenshot">Screenshot</button>
+                    </div>
+                    <div class="subsection-label">To-Do</div>
+                    <div class="items-grid">
+                        <button class="item-btn" data-action="capture:urgent">Urgent</button>
+                        <button class="item-btn" data-action="capture:asap">ASAP</button>
+                        <button class="item-btn" data-action="capture:task">Task</button>
+                        <button class="item-btn" data-action="capture:todo">To-Do</button>
+                        <button class="item-btn" data-action="capture:add_task">Add Task</button>
+                        <button class="item-btn" data-action="capture:call_someone">Call Someone</button>
+                        <button class="item-btn" data-action="capture:text_someone">Text Someone</button>
+                        <button class="item-btn" data-action="capture:email">Email</button>
+                        <button class="item-btn" data-action="capture:buy">Buy Something</button>
+                        <button class="item-btn" data-action="capture:follow_up">Follow Up</button>
+                        <button class="item-btn" data-action="capture:figure_out">Figure Out</button>
+                        <button class="item-btn" data-action="capture:backlog">Backlog</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="bottom-spacer"></div>
         </main>
@@ -161,10 +451,21 @@
         <div class="sheet-backdrop" onclick="closeSheet()"></div>
         <div class="sheet-content">
             <div class="sheet-handle"></div>
-
             <div class="sheet-header">
-                <div class="sheet-icon" id="sheet-icon"></div>
-                <div class="sheet-title" id="sheet-title">New Event</div>
+                <div class="sheet-icon" id="sheet-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                </div>
+                <div class="sheet-title" id="sheet-title">Quick Action</div>
+            </div>
+
+            <!-- Who picker (for kids actions) -->
+            <div class="picker-section" id="who-section" style="display:none;">
+                <div class="picker-label">Who</div>
+                <div class="who-picker">
+                    <button class="who-btn active" data-who="both">Both</button>
+                    <button class="who-btn" data-who="jackson">Jackson</button>
+                    <button class="who-btn" data-who="henry">Henry</button>
+                </div>
             </div>
 
             <!-- When Picker -->
@@ -182,7 +483,7 @@
             </div>
 
             <!-- Duration Picker -->
-            <div class="picker-section" id="duration-section">
+            <div class="picker-section" id="duration-section" style="display:none;">
                 <div class="picker-label">Duration</div>
                 <div class="segmented-control" id="duration-picker">
                     <button class="segment" data-duration="15">15m</button>
@@ -198,9 +499,7 @@
             </div>
 
             <!-- Action Button -->
-            <button class="action-button" id="action-button" onclick="submitAction()">
-                <span>Send to LUMI</span>
-            </button>
+            <button class="action-button" onclick="submitAction()">Send to LUMI</button>
         </div>
     </div>
 
@@ -212,54 +511,61 @@
 
     <script>
         const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
-
         let currentAction = null;
+        let selectedWho = 'both';
         let selectedWhen = 'now';
         let selectedDuration = 60;
 
-        // List item handlers
-        document.querySelectorAll('.list-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const action = item.dataset.action;
-                currentAction = action;
+        function toggleSection(header) {
+            header.parentElement.classList.toggle('open');
+            if (navigator.vibrate) navigator.vibrate(5);
+        }
 
-                // Get icon and label
-                const icon = item.querySelector('.item-icon').innerHTML;
-                const label = item.querySelector('.item-label').textContent;
+        // Item button handlers
+        document.querySelectorAll('.item-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentAction = btn.dataset.action;
+                const label = btn.textContent;
+                const [category] = currentAction.split(':');
 
-                document.getElementById('sheet-icon').innerHTML = icon;
-                document.getElementById('sheet-icon').className = 'sheet-icon ' + action.split(':')[0];
                 document.getElementById('sheet-title').textContent = label;
 
-                // Show/hide sections based on action type
-                const showWhen = action.startsWith('calendar:') || action.startsWith('custody:');
-                const showDuration = action.startsWith('calendar:') && !action.includes('reminder');
+                // Color the icon
+                const iconEl = document.getElementById('sheet-icon');
+                iconEl.style.background = getComputedStyle(document.documentElement)
+                    .getPropertyValue(`--lcars-${category === 'kids' ? 'pink' : category === 'me' ? 'cyan' : category === 'family' ? 'purple' : category === 'calendar' ? 'orange' : 'green'}`);
+                iconEl.style.color = '#000';
 
-                document.getElementById('when-section').style.display = showWhen ? 'block' : 'none';
-                document.getElementById('duration-section').style.display = showDuration ? 'block' : 'none';
+                // Show/hide sections
+                document.getElementById('who-section').style.display = category === 'kids' ? 'block' : 'none';
+                document.getElementById('duration-section').style.display = category === 'calendar' ? 'block' : 'none';
 
-                // Update placeholder
-                document.getElementById('details-input').placeholder = getPlaceholder(action);
+                // Set placeholder
+                document.getElementById('details-input').placeholder = getPlaceholder(currentAction);
 
-                // Open sheet
                 openSheet();
-
-                // Haptic
                 if (navigator.vibrate) navigator.vibrate(10);
             });
         });
 
-        // Segmented control handlers
+        // Who picker
+        document.querySelectorAll('.who-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.who-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedWho = btn.dataset.who;
+                if (navigator.vibrate) navigator.vibrate(5);
+            });
+        });
+
+        // Segmented controls
         document.querySelectorAll('.segment[data-when]').forEach(seg => {
             seg.addEventListener('click', () => {
                 document.querySelectorAll('.segment[data-when]').forEach(s => s.classList.remove('active'));
                 seg.classList.add('active');
                 selectedWhen = seg.dataset.when;
-
-                // Show time input for "later"
                 document.getElementById('time-detail').style.display =
                     (selectedWhen === 'later' || selectedWhen === 'soon') ? 'block' : 'none';
-
                 if (navigator.vibrate) navigator.vibrate(5);
             });
         });
@@ -274,23 +580,13 @@
         });
 
         function getPlaceholder(action) {
-            const map = {
-                'custody:with_me': 'Add a note...',
-                'custody:handoff': 'Add a note...',
-                'custody:pickup': 'Location...',
-                'custody:dropoff': 'Location...',
-                'calendar:event': 'What is it?',
-                'calendar:block': 'Reason...',
-                'calendar:reminder': 'Remind me to...',
-                'todo:task': 'What needs doing?',
-                'todo:urgent': 'What is urgent?',
-                'todo:call': 'Who to call?',
-                'todo:buy': 'What to buy?',
-                'lumi:note': 'Your note...',
-                'lumi:message': 'Message for LUMI...',
-                'lumi:status': 'Leave blank for status check',
-            };
-            return map[action] || 'Details...';
+            if (action.includes('note') || action.includes('thought') || action.includes('idea')) return 'What\'s on your mind?';
+            if (action.includes('call')) return 'Who to call?';
+            if (action.includes('text') || action.includes('email')) return 'Who and what?';
+            if (action.includes('buy')) return 'What to buy?';
+            if (action.includes('pickup') || action.includes('dropoff')) return 'Location?';
+            if (action.includes('transfer') || action.includes('exchange')) return 'Notes for handoff...';
+            return 'Details...';
         }
 
         function openSheet() {
@@ -311,8 +607,7 @@
             const timeInput = document.getElementById('time-input').value;
 
             switch(selectedWhen) {
-                case 'now':
-                    return { date: today, time: now.toTimeString().slice(0,5) };
+                case 'now': return { date: today, time: now.toTimeString().slice(0,5) };
                 case 'soon':
                     if (timeInput) return { date: today, time: timeInput };
                     now.setMinutes(now.getMinutes() + 30);
@@ -324,8 +619,7 @@
                 case 'tomorrow':
                     now.setDate(now.getDate() + 1);
                     return { date: now.toISOString().split('T')[0], time: '09:00' };
-                default:
-                    return { date: today, time: now.toTimeString().slice(0,5) };
+                default: return { date: today, time: now.toTimeString().slice(0,5) };
             }
         }
 
@@ -334,24 +628,18 @@
 
             const details = document.getElementById('details-input').value.trim();
             const { date, time } = computeDateTime();
-
             const [category, type] = currentAction.split(':');
-            const title = `[QUICK:${currentAction}] ${details || type.toUpperCase()}`;
+            const label = document.getElementById('sheet-title').textContent;
 
-            const body = `## Quick Action
-\`${currentAction}\`
+            let title = `[QUICK:${currentAction}] ${label}`;
+            if (details) title += ` - ${details.substring(0, 50)}`;
 
-## When
-${date} ${time}
-
-${selectedDuration ? `## Duration
-${selectedDuration} minutes
-` : ''}
-## Details
-${details || '(none)'}
-
----
-*LUMI Mobile • ${new Date().toISOString()}*`;
+            let body = `## Quick Action\n\`${currentAction}\`\n\n`;
+            if (category === 'kids') body += `## Who\n${selectedWho}\n\n`;
+            body += `## When\n${date} ${time}\n\n`;
+            if (category === 'calendar') body += `## Duration\n${selectedDuration} minutes\n\n`;
+            body += `## Details\n${details || '(none)'}\n\n`;
+            body += `---\n*LUMI Mobile • ${new Date().toISOString()}*`;
 
             const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
                 `labels=lumi-command,quick,${category}&` +
@@ -359,7 +647,6 @@ ${details || '(none)'}
                 `body=${encodeURIComponent(body)}`;
 
             window.open(issueUrl, '_blank');
-
             showToast('Sent to LUMI');
             if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
             closeSheet();
@@ -372,35 +659,25 @@ ${details || '(none)'}
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
+        // Swipe to close
+        let touchStartY = 0;
+        const sheetContent = document.querySelector('.sheet-content');
+        sheetContent.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
+        sheetContent.addEventListener('touchmove', e => {
+            if (e.touches[0].clientY - touchStartY > 100) closeSheet();
+        });
+
         // Load pending count
         async function loadPending() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues?labels=lumi-command&state=open&per_page=100`);
                 const issues = await res.json();
                 const count = Array.isArray(issues) ? issues.length : 0;
-                const el = document.getElementById('pending-count');
-                if (count > 0) {
-                    el.textContent = count;
-                    el.style.display = 'flex';
-                } else {
-                    el.style.display = 'none';
-                }
-            } catch (e) {
-                document.getElementById('pending-count').style.display = 'none';
-            }
+                const el = document.getElementById('pending-badge');
+                if (count > 0) { el.textContent = count; el.style.display = 'inline'; }
+                else { el.style.display = 'none'; }
+            } catch (e) { document.getElementById('pending-badge').style.display = 'none'; }
         }
-
-        // Swipe to close sheet
-        let touchStartY = 0;
-        const sheetContent = document.querySelector('.sheet-content');
-        sheetContent.addEventListener('touchstart', e => {
-            touchStartY = e.touches[0].clientY;
-        });
-        sheetContent.addEventListener('touchmove', e => {
-            const diff = e.touches[0].clientY - touchStartY;
-            if (diff > 100) closeSheet();
-        });
-
         loadPending();
         setInterval(loadPending, 60000);
     </script>
