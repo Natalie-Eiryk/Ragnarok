@@ -17,6 +17,8 @@
             --lcars-pink: #ff6b9d;
             --lcars-green: #30d158;
             --lcars-red: #ff453a;
+            --lcars-yellow: #ffcc00;
+            --lcars-blue: #5856d6;
             --bg-primary: #000000;
             --bg-secondary: #1c1c1e;
             --bg-tertiary: #2c2c2e;
@@ -58,9 +60,7 @@
         .main-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
 
         /* Progress */
-        .progress-bar {
-            display: flex; gap: 6px; margin-bottom: 24px;
-        }
+        .progress-bar { display: flex; gap: 6px; margin-bottom: 24px; }
         .progress-step {
             flex: 1; height: 4px; background: var(--bg-tertiary); border-radius: 2px;
             transition: background 0.3s;
@@ -77,22 +77,16 @@
             font-size: 13px; font-weight: 600; color: var(--text-secondary);
             text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
         }
-        .step-question {
-            font-size: 28px; font-weight: 700; margin-bottom: 20px; line-height: 1.2;
-        }
+        .step-question { font-size: 28px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
 
         /* Selection summary */
-        .selection-summary {
-            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
-        }
+        .selection-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .selection-chip {
             background: var(--bg-tertiary); border-radius: 16px; padding: 6px 12px;
             font-size: 13px; font-weight: 500; color: var(--text-secondary);
             display: flex; align-items: center; gap: 6px;
         }
-        .selection-chip .chip-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-        }
+        .selection-chip .chip-dot { width: 8px; height: 8px; border-radius: 50%; }
 
         /* Options list */
         .options-list { display: flex; flex-direction: column; gap: 8px; }
@@ -114,6 +108,10 @@
         .option-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
         .option-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
         .option-chevron { color: var(--text-tertiary); font-size: 20px; }
+        .option-map {
+            color: var(--lcars-cyan); font-size: 18px; padding: 8px;
+            margin-right: -8px; text-decoration: none;
+        }
 
         /* Color variants */
         .option-btn.pink .option-icon { background: var(--lcars-pink); }
@@ -122,8 +120,10 @@
         .option-btn.orange .option-icon { background: var(--lcars-orange); }
         .option-btn.green .option-icon { background: var(--lcars-green); }
         .option-btn.red .option-icon { background: var(--lcars-red); }
+        .option-btn.yellow .option-icon { background: var(--lcars-yellow); }
+        .option-btn.blue .option-icon { background: var(--lcars-blue); }
 
-        /* Subsection within options */
+        /* Section label */
         .options-section-label {
             font-size: 12px; font-weight: 600; color: var(--text-tertiary);
             text-transform: uppercase; letter-spacing: 0.5px;
@@ -132,7 +132,7 @@
         }
         .options-section-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
-        /* Text input step */
+        /* Text input */
         .text-input-area { margin-top: 16px; }
         .text-input {
             width: 100%; padding: 16px; background: var(--bg-secondary);
@@ -143,7 +143,7 @@
         .text-input:focus { outline: none; border-color: var(--lcars-cyan); }
         .text-input::placeholder { color: var(--text-tertiary); }
 
-        /* Final summary */
+        /* Summary */
         .summary-card {
             background: var(--bg-secondary); border-radius: 16px; padding: 20px;
             margin-bottom: 20px;
@@ -164,14 +164,11 @@
             margin-top: 20px;
         }
         .action-btn:active { opacity: 0.9; transform: scale(0.98); }
-        .action-btn:disabled { background: var(--bg-tertiary); color: var(--text-tertiary); }
 
-        /* Skip link */
         .skip-link {
             display: block; text-align: center; padding: 16px;
             color: var(--text-secondary); font-size: 15px; cursor: pointer;
         }
-        .skip-link:active { color: var(--text-primary); }
 
         /* Toast */
         .toast {
@@ -203,21 +200,21 @@
         </header>
 
         <main class="main-scroll">
-            <!-- Progress bar -->
+            <!-- Progress bar (6 steps now: Who, Category, Action, When, Where, Details) -->
             <div class="progress-bar">
                 <div class="progress-step" data-step="1"></div>
                 <div class="progress-step" data-step="2"></div>
                 <div class="progress-step" data-step="3"></div>
                 <div class="progress-step" data-step="4"></div>
                 <div class="progress-step" data-step="5"></div>
+                <div class="progress-step" data-step="6"></div>
             </div>
 
-            <!-- Selection summary (shows what you've picked) -->
             <div class="selection-summary" id="selection-summary"></div>
 
             <!-- STEP 1: WHO -->
             <div class="step active" data-step="1">
-                <div class="step-label">Step 1 of 5</div>
+                <div class="step-label">Step 1 of 6</div>
                 <div class="step-question">Who is this about?</div>
                 <div class="options-list" id="who-options">
                     <div class="options-section-label">Kids</div>
@@ -265,20 +262,6 @@
                         </div>
                         <span class="option-chevron">›</span>
                     </button>
-                    <button class="option-btn purple" data-value="my_mom" data-label="My Mom" data-color="purple">
-                        <div class="option-icon">👩</div>
-                        <div class="option-text">
-                            <div class="option-title">My Mom</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn purple" data-value="my_dad" data-label="My Dad" data-color="purple">
-                        <div class="option-icon">👨</div>
-                        <div class="option-text">
-                            <div class="option-title">My Dad</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
                     <button class="option-btn purple" data-value="brothers_family" data-label="Brother's Family" data-color="purple">
                         <div class="option-icon">👨‍👩‍👧‍👦</div>
                         <div class="option-text">
@@ -293,7 +276,6 @@
                         <div class="option-icon">🐕</div>
                         <div class="option-text">
                             <div class="option-title">Dogs</div>
-                            <div class="option-subtitle">Both pups</div>
                         </div>
                         <span class="option-chevron">›</span>
                     </button>
@@ -310,7 +292,6 @@
                         <div class="option-icon">🏠</div>
                         <div class="option-text">
                             <div class="option-title">Household</div>
-                            <div class="option-subtitle">Home stuff</div>
                         </div>
                         <span class="option-chevron">›</span>
                     </button>
@@ -325,185 +306,78 @@
                 </div>
             </div>
 
-            <!-- STEP 2: WHAT -->
+            <!-- STEP 2: WHAT CATEGORY -->
             <div class="step" data-step="2">
-                <div class="step-label">Step 2 of 5</div>
-                <div class="step-question">What's happening?</div>
-                <div class="options-list" id="what-options">
-                    <!-- Populated dynamically based on WHO -->
-                </div>
+                <div class="step-label">Step 2 of 6</div>
+                <div class="step-question">What category?</div>
+                <div class="options-list" id="category-options"></div>
             </div>
 
-            <!-- STEP 3: WHEN -->
+            <!-- STEP 3: WHAT SPECIFIC -->
             <div class="step" data-step="3">
-                <div class="step-label">Step 3 of 5</div>
+                <div class="step-label">Step 3 of 6</div>
+                <div class="step-question" id="action-question">What specifically?</div>
+                <div class="options-list" id="action-options"></div>
+            </div>
+
+            <!-- STEP 4: WHEN -->
+            <div class="step" data-step="4">
+                <div class="step-label">Step 4 of 6</div>
                 <div class="step-question">When?</div>
                 <div class="options-list" id="when-options">
                     <button class="option-btn orange" data-value="now" data-label="Now">
                         <div class="option-icon">⚡</div>
-                        <div class="option-text">
-                            <div class="option-title">Right Now</div>
-                            <div class="option-subtitle">Happening currently</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">Right Now</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="today" data-label="Today">
                         <div class="option-icon">📅</div>
-                        <div class="option-text">
-                            <div class="option-title">Today</div>
-                            <div class="option-subtitle">Later today</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">Today</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="tomorrow" data-label="Tomorrow">
                         <div class="option-icon">🌅</div>
-                        <div class="option-text">
-                            <div class="option-title">Tomorrow</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">Tomorrow</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="this_week" data-label="This Week">
                         <div class="option-icon">📆</div>
-                        <div class="option-text">
-                            <div class="option-title">This Week</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">This Week</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="next_week" data-label="Next Week">
                         <div class="option-icon">➡️</div>
-                        <div class="option-text">
-                            <div class="option-title">Next Week</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">Next Week</div></div>
                         <span class="option-chevron">›</span>
                     </button>
-                    <button class="option-btn orange" data-value="upcoming" data-label="Upcoming">
+                    <button class="option-btn orange" data-value="this_month" data-label="This Month">
                         <div class="option-icon">🗓️</div>
-                        <div class="option-text">
-                            <div class="option-title">Upcoming</div>
-                            <div class="option-subtitle">Future date</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">This Month</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="recurring" data-label="Recurring">
                         <div class="option-icon">🔄</div>
-                        <div class="option-text">
-                            <div class="option-title">Recurring</div>
-                            <div class="option-subtitle">Repeating event</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">Recurring</div><div class="option-subtitle">Repeating event</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                     <button class="option-btn orange" data-value="no_time" data-label="No specific time">
                         <div class="option-icon">∞</div>
-                        <div class="option-text">
-                            <div class="option-title">No Specific Time</div>
-                            <div class="option-subtitle">Just a note/reminder</div>
-                        </div>
+                        <div class="option-text"><div class="option-title">No Specific Time</div></div>
                         <span class="option-chevron">›</span>
                     </button>
                 </div>
             </div>
 
-            <!-- STEP 4: WHERE -->
-            <div class="step" data-step="4">
-                <div class="step-label">Step 4 of 5</div>
-                <div class="step-question">Where?</div>
-                <div class="options-list" id="where-options">
-                    <button class="option-btn cyan" data-value="home" data-label="Home">
-                        <div class="option-icon">🏠</div>
-                        <div class="option-text">
-                            <div class="option-title">Home</div>
-                            <div class="option-subtitle">My house</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="moms_house" data-label="Mom's House">
-                        <div class="option-icon">🏡</div>
-                        <div class="option-text">
-                            <div class="option-title">Mom's House</div>
-                            <div class="option-subtitle">Co-parent's place</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="parents_house" data-label="Parents' House">
-                        <div class="option-icon">🏘️</div>
-                        <div class="option-text">
-                            <div class="option-title">Parents' House</div>
-                            <div class="option-subtitle">Mom & Dad next door</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="school" data-label="School">
-                        <div class="option-icon">🏫</div>
-                        <div class="option-text">
-                            <div class="option-title">School</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="doctor" data-label="Doctor/Medical">
-                        <div class="option-icon">🏥</div>
-                        <div class="option-text">
-                            <div class="option-title">Doctor / Medical</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="dentist" data-label="Dentist">
-                        <div class="option-icon">🦷</div>
-                        <div class="option-text">
-                            <div class="option-title">Dentist</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="vet" data-label="Vet">
-                        <div class="option-icon">🐾</div>
-                        <div class="option-text">
-                            <div class="option-title">Vet</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="store" data-label="Store">
-                        <div class="option-icon">🛒</div>
-                        <div class="option-text">
-                            <div class="option-title">Store / Shopping</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="out" data-label="Out">
-                        <div class="option-icon">🚗</div>
-                        <div class="option-text">
-                            <div class="option-title">Out / Errand</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="online" data-label="Online/Remote">
-                        <div class="option-icon">💻</div>
-                        <div class="option-text">
-                            <div class="option-title">Online / Remote</div>
-                            <div class="option-subtitle">Virtual, Zoom, etc.</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="other_location" data-label="Other">
-                        <div class="option-icon">📍</div>
-                        <div class="option-text">
-                            <div class="option-title">Other Location</div>
-                            <div class="option-subtitle">I'll specify</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                    <button class="option-btn cyan" data-value="na" data-label="N/A">
-                        <div class="option-icon">—</div>
-                        <div class="option-text">
-                            <div class="option-title">Not Applicable</div>
-                            <div class="option-subtitle">Location doesn't matter</div>
-                        </div>
-                        <span class="option-chevron">›</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- STEP 5: WHY / Details -->
+            <!-- STEP 5: WHERE (with map links) -->
             <div class="step" data-step="5">
-                <div class="step-label">Step 5 of 5</div>
+                <div class="step-label">Step 5 of 6</div>
+                <div class="step-question">Where?</div>
+                <div class="options-list" id="where-options"></div>
+            </div>
+
+            <!-- STEP 6: DETAILS -->
+            <div class="step" data-step="6">
+                <div class="step-label">Step 6 of 6</div>
                 <div class="step-question">Any details?</div>
 
                 <div class="summary-card">
@@ -546,175 +420,386 @@
     <script>
         const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
 
-        // State
         let currentStep = 1;
         let selections = {
             who: { value: '', label: '', color: '' },
-            what: { value: '', label: '' },
+            category: { value: '', label: '' },
+            action: { value: '', label: '' },
             when: { value: '', label: '' },
-            where: { value: '', label: '' },
+            where: { value: '', label: '', mapUrl: '' },
             details: ''
         };
 
-        // WHAT options based on WHO
-        const whatOptions = {
-            // Kids
-            both_kids: [
-                { section: 'Custody', items: [
-                    { value: 'home_with_me', label: 'Home With Me', icon: '🏠' },
-                    { value: 'at_moms', label: "At Mom's", icon: '🏡' },
-                    { value: 'transfer', label: 'Transfer / Exchange', icon: '🔄' },
-                    { value: 'pickup', label: 'Pickup', icon: '🚗' },
-                    { value: 'dropoff', label: 'Dropoff', icon: '📍' },
-                    { value: 'schedule_change', label: 'Schedule Change', icon: '📅' },
-                    { value: 'swap_days', label: 'Swap Days', icon: '🔀' },
-                ]},
-                { section: 'School', items: [
-                    { value: 'school_pickup', label: 'School Pickup', icon: '🚗' },
-                    { value: 'school_dropoff', label: 'School Dropoff', icon: '🏫' },
-                    { value: 'school_event', label: 'School Event', icon: '🎭' },
-                    { value: 'conference', label: 'Parent-Teacher', icon: '👩‍🏫' },
-                    { value: 'no_school', label: 'No School', icon: '🏖️' },
-                    { value: 'sick_day', label: 'Sick Day', icon: '🤒' },
-                    { value: 'homework', label: 'Homework Help', icon: '📚' },
-                    { value: 'project_due', label: 'Project Due', icon: '📋' },
-                ]},
-                { section: 'Health', items: [
-                    { value: 'doctor', label: 'Doctor Appt', icon: '👨‍⚕️' },
-                    { value: 'dentist', label: 'Dentist', icon: '🦷' },
-                    { value: 'orthodontist', label: 'Orthodontist', icon: '😁' },
-                    { value: 'therapy', label: 'Therapy', icon: '💭' },
-                ]},
-                { section: 'Activities', items: [
-                    { value: 'activity', label: 'Activity / Sports', icon: '⚽' },
-                    { value: 'practice', label: 'Practice', icon: '🏃' },
-                    { value: 'game', label: 'Game', icon: '🏆' },
-                    { value: 'lesson', label: 'Lesson', icon: '🎵' },
-                    { value: 'friend_over', label: 'Friend Over', icon: '👋' },
-                    { value: 'at_friends', label: "At Friend's", icon: '🏠' },
-                    { value: 'party', label: 'Party', icon: '🎉' },
-                ]},
+        // =====================
+        // CATEGORIES by WHO
+        // =====================
+        const categories = {
+            kids: [
+                { value: 'custody', label: 'Custody / Co-Parenting', icon: '🔄', color: 'pink' },
+                { value: 'school', label: 'School', icon: '🏫', color: 'blue' },
+                { value: 'medical', label: 'Medical / Health', icon: '🏥', color: 'red' },
+                { value: 'activities', label: 'Activities / Sports', icon: '⚽', color: 'green' },
+                { value: 'social', label: 'Social / Friends', icon: '👋', color: 'purple' },
+                { value: 'needs', label: 'Needs / Shopping', icon: '🛒', color: 'orange' },
             ],
-            jackson: 'both_kids', // Same as both
-            henry: 'both_kids',   // Same as both
-
-            // Me
             me: [
-                { section: 'School', items: [
-                    { value: 'lecture', label: 'Lecture', icon: '🎓' },
-                    { value: 'lab', label: 'Lab', icon: '🔬' },
-                    { value: 'exam', label: 'Exam / Test', icon: '📝' },
-                    { value: 'assignment_due', label: 'Assignment Due', icon: '📄' },
-                    { value: 'study_time', label: 'Study Time', icon: '📚' },
-                    { value: 'study_group', label: 'Study Group', icon: '👥' },
-                ]},
-                { section: 'Health', items: [
-                    { value: 'doctor', label: 'Doctor', icon: '👨‍⚕️' },
-                    { value: 'dentist', label: 'Dentist', icon: '🦷' },
-                    { value: 'therapy', label: 'Therapy', icon: '💭' },
-                    { value: 'self_care', label: 'Self-Care', icon: '🧘' },
-                    { value: 'mental_health_day', label: 'Mental Health Day', icon: '🌸' },
-                    { value: 'workout', label: 'Workout', icon: '💪' },
-                ]},
-                { section: 'Personal', items: [
-                    { value: 'errand', label: 'Errand', icon: '🚗' },
-                    { value: 'appointment', label: 'Appointment', icon: '📅' },
-                    { value: 'date', label: 'Date', icon: '❤️' },
-                    { value: 'dinner_out', label: 'Dinner Out', icon: '🍽️' },
-                    { value: 'do_not_disturb', label: 'Do Not Disturb', icon: '🔕' },
-                ]},
-                { section: 'Work/Creative', items: [
-                    { value: 'writing', label: 'Writing', icon: '✍️' },
-                    { value: 'meeting', label: 'Meeting', icon: '👥' },
-                    { value: 'call', label: 'Call', icon: '📞' },
-                    { value: 'zoom', label: 'Zoom', icon: '💻' },
-                ]},
+                { value: 'school', label: 'School / Classes', icon: '🎓', color: 'blue' },
+                { value: 'medical', label: 'Medical / Health', icon: '🏥', color: 'red' },
+                { value: 'wellness', label: 'Wellness / Self-Care', icon: '🧘', color: 'purple' },
+                { value: 'errands', label: 'Errands / Tasks', icon: '📋', color: 'orange' },
+                { value: 'social', label: 'Social / Personal', icon: '💜', color: 'pink' },
+                { value: 'work', label: 'Work / Creative', icon: '✍️', color: 'cyan' },
+                { value: 'finance', label: 'Finance / Bills', icon: '💵', color: 'green' },
             ],
-
-            // Family
-            mom_dad: [
-                { section: 'Events', items: [
-                    { value: 'visit', label: 'Visiting', icon: '👋' },
-                    { value: 'dinner', label: 'Dinner There', icon: '🍽️' },
-                    { value: 'help_needed', label: 'Help Needed', icon: '🆘' },
-                    { value: 'their_appt', label: "Their Appt", icon: '📅' },
-                    { value: 'health_issue', label: 'Health Issue', icon: '🏥' },
-                ]},
+            family: [
+                { value: 'visits', label: 'Visits / Gatherings', icon: '👋', color: 'purple' },
+                { value: 'help', label: 'Help / Support', icon: '🆘', color: 'red' },
+                { value: 'events', label: 'Events / Celebrations', icon: '🎉', color: 'pink' },
+                { value: 'medical', label: 'Their Medical', icon: '🏥', color: 'red' },
             ],
-            my_mom: 'mom_dad',
-            my_dad: 'mom_dad',
-            brothers_family: [
-                { section: 'Events', items: [
-                    { value: 'cousin_hangout', label: 'Cousin Hangout', icon: '👧👦' },
-                    { value: 'family_gathering', label: 'Family Gathering', icon: '👨‍👩‍👧‍👦' },
-                    { value: 'family_event', label: 'Family Event', icon: '🎉' },
-                    { value: 'visit', label: 'Visit', icon: '👋' },
-                ]},
+            pets: [
+                { value: 'medical', label: 'Vet / Medical', icon: '🏥', color: 'red' },
+                { value: 'care', label: 'Daily Care', icon: '🐾', color: 'orange' },
+                { value: 'supplies', label: 'Food / Supplies', icon: '🦴', color: 'green' },
+                { value: 'grooming', label: 'Grooming', icon: '✂️', color: 'cyan' },
             ],
-
-            // Pets
-            dogs: [
-                { section: 'Care', items: [
-                    { value: 'vet', label: 'Vet Appt', icon: '🏥' },
-                    { value: 'grooming', label: 'Grooming', icon: '✂️' },
-                    { value: 'walk', label: 'Walk', icon: '🚶' },
-                    { value: 'need_food', label: 'Need Dog Food', icon: '🦴' },
-                    { value: 'medication', label: 'Medication', icon: '💊' },
-                ]},
-            ],
-            cat: [
-                { section: 'Care', items: [
-                    { value: 'vet', label: 'Vet Appt', icon: '🏥' },
-                    { value: 'litter_box', label: 'Litter Box', icon: '🧹' },
-                    { value: 'need_food', label: 'Need Cat Food', icon: '🐟' },
-                    { value: 'medication', label: 'Medication', icon: '💊' },
-                ]},
-            ],
-
-            // Other
             household: [
-                { section: 'Tasks', items: [
-                    { value: 'cleaning', label: 'Cleaning', icon: '🧹' },
-                    { value: 'laundry', label: 'Laundry', icon: '👕' },
-                    { value: 'groceries', label: 'Groceries', icon: '🛒' },
-                    { value: 'repair', label: 'Repair/Fix', icon: '🔧' },
-                    { value: 'bill_due', label: 'Bill Due', icon: '💵' },
-                    { value: 'payment', label: 'Payment', icon: '💳' },
-                ]},
+                { value: 'cleaning', label: 'Cleaning', icon: '🧹', color: 'cyan' },
+                { value: 'maintenance', label: 'Maintenance / Repair', icon: '🔧', color: 'orange' },
+                { value: 'shopping', label: 'Shopping / Groceries', icon: '🛒', color: 'green' },
+                { value: 'bills', label: 'Bills / Payments', icon: '💵', color: 'yellow' },
+                { value: 'organization', label: 'Organization', icon: '📦', color: 'purple' },
             ],
             general: [
-                { section: 'Capture', items: [
-                    { value: 'note', label: 'Note', icon: '📝' },
-                    { value: 'thought', label: 'Thought', icon: '💭' },
-                    { value: 'idea', label: 'Idea', icon: '💡' },
-                    { value: 'reminder', label: 'Reminder', icon: '⏰' },
-                    { value: 'todo', label: 'To-Do', icon: '✅' },
-                    { value: 'urgent', label: 'Urgent', icon: '🚨' },
-                    { value: 'follow_up', label: 'Follow Up', icon: '📞' },
-                ]},
-                { section: 'Calendar', items: [
-                    { value: 'add_event', label: 'Add Event', icon: '📅' },
-                    { value: 'deadline', label: 'Deadline', icon: '⏰' },
-                    { value: 'birthday', label: 'Birthday', icon: '🎂' },
-                    { value: 'holiday', label: 'Holiday', icon: '🎄' },
-                    { value: 'legal', label: 'Legal / Court', icon: '⚖️' },
-                ]},
+                { value: 'capture', label: 'Quick Capture', icon: '📝', color: 'cyan' },
+                { value: 'calendar', label: 'Calendar / Events', icon: '📅', color: 'orange' },
+                { value: 'reminders', label: 'Reminders / Tasks', icon: '⏰', color: 'yellow' },
+                { value: 'legal', label: 'Legal / Court', icon: '⚖️', color: 'red' },
+                { value: 'communication', label: 'Communication', icon: '📞', color: 'green' },
             ],
         };
 
-        // Initialize
+        // =====================
+        // ACTIONS by CATEGORY
+        // =====================
+        const actions = {
+            // KIDS categories
+            custody: [
+                { value: 'home_with_me', label: 'Home With Me', icon: '🏠' },
+                { value: 'at_moms', label: "At Mom's", icon: '🏡' },
+                { value: 'transfer', label: 'Transfer / Exchange', icon: '🔄' },
+                { value: 'pickup', label: 'Pickup', icon: '🚗' },
+                { value: 'dropoff', label: 'Dropoff', icon: '📍' },
+                { value: 'schedule_change', label: 'Schedule Change', icon: '📅' },
+                { value: 'swap_days', label: 'Swap Days', icon: '🔀' },
+                { value: 'delayed', label: 'Running Late / Delayed', icon: '⏰' },
+                { value: 'communication', label: 'Co-Parent Communication', icon: '💬' },
+            ],
+            school: [
+                { value: 'pickup', label: 'School Pickup', icon: '🚗' },
+                { value: 'dropoff', label: 'School Dropoff', icon: '🏫' },
+                { value: 'event', label: 'School Event', icon: '🎭' },
+                { value: 'conference', label: 'Parent-Teacher Conference', icon: '👩‍🏫' },
+                { value: 'field_trip', label: 'Field Trip', icon: '🚌' },
+                { value: 'picture_day', label: 'Picture Day', icon: '📸' },
+                { value: 'spirit_day', label: 'Spirit Day / Theme', icon: '🎨' },
+                { value: 'no_school', label: 'No School', icon: '🏖️' },
+                { value: 'early_release', label: 'Early Release', icon: '⏰' },
+                { value: 'late_start', label: 'Late Start', icon: '🕐' },
+                { value: 'sick_day', label: 'Sick Day', icon: '🤒' },
+                { value: 'homework', label: 'Homework Help', icon: '📚' },
+                { value: 'project', label: 'Project Due', icon: '📋' },
+                { value: 'test', label: 'Test / Quiz', icon: '📝' },
+                { value: 'report_card', label: 'Report Card', icon: '📊' },
+                { value: 'supplies', label: 'School Supplies', icon: '✏️' },
+                { value: 'lunch_money', label: 'Lunch Money', icon: '💵' },
+            ],
+            medical: [
+                { value: 'checkup', label: 'Checkup / Well Visit', icon: '👨‍⚕️' },
+                { value: 'sick_visit', label: 'Sick Visit', icon: '🤒' },
+                { value: 'specialist', label: 'Specialist', icon: '🩺' },
+                { value: 'dentist', label: 'Dentist', icon: '🦷' },
+                { value: 'orthodontist', label: 'Orthodontist', icon: '😁' },
+                { value: 'eye_doctor', label: 'Eye Doctor', icon: '👁️' },
+                { value: 'therapy', label: 'Therapy', icon: '💭' },
+                { value: 'shots', label: 'Shots / Vaccines', icon: '💉' },
+                { value: 'prescription', label: 'Prescription / Refill', icon: '💊' },
+                { value: 'urgent_care', label: 'Urgent Care', icon: '🚨' },
+                { value: 'er', label: 'Emergency Room', icon: '🏥' },
+                { value: 'follow_up', label: 'Follow-Up Visit', icon: '📋' },
+            ],
+            activities: [
+                { value: 'practice', label: 'Practice', icon: '🏃' },
+                { value: 'game', label: 'Game / Match', icon: '🏆' },
+                { value: 'tournament', label: 'Tournament', icon: '🥇' },
+                { value: 'lesson', label: 'Lesson', icon: '🎵' },
+                { value: 'class', label: 'Class', icon: '📚' },
+                { value: 'recital', label: 'Recital / Performance', icon: '🎭' },
+                { value: 'tryout', label: 'Tryout', icon: '🎯' },
+                { value: 'camp', label: 'Camp', icon: '⛺' },
+                { value: 'registration', label: 'Registration / Signup', icon: '📝' },
+                { value: 'equipment', label: 'Equipment Needed', icon: '🎒' },
+                { value: 'uniform', label: 'Uniform', icon: '👕' },
+                { value: 'photos', label: 'Team Photos', icon: '📸' },
+            ],
+            social: [
+                { value: 'playdate', label: 'Playdate', icon: '👧👦' },
+                { value: 'friend_over', label: 'Friend Coming Over', icon: '🏠' },
+                { value: 'at_friends', label: "At Friend's House", icon: '🏡' },
+                { value: 'birthday_party', label: 'Birthday Party', icon: '🎂' },
+                { value: 'sleepover', label: 'Sleepover', icon: '🛏️' },
+                { value: 'movie', label: 'Movie', icon: '🎬' },
+                { value: 'outing', label: 'Outing / Activity', icon: '🎡' },
+            ],
+            needs: [
+                { value: 'clothes', label: 'Clothes / Shoes', icon: '👕' },
+                { value: 'school_supplies', label: 'School Supplies', icon: '✏️' },
+                { value: 'haircut', label: 'Haircut', icon: '💇' },
+                { value: 'gift', label: 'Gift to Buy', icon: '🎁' },
+                { value: 'allowance', label: 'Allowance', icon: '💵' },
+            ],
+
+            // ME categories
+            wellness: [
+                { value: 'self_care', label: 'Self-Care Time', icon: '🧘' },
+                { value: 'mental_health_day', label: 'Mental Health Day', icon: '🌸' },
+                { value: 'workout', label: 'Workout', icon: '💪' },
+                { value: 'gym', label: 'Gym', icon: '🏋️' },
+                { value: 'yoga', label: 'Yoga', icon: '🧘‍♀️' },
+                { value: 'walk', label: 'Walk', icon: '🚶' },
+                { value: 'run', label: 'Run', icon: '🏃‍♀️' },
+                { value: 'meditation', label: 'Meditation', icon: '🧠' },
+                { value: 'sleep', label: 'Rest / Sleep', icon: '😴' },
+            ],
+            errands: [
+                { value: 'errand', label: 'General Errand', icon: '🚗' },
+                { value: 'groceries', label: 'Groceries', icon: '🛒' },
+                { value: 'pharmacy', label: 'Pharmacy', icon: '💊' },
+                { value: 'post_office', label: 'Post Office', icon: '📮' },
+                { value: 'bank', label: 'Bank', icon: '🏦' },
+                { value: 'dmv', label: 'DMV', icon: '🚗' },
+                { value: 'returns', label: 'Returns', icon: '📦' },
+                { value: 'pickup_order', label: 'Pickup Order', icon: '📦' },
+            ],
+            work: [
+                { value: 'writing', label: 'Writing', icon: '✍️' },
+                { value: 'meeting', label: 'Meeting', icon: '👥' },
+                { value: 'call', label: 'Call', icon: '📞' },
+                { value: 'zoom', label: 'Zoom / Video', icon: '💻' },
+                { value: 'deadline', label: 'Deadline', icon: '⏰' },
+                { value: 'interview', label: 'Interview', icon: '🎤' },
+                { value: 'do_not_disturb', label: 'Do Not Disturb', icon: '🔕' },
+            ],
+            finance: [
+                { value: 'bill_due', label: 'Bill Due', icon: '📄' },
+                { value: 'payment', label: 'Payment', icon: '💳' },
+                { value: 'budget', label: 'Budget Review', icon: '📊' },
+                { value: 'tax', label: 'Tax Related', icon: '📋' },
+                { value: 'subscription', label: 'Subscription', icon: '🔄' },
+                { value: 'insurance', label: 'Insurance', icon: '🛡️' },
+            ],
+
+            // FAMILY categories
+            visits: [
+                { value: 'visit', label: 'Visit', icon: '👋' },
+                { value: 'dinner', label: 'Dinner Together', icon: '🍽️' },
+                { value: 'lunch', label: 'Lunch Together', icon: '🥪' },
+                { value: 'holiday', label: 'Holiday Gathering', icon: '🎄' },
+                { value: 'birthday', label: 'Birthday Celebration', icon: '🎂' },
+            ],
+            help: [
+                { value: 'help_needed', label: 'They Need Help', icon: '🆘' },
+                { value: 'offering_help', label: 'Offering Help', icon: '🤝' },
+                { value: 'transportation', label: 'Give Them a Ride', icon: '🚗' },
+                { value: 'errand_for_them', label: 'Run Errand for Them', icon: '📦' },
+            ],
+            events: [
+                { value: 'family_event', label: 'Family Event', icon: '🎉' },
+                { value: 'reunion', label: 'Reunion', icon: '👨‍👩‍👧‍👦' },
+                { value: 'wedding', label: 'Wedding', icon: '💒' },
+                { value: 'funeral', label: 'Funeral / Memorial', icon: '🕯️' },
+                { value: 'graduation', label: 'Graduation', icon: '🎓' },
+            ],
+
+            // PETS categories
+            care: [
+                { value: 'walk', label: 'Walk', icon: '🚶' },
+                { value: 'feed', label: 'Feed', icon: '🍖' },
+                { value: 'litter', label: 'Litter Box', icon: '🧹' },
+                { value: 'bath', label: 'Bath', icon: '🛁' },
+                { value: 'medication', label: 'Medication', icon: '💊' },
+            ],
+            supplies: [
+                { value: 'dog_food', label: 'Dog Food', icon: '🦴' },
+                { value: 'cat_food', label: 'Cat Food', icon: '🐟' },
+                { value: 'treats', label: 'Treats', icon: '🍪' },
+                { value: 'toys', label: 'Toys', icon: '🧸' },
+                { value: 'litter', label: 'Litter', icon: '🧹' },
+                { value: 'other_supplies', label: 'Other Supplies', icon: '📦' },
+            ],
+            grooming: [
+                { value: 'haircut', label: 'Haircut / Grooming', icon: '✂️' },
+                { value: 'nails', label: 'Nail Trim', icon: '💅' },
+                { value: 'bath', label: 'Bath', icon: '🛁' },
+            ],
+
+            // HOUSEHOLD categories
+            cleaning: [
+                { value: 'general_clean', label: 'General Cleaning', icon: '🧹' },
+                { value: 'deep_clean', label: 'Deep Clean', icon: '✨' },
+                { value: 'laundry', label: 'Laundry', icon: '👕' },
+                { value: 'dishes', label: 'Dishes', icon: '🍽️' },
+                { value: 'vacuum', label: 'Vacuum', icon: '🧹' },
+                { value: 'bathroom', label: 'Bathroom', icon: '🚽' },
+                { value: 'kitchen', label: 'Kitchen', icon: '🍳' },
+                { value: 'yard', label: 'Yard Work', icon: '🌿' },
+            ],
+            maintenance: [
+                { value: 'repair', label: 'Repair Something', icon: '🔧' },
+                { value: 'call_service', label: 'Call Service Person', icon: '📞' },
+                { value: 'hvac', label: 'HVAC', icon: '❄️' },
+                { value: 'plumbing', label: 'Plumbing', icon: '🚿' },
+                { value: 'electrical', label: 'Electrical', icon: '💡' },
+                { value: 'appliance', label: 'Appliance', icon: '🔌' },
+                { value: 'car', label: 'Car Maintenance', icon: '🚗' },
+            ],
+            shopping: [
+                { value: 'groceries', label: 'Groceries', icon: '🛒' },
+                { value: 'household_items', label: 'Household Items', icon: '🧴' },
+                { value: 'online_order', label: 'Online Order', icon: '📦' },
+            ],
+            bills: [
+                { value: 'rent_mortgage', label: 'Rent / Mortgage', icon: '🏠' },
+                { value: 'utilities', label: 'Utilities', icon: '💡' },
+                { value: 'internet', label: 'Internet / Phone', icon: '📱' },
+                { value: 'insurance', label: 'Insurance', icon: '🛡️' },
+                { value: 'subscription', label: 'Subscription', icon: '🔄' },
+            ],
+            organization: [
+                { value: 'declutter', label: 'Declutter', icon: '📦' },
+                { value: 'organize', label: 'Organize', icon: '🗂️' },
+                { value: 'donate', label: 'Donate Items', icon: '🎁' },
+            ],
+
+            // GENERAL categories
+            capture: [
+                { value: 'note', label: 'Note', icon: '📝' },
+                { value: 'thought', label: 'Thought', icon: '💭' },
+                { value: 'idea', label: 'Idea', icon: '💡' },
+                { value: 'screenshot', label: 'Screenshot', icon: '📸' },
+                { value: 'voice_memo', label: 'Voice Memo', icon: '🎤' },
+            ],
+            calendar: [
+                { value: 'add_event', label: 'Add Event', icon: '📅' },
+                { value: 'birthday', label: 'Birthday', icon: '🎂' },
+                { value: 'anniversary', label: 'Anniversary', icon: '💕' },
+                { value: 'holiday', label: 'Holiday', icon: '🎄' },
+                { value: 'deadline', label: 'Deadline', icon: '⏰' },
+                { value: 'block_time', label: 'Block Time', icon: '🚫' },
+            ],
+            reminders: [
+                { value: 'todo', label: 'To-Do', icon: '✅' },
+                { value: 'urgent', label: 'Urgent', icon: '🚨' },
+                { value: 'follow_up', label: 'Follow Up', icon: '📞' },
+                { value: 'dont_forget', label: "Don't Forget", icon: '🧠' },
+                { value: 'someday', label: 'Someday / Maybe', icon: '🌈' },
+            ],
+            legal: [
+                { value: 'court_date', label: 'Court Date', icon: '⚖️' },
+                { value: 'filing', label: 'Filing / Paperwork', icon: '📄' },
+                { value: 'lawyer', label: 'Lawyer Meeting', icon: '👔' },
+                { value: 'deadline', label: 'Legal Deadline', icon: '⏰' },
+            ],
+            communication: [
+                { value: 'call', label: 'Call Someone', icon: '📞' },
+                { value: 'text', label: 'Text Someone', icon: '💬' },
+                { value: 'email', label: 'Email', icon: '📧' },
+                { value: 'thank_you', label: 'Send Thank You', icon: '💌' },
+            ],
+        };
+
+        // =====================
+        // WHERE OPTIONS with map search
+        // =====================
+        const whereOptions = {
+            homes: [
+                { value: 'home', label: 'Home', icon: '🏠', subtitle: 'My house' },
+                { value: 'moms_house', label: "Mom's House", icon: '🏡', subtitle: 'Co-parent' },
+                { value: 'parents_house', label: "Parents' House", icon: '🏘️', subtitle: 'Next door' },
+                { value: 'brothers_house', label: "Brother's House", icon: '🏠', subtitle: '10 min away' },
+            ],
+            education: [
+                { value: 'school_jackson', label: "Jackson's School", icon: '🏫', mapSearch: 'middle school near me' },
+                { value: 'school_henry', label: "Henry's School", icon: '🏫', mapSearch: 'elementary school near me' },
+                { value: 'my_campus', label: 'My Campus', icon: '🎓', mapSearch: 'college near me' },
+                { value: 'library', label: 'Library', icon: '📚', mapSearch: 'library near me' },
+            ],
+            medical: [
+                { value: 'doctor', label: 'Doctor', icon: '👨‍⚕️', mapSearch: 'doctor near me' },
+                { value: 'pediatrician', label: 'Pediatrician', icon: '👶', mapSearch: 'pediatrician near me' },
+                { value: 'dentist', label: 'Dentist', icon: '🦷', mapSearch: 'dentist near me' },
+                { value: 'orthodontist', label: 'Orthodontist', icon: '😁', mapSearch: 'orthodontist near me' },
+                { value: 'eye_doctor', label: 'Eye Doctor', icon: '👁️', mapSearch: 'optometrist near me' },
+                { value: 'urgent_care', label: 'Urgent Care', icon: '🚨', mapSearch: 'urgent care near me' },
+                { value: 'hospital', label: 'Hospital / ER', icon: '🏥', mapSearch: 'hospital emergency room near me' },
+                { value: 'pharmacy', label: 'Pharmacy', icon: '💊', mapSearch: 'pharmacy near me' },
+                { value: 'therapist', label: 'Therapist', icon: '💭', mapSearch: 'therapist near me' },
+                { value: 'vet', label: 'Vet', icon: '🐾', mapSearch: 'veterinarian near me' },
+            ],
+            shopping: [
+                { value: 'grocery', label: 'Grocery Store', icon: '🛒', mapSearch: 'grocery store near me' },
+                { value: 'target', label: 'Target', icon: '🎯', mapSearch: 'target near me' },
+                { value: 'walmart', label: 'Walmart', icon: '🏪', mapSearch: 'walmart near me' },
+                { value: 'costco', label: 'Costco', icon: '📦', mapSearch: 'costco near me' },
+                { value: 'mall', label: 'Mall', icon: '🛍️', mapSearch: 'shopping mall near me' },
+                { value: 'pet_store', label: 'Pet Store', icon: '🐕', mapSearch: 'pet store near me' },
+            ],
+            food: [
+                { value: 'restaurant', label: 'Restaurant', icon: '🍽️', mapSearch: 'restaurant near me' },
+                { value: 'fast_food', label: 'Fast Food', icon: '🍔', mapSearch: 'fast food near me' },
+                { value: 'coffee', label: 'Coffee Shop', icon: '☕', mapSearch: 'coffee shop near me' },
+                { value: 'pizza', label: 'Pizza', icon: '🍕', mapSearch: 'pizza near me' },
+            ],
+            services: [
+                { value: 'bank', label: 'Bank', icon: '🏦', mapSearch: 'bank near me' },
+                { value: 'post_office', label: 'Post Office', icon: '📮', mapSearch: 'post office near me' },
+                { value: 'gas_station', label: 'Gas Station', icon: '⛽', mapSearch: 'gas station near me' },
+                { value: 'car_service', label: 'Car Service', icon: '🔧', mapSearch: 'auto repair near me' },
+                { value: 'hair_salon', label: 'Hair Salon', icon: '💇', mapSearch: 'hair salon near me' },
+            ],
+            recreation: [
+                { value: 'gym', label: 'Gym', icon: '🏋️', mapSearch: 'gym near me' },
+                { value: 'park', label: 'Park', icon: '🌳', mapSearch: 'park near me' },
+                { value: 'movie_theater', label: 'Movie Theater', icon: '🎬', mapSearch: 'movie theater near me' },
+                { value: 'sports_field', label: 'Sports Field', icon: '⚽', mapSearch: 'sports field near me' },
+                { value: 'pool', label: 'Pool', icon: '🏊', mapSearch: 'swimming pool near me' },
+            ],
+            other: [
+                { value: 'online', label: 'Online / Remote', icon: '💻', subtitle: 'Virtual' },
+                { value: 'other', label: 'Other Location', icon: '📍', subtitle: "I'll specify" },
+                { value: 'na', label: 'N/A', icon: '—', subtitle: "Doesn't matter" },
+            ],
+        };
+
+        // =====================
+        // INITIALIZATION
+        // =====================
         updateProgress();
         bindOptionClicks();
 
         function bindOptionClicks() {
             document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.addEventListener('click', () => handleOptionClick(btn));
+                btn.addEventListener('click', (e) => {
+                    // Don't trigger if clicking the map link
+                    if (e.target.classList.contains('option-map')) return;
+                    handleOptionClick(btn);
+                });
             });
         }
 
         function handleOptionClick(btn) {
             const value = btn.dataset.value;
-            const label = btn.dataset.label || btn.querySelector('.option-title').textContent;
+            const label = btn.dataset.label || btn.querySelector('.option-title')?.textContent || value;
             const color = btn.dataset.color || 'orange';
 
             if (navigator.vibrate) navigator.vibrate(10);
@@ -722,46 +807,114 @@
             switch(currentStep) {
                 case 1: // WHO
                     selections.who = { value, label, color };
-                    populateWhatOptions(value);
+                    populateCategories(value);
                     goToStep(2);
                     break;
-                case 2: // WHAT
-                    selections.what = { value, label };
+                case 2: // CATEGORY
+                    selections.category = { value, label };
+                    populateActions(value);
                     goToStep(3);
                     break;
-                case 3: // WHEN
-                    selections.when = { value, label };
+                case 3: // ACTION
+                    selections.action = { value, label };
                     goToStep(4);
                     break;
-                case 4: // WHERE
-                    selections.where = { value, label };
-                    populateSummary();
+                case 4: // WHEN
+                    selections.when = { value, label };
+                    populateWhereOptions();
                     goToStep(5);
+                    break;
+                case 5: // WHERE
+                    selections.where = {
+                        value,
+                        label,
+                        mapUrl: btn.dataset.mapSearch ? `https://maps.google.com/maps?q=${encodeURIComponent(btn.dataset.mapSearch)}` : ''
+                    };
+                    populateSummary();
+                    goToStep(6);
                     break;
             }
 
             updateSelectionChips();
         }
 
-        function populateWhatOptions(whoValue) {
-            const container = document.getElementById('what-options');
-            let options = whatOptions[whoValue];
+        function getWhoGroup(whoValue) {
+            if (['both_kids', 'jackson', 'henry'].includes(whoValue)) return 'kids';
+            if (whoValue === 'me') return 'me';
+            if (['mom_dad', 'brothers_family'].includes(whoValue)) return 'family';
+            if (['dogs', 'cat'].includes(whoValue)) return 'pets';
+            if (whoValue === 'household') return 'household';
+            return 'general';
+        }
 
-            // Handle aliases
-            if (typeof options === 'string') {
-                options = whatOptions[options];
-            }
+        function populateCategories(whoValue) {
+            const container = document.getElementById('category-options');
+            const group = getWhoGroup(whoValue);
+            const cats = categories[group];
 
             let html = '';
-            options.forEach(section => {
-                html += `<div class="options-section-label">${section.section}</div>`;
-                section.items.forEach(item => {
+            cats.forEach(cat => {
+                html += `
+                    <button class="option-btn ${cat.color}" data-value="${cat.value}" data-label="${cat.label}">
+                        <div class="option-icon">${cat.icon}</div>
+                        <div class="option-text">
+                            <div class="option-title">${cat.label}</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+            bindOptionClicks();
+        }
+
+        function populateActions(categoryValue) {
+            const container = document.getElementById('action-options');
+            const acts = actions[categoryValue] || [];
+
+            // Update question
+            document.getElementById('action-question').textContent =
+                `What ${selections.category.label.toLowerCase()}?`;
+
+            let html = '';
+            acts.forEach(act => {
+                html += `
+                    <button class="option-btn orange" data-value="${act.value}" data-label="${act.label}">
+                        <div class="option-icon">${act.icon}</div>
+                        <div class="option-text">
+                            <div class="option-title">${act.label}</div>
+                        </div>
+                        <span class="option-chevron">›</span>
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+            bindOptionClicks();
+        }
+
+        function populateWhereOptions() {
+            const container = document.getElementById('where-options');
+            let html = '';
+
+            Object.entries(whereOptions).forEach(([section, opts]) => {
+                const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1);
+                html += `<div class="options-section-label">${sectionLabel}</div>`;
+
+                opts.forEach(opt => {
+                    const mapLink = opt.mapSearch
+                        ? `<a class="option-map" href="https://maps.google.com/maps?q=${encodeURIComponent(opt.mapSearch)}" target="_blank" onclick="event.stopPropagation()">📍</a>`
+                        : '';
+
                     html += `
-                        <button class="option-btn orange" data-value="${item.value}" data-label="${item.label}">
-                            <div class="option-icon">${item.icon}</div>
+                        <button class="option-btn cyan" data-value="${opt.value}" data-label="${opt.label}" ${opt.mapSearch ? `data-map-search="${opt.mapSearch}"` : ''}>
+                            <div class="option-icon">${opt.icon}</div>
                             <div class="option-text">
-                                <div class="option-title">${item.label}</div>
+                                <div class="option-title">${opt.label}</div>
+                                ${opt.subtitle ? `<div class="option-subtitle">${opt.subtitle}</div>` : ''}
                             </div>
+                            ${mapLink}
                             <span class="option-chevron">›</span>
                         </button>
                     `;
@@ -777,11 +930,7 @@
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
             updateProgress();
-
-            // Show reset button after step 1
             document.getElementById('reset-btn').style.display = step > 1 ? 'block' : 'none';
-
-            // Scroll to top
             document.querySelector('.main-scroll').scrollTop = 0;
         }
 
@@ -802,8 +951,11 @@
                 const colorVar = `var(--lcars-${selections.who.color})`;
                 html += `<div class="selection-chip"><span class="chip-dot" style="background:${colorVar}"></span>${selections.who.label}</div>`;
             }
-            if (selections.what.label) {
-                html += `<div class="selection-chip">${selections.what.label}</div>`;
+            if (selections.category.label) {
+                html += `<div class="selection-chip">${selections.category.label}</div>`;
+            }
+            if (selections.action.label) {
+                html += `<div class="selection-chip">${selections.action.label}</div>`;
             }
             if (selections.when.label) {
                 html += `<div class="selection-chip">${selections.when.label}</div>`;
@@ -817,7 +969,8 @@
 
         function populateSummary() {
             document.getElementById('sum-who').textContent = selections.who.label || '—';
-            document.getElementById('sum-what').textContent = selections.what.label || '—';
+            document.getElementById('sum-what').textContent =
+                `${selections.category.label} › ${selections.action.label}`;
             document.getElementById('sum-when').textContent = selections.when.label || '—';
             document.getElementById('sum-where').textContent = selections.where.label || '—';
         }
@@ -825,9 +978,10 @@
         function resetWizard() {
             selections = {
                 who: { value: '', label: '', color: '' },
-                what: { value: '', label: '' },
+                category: { value: '', label: '' },
+                action: { value: '', label: '' },
                 when: { value: '', label: '' },
-                where: { value: '', label: '' },
+                where: { value: '', label: '', mapUrl: '' },
                 details: ''
             };
             document.getElementById('details-input').value = '';
@@ -840,19 +994,22 @@
             const details = document.getElementById('details-input').value.trim();
             selections.details = details;
 
-            // Build title
-            let title = `[QUICK] ${selections.who.label}: ${selections.what.label}`;
+            let title = `[QUICK] ${selections.who.label}: ${selections.action.label}`;
             if (selections.when.label !== 'No specific time') {
                 title += ` (${selections.when.label})`;
             }
 
-            // Build body
             let body = `## Quick Command\n\n`;
             body += `| Field | Value |\n|-------|-------|\n`;
             body += `| **Who** | ${selections.who.label} |\n`;
-            body += `| **What** | ${selections.what.label} |\n`;
+            body += `| **Category** | ${selections.category.label} |\n`;
+            body += `| **Action** | ${selections.action.label} |\n`;
             body += `| **When** | ${selections.when.label} |\n`;
             body += `| **Where** | ${selections.where.label} |\n\n`;
+
+            if (selections.where.mapUrl) {
+                body += `📍 [Open in Maps](${selections.where.mapUrl})\n\n`;
+            }
 
             if (details) {
                 body += `## Details\n${details}\n\n`;
@@ -860,12 +1017,9 @@
 
             body += `---\n*LUMI Mobile • ${new Date().toLocaleString()}*`;
 
-            // Build labels
-            const labels = ['lumi-command', 'quick'];
-            if (['both_kids', 'jackson', 'henry'].includes(selections.who.value)) labels.push('kids');
-            if (selections.who.value === 'me') labels.push('personal');
-            if (['mom_dad', 'my_mom', 'my_dad', 'brothers_family'].includes(selections.who.value)) labels.push('family');
-            if (['dogs', 'cat'].includes(selections.who.value)) labels.push('pets');
+            const labels = ['lumi-command', 'quick', selections.category.value];
+            const group = getWhoGroup(selections.who.value);
+            if (group !== 'general') labels.push(group);
 
             const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
                 `labels=${labels.join(',')}&` +
@@ -876,7 +1030,6 @@
             showToast('Opening GitHub...');
             if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
 
-            // Reset after a moment
             setTimeout(resetWizard, 500);
         }
 
