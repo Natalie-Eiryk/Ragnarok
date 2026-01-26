@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>BookWriter Offline</title>
+    <link rel="manifest" href="manifest-bookwriter.json">
+    <link rel="apple-touch-icon" href="icons/lumi-192.png">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-editor: #1a1a2e;
+            --bg-toolbar: #16213e;
+            --bg-sidebar: #0f0f1a;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #ff9900;
+            --accent-dim: #cc7a00;
+            --border: #2a2a3e;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            /* Voice colors */
+            --voice-narrator: #e4e4e7;
+            --voice-kara: #60a5fa;
+            --voice-astrid: #f472b6;
+            --voice-heinrikr: #a78bfa;
+            --voice-rue: #34d399;
+            --voice-natalie: #fbbf24;
+
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            padding-top: calc(8px + var(--safe-top));
+            background: var(--bg-toolbar);
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .sync-dot.online { background: var(--success); }
+        .sync-dot.offline { background: var(--warning); }
+        .sync-dot.pending { background: var(--warning); animation: pulse 1.5s infinite; }
+        .sync-dot.error { background: var(--danger); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        .btn-ghost:hover { background: var(--border); color: var(--text-primary); }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+        .btn-primary:hover { background: var(--accent-dim); }
+
+        /* Voice Toolbar */
+        .voice-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .voice-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-editor);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+
+        .voice-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .voice-btn .voice-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .voice-btn .voice-key {
+            font-size: 10px;
+            padding: 2px 4px;
+            background: var(--border);
+            border-radius: 3px;
+            color: var(--text-muted);
+        }
+
+        .voice-btn[data-voice="narrator"] .voice-color { background: var(--voice-narrator); }
+        .voice-btn[data-voice="kara"] .voice-color { background: var(--voice-kara); }
+        .voice-btn[data-voice="astrid"] .voice-color { background: var(--voice-astrid); }
+        .voice-btn[data-voice="heinrikr"] .voice-color { background: var(--voice-heinrikr); }
+        .voice-btn[data-voice="rue"] .voice-color { background: var(--voice-rue); }
+        .voice-btn[data-voice="natalie"] .voice-color { background: var(--voice-natalie); }
+
+        /* Main Editor Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-action {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .file-item:hover { background: var(--border); color: var(--text-primary); }
+        .file-item.active { background: var(--accent); color: #000; }
+
+        .file-item .file-icon { font-size: 14px; }
+        .file-item .file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+        .file-item .file-pending {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--warning);
+        }
+
+        /* Editor */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-tabs {
+            display: flex;
+            background: var(--bg-toolbar);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .editor-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .editor-tab.active {
+            background: var(--bg-editor);
+            color: var(--text-primary);
+        }
+
+        .editor-tab .tab-close {
+            font-size: 14px;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        .editor-tab .tab-close:hover { opacity: 1; }
+
+        .editor-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editor {
+            width: 100%;
+            height: 100%;
+            padding: 20px 24px;
+            background: var(--bg-editor);
+            border: none;
+            outline: none;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            resize: none;
+            overflow-y: auto;
+        }
+
+        .editor::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Preview pane (hidden by default on mobile) */
+        .preview-pane {
+            width: 50%;
+            background: var(--bg-dark);
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 24px;
+            display: none;
+        }
+
+        .preview-pane.visible { display: block; }
+
+        .preview-content {
+            max-width: 600px;
+            margin: 0 auto;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        /* Voice-styled text in preview */
+        .preview-content .voice-narrator { font-family: Georgia, serif; }
+        .preview-content .voice-kara { font-family: 'Comic Sans MS', cursive; color: var(--voice-kara); }
+        .preview-content .voice-astrid { font-family: 'Brush Script MT', cursive; color: var(--voice-astrid); font-style: italic; }
+        .preview-content .voice-heinrikr { font-family: 'Impact', sans-serif; color: var(--voice-heinrikr); text-transform: uppercase; }
+        .preview-content .voice-rue { font-family: 'Bradley Hand', cursive; color: var(--voice-rue); }
+        .preview-content .voice-natalie { font-family: Georgia, serif; color: var(--voice-natalie); font-style: italic; }
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px;
+            padding-bottom: calc(6px + var(--safe-bottom));
+            background: var(--bg-toolbar);
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .status-left, .status-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .preview-pane { display: none !important; }
+            .voice-btn .voice-key { display: none; }
+            .editor { padding: 16px; font-size: 16px; }
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: var(--bg-sidebar);
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-editor);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: calc(60px + var(--safe-bottom));
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 12px 20px;
+            background: var(--bg-toolbar);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <span class="logo">BookWriter</span>
+                <div class="sync-status">
+                    <span class="sync-dot" id="sync-dot"></span>
+                    <span id="sync-text">Checking...</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="togglePreview()">Preview</button>
+                <button class="btn btn-ghost" onclick="showProjectModal()">Projects</button>
+                <button class="btn btn-primary" onclick="forceSyncNow()">Sync</button>
+            </div>
+        </header>
+
+        <!-- Voice Toolbar -->
+        <div class="voice-toolbar">
+            <button class="voice-btn" data-voice="narrator" onclick="insertVoice('narrator')" title="F1">
+                <span class="voice-color"></span>
+                <span>Narrator</span>
+                <span class="voice-key">F1</span>
+            </button>
+            <button class="voice-btn" data-voice="kara" onclick="insertVoice('kara')" title="F2">
+                <span class="voice-color"></span>
+                <span>Kara</span>
+                <span class="voice-key">F2</span>
+            </button>
+            <button class="voice-btn" data-voice="astrid" onclick="insertVoice('astrid')" title="F3">
+                <span class="voice-color"></span>
+                <span>Astrid</span>
+                <span class="voice-key">F3</span>
+            </button>
+            <button class="voice-btn" data-voice="heinrikr" onclick="insertVoice('heinrikr')" title="F4">
+                <span class="voice-color"></span>
+                <span>Heinrikr</span>
+                <span class="voice-key">F4</span>
+            </button>
+            <button class="voice-btn" data-voice="rue" onclick="insertVoice('rue')" title="F5">
+                <span class="voice-color"></span>
+                <span>Rue</span>
+                <span class="voice-key">F5</span>
+            </button>
+            <button class="voice-btn" data-voice="natalie" onclick="insertVoice('natalie')" title="F6">
+                <span class="voice-color"></span>
+                <span>Natalie</span>
+                <span class="voice-key">F6</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-title">Files</span>
+                    <button class="sidebar-action" onclick="newFile()">+</button>
+                </div>
+                <div class="file-list" id="file-list">
+                    <!-- Populated by JS -->
+                </div>
+            </aside>
+
+            <!-- Editor -->
+            <div class="editor-container">
+                <div class="editor-tabs" id="editor-tabs">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="editor-wrapper">
+                    <textarea
+                        class="editor"
+                        id="editor"
+                        placeholder="Start writing... Use F1-F6 for character voices."
+                        spellcheck="true"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-pane" id="preview-pane">
+                <div class="preview-content" id="preview-content">
+                    <!-- Rendered preview -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span id="status-file">No file open</span>
+                <span id="status-pending"></span>
+            </div>
+            <div class="status-right">
+                <span id="status-words">0 words</span>
+                <span id="status-saved">Not saved</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal">
+            <div class="modal-title">Projects</div>
+            <div id="project-list" style="margin-bottom: 16px;">
+                <!-- Populated by JS -->
+            </div>
+            <input type="text" class="modal-input" id="new-project-name" placeholder="New project name...">
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeProjectModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createProject()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New File Modal -->
+    <div class="modal-overlay" id="file-modal">
+        <div class="modal">
+            <div class="modal-title">New File</div>
+            <input type="text" class="modal-input" id="new-file-name" placeholder="chapter-01.tex">
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeFileModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createFile()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // =====================
+        // CONFIGURATION
+        // =====================
+        const GITHUB_REPO = 'Natalie-Eiryk/Ragnarok';
+        const SYNC_INTERVAL = 30000; // 30 seconds
+        const AUTOSAVE_DELAY = 2000; // 2 seconds
+
+        // =====================
+        // VOICE DEFINITIONS
+        // =====================
+        const voices = {
+            narrator: {
+                name: 'Narrator',
+                latex: '\\narrator{',
+                description: 'Spoken aloud, shared plane',
+                font: 'Georgia',
+                color: '#e4e4e7'
+            },
+            kara: {
+                name: 'Kara',
+                latex: '\\kara{',
+                description: 'Protagonist telepathic thoughts',
+                font: 'The Girl Next Door',
+                color: '#60a5fa'
+            },
+            astrid: {
+                name: 'Astrid',
+                latex: '\\astrid{',
+                description: 'Emotional connection, Kara\'s wife',
+                font: 'La Belle Aurore',
+                color: '#f472b6'
+            },
+            heinrikr: {
+                name: 'Heinrikr',
+                latex: '\\heinrikr{',
+                description: 'Mysterious figure, urgent warnings',
+                font: 'Permanent Marker',
+                color: '#a78bfa'
+            },
+            rue: {
+                name: 'Rue',
+                latex: '\\rue{',
+                description: 'Meta-commentary, time echoes',
+                font: 'Bradley Hand ITC',
+                color: '#34d399'
+            },
+            natalie: {
+                name: 'Natalie',
+                latex: '\\natalie{',
+                description: 'Author\'s direct voice',
+                font: 'Georgia Italic',
+                color: '#fbbf24'
+            }
+        };
+
+        // =====================
+        // STATE
+        // =====================
+        let state = {
+            currentProject: null,
+            currentFile: null,
+            files: {},           // { filename: { content, modified, synced } }
+            pendingChanges: [],  // Changes to sync
+            isOnline: navigator.onLine,
+            lastSaved: null,
+            autosaveTimer: null
+        };
+
+        // =====================
+        // INITIALIZATION
+        // =====================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            setupEventListeners();
+            updateSyncStatus();
+            renderFileList();
+            renderTabs();
+
+            // Check online status
+            window.addEventListener('online', () => {
+                state.isOnline = true;
+                updateSyncStatus();
+                attemptSync();
+            });
+
+            window.addEventListener('offline', () => {
+                state.isOnline = false;
+                updateSyncStatus();
+            });
+
+            // Periodic sync attempt
+            setInterval(() => {
+                if (state.isOnline && state.pendingChanges.length > 0) {
+                    attemptSync();
+                }
+            }, SYNC_INTERVAL);
+        });
+
+        function setupEventListeners() {
+            const editor = document.getElementById('editor');
+
+            // Auto-save on input
+            editor.addEventListener('input', () => {
+                clearTimeout(state.autosaveTimer);
+                state.autosaveTimer = setTimeout(() => {
+                    saveCurrentFile();
+                }, AUTOSAVE_DELAY);
+                updateWordCount();
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // F1-F6 for voices
+                if (e.key >= 'F1' && e.key <= 'F6') {
+                    e.preventDefault();
+                    const voiceIndex = parseInt(e.key.slice(1)) - 1;
+                    const voiceNames = Object.keys(voices);
+                    if (voiceIndex < voiceNames.length) {
+                        insertVoice(voiceNames[voiceIndex]);
+                    }
+                }
+
+                // Ctrl/Cmd + S to save
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveCurrentFile();
+                    showToast('Saved locally');
+                }
+
+                // Ctrl/Cmd + P for preview
+                if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                    e.preventDefault();
+                    togglePreview();
+                }
+            });
+        }
+
+        // =====================
+        // PERSISTENCE (localStorage + IndexedDB)
+        // =====================
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('bookwriter_state');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state.currentProject = parsed.currentProject || null;
+                    state.currentFile = parsed.currentFile || null;
+                    state.files = parsed.files || {};
+                    state.pendingChanges = parsed.pendingChanges || [];
+                }
+
+                // Load current file into editor
+                if (state.currentFile && state.files[state.currentFile]) {
+                    document.getElementById('editor').value = state.files[state.currentFile].content || '';
+                    updateWordCount();
+                }
+
+                updatePendingCount();
+            } catch (e) {
+                console.error('Failed to load state:', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('bookwriter_state', JSON.stringify({
+                    currentProject: state.currentProject,
+                    currentFile: state.currentFile,
+                    files: state.files,
+                    pendingChanges: state.pendingChanges
+                }));
+            } catch (e) {
+                console.error('Failed to save state:', e);
+            }
+        }
+
+        function saveCurrentFile() {
+            if (!state.currentFile) return;
+
+            const content = document.getElementById('editor').value;
+            const now = new Date().toISOString();
+
+            // Update file
+            if (!state.files[state.currentFile]) {
+                state.files[state.currentFile] = {};
+            }
+            state.files[state.currentFile].content = content;
+            state.files[state.currentFile].modified = now;
+            state.files[state.currentFile].synced = false;
+
+            // Add to pending changes
+            const existingIndex = state.pendingChanges.findIndex(
+                c => c.file === state.currentFile
+            );
+            if (existingIndex >= 0) {
+                state.pendingChanges[existingIndex] = {
+                    file: state.currentFile,
+                    content: content,
+                    timestamp: now,
+                    project: state.currentProject
+                };
+            } else {
+                state.pendingChanges.push({
+                    file: state.currentFile,
+                    content: content,
+                    timestamp: now,
+                    project: state.currentProject
+                });
+            }
+
+            state.lastSaved = now;
+            saveState();
+            updateStatusBar();
+            updatePendingCount();
+            renderFileList();
+        }
+
+        // =====================
+        // FILE MANAGEMENT
+        // =====================
+        function newFile() {
+            document.getElementById('new-file-name').value = '';
+            document.getElementById('file-modal').classList.add('open');
+            document.getElementById('new-file-name').focus();
+        }
+
+        function closeFileModal() {
+            document.getElementById('file-modal').classList.remove('open');
+        }
+
+        function createFile() {
+            const name = document.getElementById('new-file-name').value.trim();
+            if (!name) return;
+
+            const filename = name.endsWith('.tex') ? name : name + '.tex';
+
+            state.files[filename] = {
+                content: `% ${filename}\n% Created: ${new Date().toLocaleDateString()}\n\n`,
+                modified: new Date().toISOString(),
+                synced: false
+            };
+
+            state.currentFile = filename;
+            document.getElementById('editor').value = state.files[filename].content;
+
+            saveState();
+            renderFileList();
+            renderTabs();
+            closeFileModal();
+            showToast(`Created ${filename}`);
+        }
+
+        function openFile(filename) {
+            if (!state.files[filename]) return;
+
+            // Save current file first
+            if (state.currentFile) {
+                saveCurrentFile();
+            }
+
+            state.currentFile = filename;
+            document.getElementById('editor').value = state.files[filename].content || '';
+
+            saveState();
+            renderFileList();
+            renderTabs();
+            updateWordCount();
+            updateStatusBar();
+        }
+
+        function renderFileList() {
+            const container = document.getElementById('file-list');
+            const files = Object.keys(state.files).sort();
+
+            if (files.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                        No files yet.<br>Click + to create one.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = files.map(filename => {
+                const file = state.files[filename];
+                const isActive = filename === state.currentFile;
+                const isPending = !file.synced;
+
+                return `
+                    <div class="file-item ${isActive ? 'active' : ''}" onclick="openFile('${filename}')">
+                        <span class="file-icon">📄</span>
+                        <span class="file-name">${filename}</span>
+                        ${isPending ? '<span class="file-pending"></span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTabs() {
+            const container = document.getElementById('editor-tabs');
+
+            if (!state.currentFile) {
+                container.innerHTML = `
+                    <div class="editor-tab active">
+                        <span>Untitled</span>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="editor-tab active">
+                    <span>${state.currentFile}</span>
+                </div>
+            `;
+        }
+
+        // =====================
+        // VOICE INSERTION
+        // =====================
+        function insertVoice(voiceName) {
+            const voice = voices[voiceName];
+            if (!voice) return;
+
+            const editor = document.getElementById('editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            const selected = text.substring(start, end);
+
+            let insertion;
+            if (selected) {
+                // Wrap selection
+                insertion = `${voice.latex}${selected}}`;
+            } else {
+                // Insert with cursor position
+                insertion = `${voice.latex}}`;
+            }
+
+            editor.value = text.substring(0, start) + insertion + text.substring(end);
+
+            // Position cursor inside braces if no selection
+            if (!selected) {
+                const newPos = start + voice.latex.length;
+                editor.setSelectionRange(newPos, newPos);
+            } else {
+                const newPos = start + insertion.length;
+                editor.setSelectionRange(newPos, newPos);
+            }
+
+            editor.focus();
+
+            // Trigger autosave
+            editor.dispatchEvent(new Event('input'));
+
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+
+        // =====================
+        // PREVIEW
+        // =====================
+        function togglePreview() {
+            const pane = document.getElementById('preview-pane');
+            pane.classList.toggle('visible');
+
+            if (pane.classList.contains('visible')) {
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('editor').value;
+            const preview = document.getElementById('preview-content');
+
+            // Simple LaTeX to HTML conversion for preview
+            let html = content
+                // Escape HTML
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                // Convert voice commands
+                .replace(/\\narrator\{([^}]*)\}/g, '<span class="voice-narrator">$1</span>')
+                .replace(/\\kara\{([^}]*)\}/g, '<span class="voice-kara">$1</span>')
+                .replace(/\\astrid\{([^}]*)\}/g, '<span class="voice-astrid">$1</span>')
+                .replace(/\\heinrikr\{([^}]*)\}/g, '<span class="voice-heinrikr">$1</span>')
+                .replace(/\\rue\{([^}]*)\}/g, '<span class="voice-rue">$1</span>')
+                .replace(/\\natalie\{([^}]*)\}/g, '<span class="voice-natalie">$1</span>')
+                // Basic formatting
+                .replace(/\\textbf\{([^}]*)\}/g, '<strong>$1</strong>')
+                .replace(/\\textit\{([^}]*)\}/g, '<em>$1</em>')
+                .replace(/\\emph\{([^}]*)\}/g, '<em>$1</em>')
+                // Paragraphs
+                .replace(/\n\n+/g, '</p><p>')
+                // Comments
+                .replace(/^%.*$/gm, '')
+                // Clean up
+                .trim();
+
+            preview.innerHTML = `<p>${html}</p>`;
+        }
+
+        // =====================
+        // SYNC
+        // =====================
+        function updateSyncStatus() {
+            const dot = document.getElementById('sync-dot');
+            const text = document.getElementById('sync-text');
+
+            dot.className = 'sync-dot';
+
+            if (!state.isOnline) {
+                dot.classList.add('offline');
+                text.textContent = 'Offline';
+            } else if (state.pendingChanges.length > 0) {
+                dot.classList.add('pending');
+                text.textContent = `${state.pendingChanges.length} pending`;
+            } else {
+                dot.classList.add('online');
+                text.textContent = 'Synced';
+            }
+        }
+
+        function updatePendingCount() {
+            const el = document.getElementById('status-pending');
+            if (state.pendingChanges.length > 0) {
+                el.textContent = `${state.pendingChanges.length} pending sync`;
+                el.style.color = 'var(--warning)';
+            } else {
+                el.textContent = '';
+            }
+            updateSyncStatus();
+        }
+
+        async function attemptSync() {
+            if (!state.isOnline || state.pendingChanges.length === 0) return;
+
+            showToast('Syncing changes...');
+
+            // For now, sync via GitHub Issues
+            // In future, could use WebSocket to LUMI-OS directly
+            try {
+                await syncViaGitHub();
+                showToast('Synced successfully!');
+            } catch (e) {
+                console.error('Sync failed:', e);
+                showToast('Sync failed - will retry');
+            }
+        }
+
+        async function syncViaGitHub() {
+            if (state.pendingChanges.length === 0) return;
+
+            // Batch all pending changes into one issue
+            const changes = [...state.pendingChanges];
+
+            let body = `## BookWriter Sync\n\n`;
+            body += `**Device:** ${navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}\n`;
+            body += `**Time:** ${new Date().toLocaleString()}\n`;
+            body += `**Files:** ${changes.length}\n\n`;
+
+            changes.forEach(change => {
+                body += `### ${change.file}\n`;
+                body += `Modified: ${change.timestamp}\n`;
+                body += `\`\`\`latex\n${change.content.substring(0, 500)}${change.content.length > 500 ? '...' : ''}\n\`\`\`\n\n`;
+            });
+
+            body += `---\n*BookWriter Offline Sync*`;
+
+            const title = `[BOOKWRITER] Sync ${changes.length} file(s) - ${new Date().toLocaleDateString()}`;
+            const labels = ['lumi-command', 'bookwriter', 'sync'];
+
+            const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?` +
+                `labels=${labels.join(',')}&` +
+                `title=${encodeURIComponent(title)}&` +
+                `body=${encodeURIComponent(body)}`;
+
+            // Open GitHub to create issue
+            window.open(issueUrl, '_blank');
+
+            // Mark as synced (optimistically)
+            changes.forEach(change => {
+                if (state.files[change.file]) {
+                    state.files[change.file].synced = true;
+                }
+            });
+            state.pendingChanges = [];
+
+            saveState();
+            updatePendingCount();
+            renderFileList();
+        }
+
+        function forceSyncNow() {
+            if (state.pendingChanges.length === 0) {
+                showToast('Nothing to sync');
+                return;
+            }
+            attemptSync();
+        }
+
+        // =====================
+        // PROJECTS
+        // =====================
+        function showProjectModal() {
+            renderProjectList();
+            document.getElementById('project-modal').classList.add('open');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.remove('open');
+        }
+
+        function renderProjectList() {
+            // For now, just show current project
+            const container = document.getElementById('project-list');
+
+            if (state.currentProject) {
+                container.innerHTML = `
+                    <div class="file-item active">
+                        <span class="file-icon">📁</span>
+                        <span class="file-name">${state.currentProject}</span>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div style="padding: 12px; color: var(--text-muted); font-size: 13px;">
+                        No project selected
+                    </div>
+                `;
+            }
+        }
+
+        function createProject() {
+            const name = document.getElementById('new-project-name').value.trim();
+            if (!name) return;
+
+            state.currentProject = name;
+            state.files = {};
+            state.currentFile = null;
+            state.pendingChanges = [];
+
+            // Create default main.tex
+            state.files['main.tex'] = {
+                content: `% ${name} - Main Document
+% Created: ${new Date().toLocaleDateString()}
+
+\\documentclass{book}
+\\usepackage{fontspec}
+
+% Voice commands
+\\newcommand{\\narrator}[1]{#1}
+\\newcommand{\\kara}[1]{\\textit{#1}}
+\\newcommand{\\astrid}[1]{\\textit{#1}}
+\\newcommand{\\heinrikr}[1]{\\textbf{#1}}
+\\newcommand{\\rue}[1]{\\textit{#1}}
+\\newcommand{\\natalie}[1]{\\textit{#1}}
+
+\\begin{document}
+
+\\title{${name}}
+\\author{Natalie Eiryk}
+\\maketitle
+
+\\chapter{Chapter One}
+
+\\narrator{Your story begins here...}
+
+\\end{document}
+`,
+                modified: new Date().toISOString(),
+                synced: false
+            };
+
+            state.currentFile = 'main.tex';
+            document.getElementById('editor').value = state.files['main.tex'].content;
+
+            saveState();
+            renderFileList();
+            renderTabs();
+            closeProjectModal();
+            showToast(`Created project: ${name}`);
+        }
+
+        // =====================
+        // UI HELPERS
+        // =====================
+        function updateWordCount() {
+            const text = document.getElementById('editor').value;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('status-words').textContent = `${words} words`;
+        }
+
+        function updateStatusBar() {
+            document.getElementById('status-file').textContent =
+                state.currentFile || 'No file open';
+
+            if (state.lastSaved) {
+                const time = new Date(state.lastSaved).toLocaleTimeString();
+                document.getElementById('status-saved').textContent = `Saved ${time}`;
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    </script>
+</body>
+</html>
