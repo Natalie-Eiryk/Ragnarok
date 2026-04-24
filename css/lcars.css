@@ -104,6 +104,37 @@ body {
     padding: 60px 40px;
 }
 
+.site-return-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 18px 20px 0;
+}
+
+.site-return-strip a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 153, 0, 0.35);
+    background: rgba(10, 10, 10, 0.78);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: var(--font-lcars);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.site-return-strip a.primary {
+    background: var(--lcars-orange);
+    color: var(--bg-dark);
+    border-color: transparent;
+}
+
 /* === LCARS Frame === */
 .lcars-frame {
     background: var(--bg-panel);

@@ -177,6 +177,24 @@
         inset 0 0 30px rgba(0, 204, 255, 0.05);
 }
 
+.chapter-card-disabled {
+    opacity: 0.7;
+    border-color: var(--lcars-purple);
+    border-left-color: var(--lcars-purple);
+}
+
+.chapter-card-disabled:hover {
+    background: var(--bg-card);
+    border-color: var(--lcars-purple);
+    border-left-color: var(--lcars-purple);
+    transform: none;
+    box-shadow: none;
+}
+
+.chapter-card-disabled .chapter-status {
+    color: var(--lcars-purple);
+}
+
 .chapter-number {
     font-family: var(--font-lcars);
     font-size: 0.9rem;

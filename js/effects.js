@@ -9,27 +9,37 @@
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    const fontSize = 14;
 
-    // Set canvas size
+    // Set canvas size and keep the drop state aligned to the viewport.
+    let drops = [];
+
+    function syncDrops(columnCount) {
+        if (drops.length < columnCount) {
+            for (let i = drops.length; i < columnCount; i++) {
+                drops[i] = Math.random() * -100;
+            }
+            return;
+        }
+
+        if (drops.length > columnCount) {
+            drops = drops.slice(0, columnCount);
+        }
+    }
+
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        const columnCount = Math.max(1, Math.floor(canvas.width / fontSize));
+        syncDrops(columnCount);
     }
+
     resize();
     window.addEventListener('resize', resize);
 
     // Characters - mix of Norse runes and tech symbols
     const chars = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ01アイウエオカキクケコ';
     const charArray = chars.split('');
-
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-
-    // Array to track y position of each column
-    const drops = [];
-    for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * -100;
-    }
 
     function draw() {
         // Semi-transparent black to create fade effect

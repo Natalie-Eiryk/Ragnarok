@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragnarök</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; object-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Ragnarok</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/lcars.css">
+    <link rel="stylesheet" href="css/lore.css">
 </head>
 <body class="landing">
-    <!-- Scan line overlay -->
     <div class="scanlines"></div>
-
-    <!-- Matrix rain effect (subtle) -->
     <canvas id="matrix-rain"></canvas>
 
-    <!-- Main content -->
     <div class="landing-container">
         <div class="lcars-frame">
             <div class="lcars-bar top">
@@ -25,26 +24,54 @@
                 <div class="lcars-block cyan"></div>
                 <div class="lcars-block purple"></div>
                 <div class="lcars-title-block">
-                    <span class="lcars-label">TRANSMISSION INCOMING</span>
+                    <span class="lcars-label">RAGNAROK SIGNAL</span>
                 </div>
                 <div class="lcars-block pink"></div>
                 <div class="lcars-elbow right"></div>
             </div>
 
             <div class="landing-content">
-                <h1 class="glitch" data-text="RAGNARÖK">RAGNARÖK</h1>
-                <p class="tagline typewriter">The end is just the beginning...</p>
+                <h1 class="glitch" data-text="RAGNAROK">RAGNAROK</h1>
+                <p class="tagline typewriter">A transmission archive built for reading, lore, and the voices that survive the storm.</p>
+
+                <div class="site-return-strip">
+                    <a class="primary" href="https://www.natalie-eiryk.com/">Back to hub</a>
+                </div>
+
+                <div class="landing-intro">
+                    <p>Enter the chapter library, read the answered transmissions, or step into the lore files that map the world behind the signal.</p>
+                </div>
 
                 <a href="chapters/index.html" class="lcars-button enter-button">
-                    <span class="button-text">ENTER</span>
+                    <span class="button-text">READ</span>
                     <span class="button-accent"></span>
                 </a>
 
                 <div class="secondary-links">
-                    <a href="about.html" class="lcars-link">ABOUT</a>
+                    <a href="chapters/index.html" class="lcars-link">READ</a>
                     <a href="ask-astrid.html" class="lcars-link">ASK ASTRID</a>
-                    <a href="lumi-console.html" class="lcars-link" style="color: var(--lcars-cyan);">LUMI DIRECT</a>
+                    <a href="astrid-archive.html" class="lcars-link">ARCHIVE</a>
+                    <a href="lore/index.html" class="lcars-link">LORE</a>
+                    <a href="about.html" class="lcars-link">ABOUT</a>
                 </div>
+
+                <section class="feature-grid" aria-label="Ragnarok site sections">
+                    <a class="feature-card" href="chapters/index.html">
+                        <span class="feature-label">Library</span>
+                        <span class="feature-title">Chapter Reader</span>
+                        <span class="feature-text">Published chapters and pending transmissions, all in one ship-ready index.</span>
+                    </a>
+                    <a class="feature-card" href="astrid-archive.html">
+                        <span class="feature-label">Answered</span>
+                        <span class="feature-title">Astrid Archive</span>
+                        <span class="feature-text">Curated responses, topic filters, and an easier way to track the story's living edges.</span>
+                    </a>
+                    <a class="feature-card" href="lore/index.html">
+                        <span class="feature-label">World</span>
+                        <span class="feature-title">Lore Directory</span>
+                        <span class="feature-text">Characters, places, and timeline notes that anchor the world around the chapters.</span>
+                    </a>
+                </section>
             </div>
 
             <div class="lcars-bar bottom">

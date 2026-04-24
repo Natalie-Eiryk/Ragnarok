@@ -1,0 +1,138 @@
+[
+  {
+    "number": "1.00",
+    "title": "Recursive Recursion",
+    "status": "published",
+    "htmlPath": "chapters/1-00.html",
+    "pdfPath": "chapters/pdf/1-00.pdf",
+    "updatedAt": "2024-02-20T03:17:01Z"
+  },
+  {
+    "number": "1.01",
+    "title": "Ragnarok",
+    "status": "published",
+    "htmlPath": "chapters/1-01.html",
+    "pdfPath": "chapters/pdf/1-01.pdf",
+    "updatedAt": "2025-01-31T23:43:38Z"
+  },
+  {
+    "number": "1.02",
+    "title": "Stories of Yesteryear",
+    "status": "published",
+    "htmlPath": "chapters/1-02.html",
+    "pdfPath": "chapters/pdf/1-02.pdf",
+    "updatedAt": "2024-07-08T02:18:42Z"
+  },
+  {
+    "number": "1.03",
+    "title": "Incoming",
+    "status": "published",
+    "htmlPath": "chapters/1-03.html",
+    "pdfPath": "chapters/pdf/1-03.pdf",
+    "updatedAt": "2024-02-05T05:44:12Z"
+  },
+  {
+    "number": "1.04",
+    "title": "Heinrikr",
+    "status": "published",
+    "htmlPath": "chapters/1-04.html",
+    "pdfPath": "chapters/pdf/1-04.pdf",
+    "updatedAt": "2024-02-05T05:44:26Z"
+  },
+  {
+    "number": "1.05",
+    "title": "The Bet",
+    "status": "published",
+    "htmlPath": "chapters/1-05.html",
+    "pdfPath": "chapters/pdf/1-05.pdf",
+    "updatedAt": "2024-02-05T05:44:42Z"
+  },
+  {
+    "number": "1.06",
+    "title": "Reprieve",
+    "status": "published",
+    "htmlPath": "chapters/1-06.html",
+    "pdfPath": "chapters/pdf/1-06.pdf",
+    "updatedAt": "2024-02-05T05:44:54Z"
+  },
+  {
+    "number": "1.07",
+    "title": "Something New",
+    "status": "published",
+    "htmlPath": "chapters/1-07.html",
+    "pdfPath": "chapters/pdf/1-07.pdf",
+    "updatedAt": "2024-02-05T05:45:07Z"
+  },
+  {
+    "number": "1.08",
+    "title": "The Elder",
+    "status": "published",
+    "htmlPath": "chapters/1-08.html",
+    "pdfPath": "chapters/pdf/1-08.pdf",
+    "updatedAt": "2024-02-05T05:45:19Z"
+  },
+  {
+    "number": "1.09",
+    "title": "Aftermath",
+    "status": "published",
+    "htmlPath": "chapters/1-09.html",
+    "pdfPath": "chapters/pdf/1-09.pdf",
+    "updatedAt": "2024-02-05T05:45:36Z"
+  },
+  {
+    "number": "1.10",
+    "title": "The Karak",
+    "status": "published",
+    "htmlPath": "chapters/1-10.html",
+    "pdfPath": "chapters/pdf/1-10.pdf",
+    "updatedAt": "2024-02-05T05:45:49Z"
+  },
+  {
+    "number": "1.11",
+    "title": "In the Morning",
+    "status": "published",
+    "htmlPath": "chapters/1-11.html",
+    "pdfPath": "chapters/pdf/1-11.pdf",
+    "updatedAt": "2024-02-05T05:42:56Z"
+  },
+  {
+    "number": "1.12",
+    "title": "New Beginnings",
+    "status": "published",
+    "htmlPath": "chapters/1-12.html",
+    "pdfPath": "chapters/pdf/1-12.pdf",
+    "updatedAt": "2024-02-05T05:43:13Z"
+  },
+  {
+    "number": "1.13",
+    "title": "New Horizons",
+    "status": "coming-soon",
+    "htmlPath": "chapters/1-13.html",
+    "pdfPath": null,
+    "updatedAt": "2026-04-24T22:59:37Z"
+  },
+  {
+    "number": "1.14",
+    "title": "Work in Progress",
+    "status": "coming-soon",
+    "htmlPath": "chapters/1-14.html",
+    "pdfPath": null,
+    "updatedAt": "2026-04-24T22:59:37Z"
+  },
+  {
+    "number": "1.15",
+    "title": "The Truth Will Set You Free",
+    "status": "coming-soon",
+    "htmlPath": "chapters/1-15.html",
+    "pdfPath": null,
+    "updatedAt": "2026-04-24T22:59:37Z"
+  },
+  {
+    "number": "1.16",
+    "title": "Chapter 1.16",
+    "status": "coming-soon",
+    "htmlPath": "chapters/1-16.html",
+    "pdfPath": null,
+    "updatedAt": "2026-04-24T22:59:37Z"
+  }
+]

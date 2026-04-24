@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>In the Morning - Ragnarök</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; object-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>In the Morning - Ragnarok</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -14,25 +16,26 @@
 <body class="pdf-reader">
     <div class="scanlines"></div>
 
-    <!-- LCARS Header -->
     <header class="lcars-header">
         <div class="header-bar">
             <div class="header-elbow"></div>
-            <a href="../index.html" class="header-home">RAGNARÖK</a>
+            <a href="../index.html" class="header-home">RAGNAROK</a>
             <div class="header-blocks">
                 <span class="block orange"></span>
                 <span class="block cyan"></span>
                 <span class="block purple"></span>
             </div>
             <div class="header-spacer"></div>
-            <a href="../about.html" class="header-donate">ABOUT</a>
+            <a href="../lore/index.html" class="header-donate">LORE</a>
             <div class="header-end"></div>
         </div>
     </header>
 
-    <!-- Main Reader -->
+    <div class="site-return-strip">
+        <a class="primary" href="https://www.natalie-eiryk.com/">Back to hub</a>
+    </div>
+
     <div class="reader-container">
-        <!-- PDF Panel -->
         <div class="pdf-panel">
             <div class="pdf-header">
                 <div class="pdf-chapter-info">
@@ -40,11 +43,11 @@
                     <div class="pdf-chapter-title">In the Morning</div>
                 </div>
                 <div class="pdf-controls">
-                    <button class="pdf-control-btn dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle reading mode">
+                    <button type="button" class="pdf-control-btn dark-mode-toggle" data-reader-action="toggle-theme" title="Toggle reading mode">
                         <span class="mode-icon">🌙</span>
                         <span class="mode-text">DARK</span>
                     </button>
-                    <button class="pdf-control-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
+                    <button type="button" class="pdf-control-btn" data-reader-action="toggle-fullscreen">FULLSCREEN</button>
                     <a href="pdf/1-11.pdf" class="pdf-control-btn" download>DOWNLOAD</a>
                 </div>
             </div>
@@ -55,7 +58,6 @@
                     src="pdf/1-11.pdf"
                     type="application/pdf"
                     class="pdf-embed"
-                    onload="document.querySelector('.pdf-loading').style.display='none'"
                 >
             </div>
 
@@ -66,25 +68,22 @@
             </div>
         </div>
 
-        <!-- Side Panel -->
         <div class="side-panel">
-            <!-- Support Card -->
             <div class="support-card">
-                <div class="support-header">SUPPORT THE WORK</div>
+                <div class="support-header">FOLLOW THE SIGNAL</div>
                 <div class="support-content">
                     <p class="support-text">
-                        Enjoying the story? This work is offered freely, but your support helps keep the transmissions flowing.
+                        Prefer context between chapters? The public site now branches out into lore files and the answered transmission archive.
                     </p>
-                    <a href="https://www.natalie-eiryk.com" class="support-btn primary" target="_blank">
+                    <a href="https://www.natalie-eiryk.com" class="support-btn primary" target="_blank" rel="noopener noreferrer">
                         VISIT MAIN SITE
                     </a>
-                    <a href="https://ko-fi.com/natalieeiryk" class="support-btn" target="_blank">
-                        BUY A COFFEE
+                    <a href="../lore/index.html" class="support-btn">
+                        OPEN LORE FILES
                     </a>
                 </div>
             </div>
 
-            <!-- Reading Progress -->
             <div class="progress-card">
                 <div class="progress-label">READING PROGRESS</div>
                 <div class="progress-bar">
@@ -93,7 +92,6 @@
                 <div class="progress-text">12 / 17 CHAPTERS</div>
             </div>
 
-            <!-- Chapter Quick Nav -->
             <div class="chapters-card">
                 <div class="chapters-header">CHAPTERS</div>
                 <div class="chapters-list">
@@ -103,7 +101,7 @@
                     </a>
                     <a href="1-01.html" class="chapter-mini-link ">
                         <span class="chapter-mini-num">1.01</span>
-                        <span>Ragnarök</span>
+                        <span>Ragnarok</span>
                     </a>
                     <a href="1-02.html" class="chapter-mini-link ">
                         <span class="chapter-mini-num">1.02</span>
@@ -139,7 +137,7 @@
                     </a>
                     <a href="1-10.html" class="chapter-mini-link ">
                         <span class="chapter-mini-num">1.10</span>
-                        <span>The Kárak</span>
+                        <span>The Karak</span>
                     </a>
                     <a href="1-11.html" class="chapter-mini-link active">
                         <span class="chapter-mini-num">1.11</span>
@@ -165,62 +163,21 @@
                         <span class="chapter-mini-num">1.16</span>
                         <span>Chapter 1.16</span>
                     </a>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="lcars-footer">
         <div class="footer-bar">
             <div class="footer-elbow"></div>
-            <span class="footer-text">RAGNARÖK</span>
+            <span class="footer-text">RAGNAROK</span>
             <div class="footer-spacer"></div>
             <span class="footer-status">FREE TO READ</span>
             <div class="footer-end"></div>
         </div>
     </footer>
 
-    <script>
-        function toggleFullscreen() {
-            const embed = document.querySelector('.pdf-embed-container');
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else {
-                embed.requestFullscreen();
-            }
-        }
-
-        function toggleDarkMode() {
-            const container = document.querySelector('.pdf-embed-container');
-            const btn = document.querySelector('.dark-mode-toggle');
-            const icon = btn.querySelector('.mode-icon');
-            const text = btn.querySelector('.mode-text');
-
-            container.classList.toggle('dark-mode');
-            const isDark = container.classList.contains('dark-mode');
-
-            icon.textContent = isDark ? '☀️' : '🌙';
-            text.textContent = isDark ? 'LIGHT' : 'DARK';
-
-            // Save preference
-            localStorage.setItem('ragnarok-reader-dark', isDark ? 'true' : 'false');
-        }
-
-        // Load saved preference (default to dark mode)
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedDark = localStorage.getItem('ragnarok-reader-dark');
-            // Default to dark mode unless explicitly set to light
-            if (savedDark !== 'false') {
-                toggleDarkMode();
-            }
-        });
-
-        // Hide loading indicator when PDF loads
-        document.querySelector('.pdf-embed').addEventListener('load', function() {
-            document.querySelector('.pdf-loading').style.display = 'none';
-        });
-    </script>
+    <script src="../js/pdf-reader.js"></script>
 </body>
 </html>
