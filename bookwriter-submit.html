@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self' https://fonts.gstatic.com; form-action https://github.com; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>BookWriter | Ragnarok</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lcars.css">
+    <link rel="stylesheet" href="css/bookwriter-submit.css">
+</head>
+<body class="bookwriter-submit-page">
+    <div class="scanlines"></div>
+
+    <main class="writer-shell">
+        <header class="writer-header">
+            <a class="back-link" href="index.html">Ragnarok</a>
+            <div>
+                <p class="kicker">BookWriter Intake</p>
+                <h1>Writing Submission</h1>
+            </div>
+            <a class="hub-link" href="https://www.natalie-eiryk.com/" rel="noopener noreferrer">Hub</a>
+        </header>
+
+        <section class="writer-grid">
+            <form id="submission-form" class="writer-panel" autocomplete="off" method="get" action="https://github.com/Natalie-Eiryk/Lumi_OS/issues/new">
+                <input id="issue-title" name="title" type="hidden">
+                <input id="issue-body" name="body" type="hidden">
+                <input id="issue-labels" name="labels" type="hidden">
+
+                <div class="field-row">
+                    <label for="writing-title">Title</label>
+                    <input id="writing-title" name="writingTitle" type="text" maxlength="120" placeholder="Untitled transmission">
+                </div>
+
+                <div class="field-pair">
+                    <div class="field-row">
+                        <label for="author">Callsign</label>
+                        <input id="author" name="author" type="text" maxlength="80" placeholder="Natalie">
+                    </div>
+                    <div class="field-row">
+                        <label for="kind">Signal</label>
+                        <select id="kind" name="kind">
+                            <option value="draft">Draft</option>
+                            <option value="chapter">Chapter</option>
+                            <option value="lore">Lore Note</option>
+                            <option value="revision">Revision</option>
+                            <option value="fragment">Fragment</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <label for="tags">Tags</label>
+                    <input id="tags" name="tags" type="text" maxlength="160" placeholder="ragnarok, chapter-01, astrid">
+                </div>
+
+                <div class="field-row">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="4" maxlength="1200" placeholder="Context, placement, continuity, or what this should become."></textarea>
+                </div>
+
+                <div class="field-row writing-field">
+                    <label for="writing">Writing</label>
+                    <textarea id="writing" name="writing" rows="16" required placeholder="Paste or draft the writing here."></textarea>
+                </div>
+
+                <div class="action-bar">
+                    <button type="submit" class="primary-action">Submit to System</button>
+                    <button type="button" id="copy-packet" class="secondary-action" disabled>Copy Packet</button>
+                    <button type="button" id="download-packet" class="secondary-action" disabled>Download</button>
+                </div>
+
+                <p id="status-line" class="status-line" role="status" aria-live="polite"></p>
+            </form>
+
+            <aside class="writer-panel side-panel">
+                <div class="signal-card">
+                    <span class="signal-label">System Flag</span>
+                    <strong>bookwriter / writing-submission / triage</strong>
+                </div>
+
+                <div class="packet-panel">
+                    <label for="packet-output">Submission Packet</label>
+                    <textarea id="packet-output" rows="18" readonly></textarea>
+                </div>
+
+                <div class="saved-panel">
+                    <div class="saved-heading">
+                        <h2>Local Queue</h2>
+                        <button type="button" id="clear-local" class="text-button">Clear</button>
+                    </div>
+                    <ol id="saved-list" class="saved-list"></ol>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="js/bookwriter-submit.js"></script>
+</body>
+</html>
